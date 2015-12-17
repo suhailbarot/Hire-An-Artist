@@ -115,7 +115,6 @@ class Listing(models.Model):
     functions = models.ManyToManyField(Function) #mandatory
     tags = models.ManyToManyField(Tag,blank=True)
 
-
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.IntegerField(default=1)
