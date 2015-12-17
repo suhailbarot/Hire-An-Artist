@@ -115,7 +115,7 @@ def user_register(request):
 
 def user_home(request):
     if request.user.is_authenticated():
-        return HttpResponse("Hi"+str(request.user.name))
+        return HttpResponse("Hi"+str(request.user.email))
     return HttpResponse("Chllies")
 
 
