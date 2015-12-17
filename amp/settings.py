@@ -201,7 +201,7 @@ MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'amp.custom_storage.MediaStorage'
 
-# try:
-#     from settings_local import *
-# except ImportError:
-#     pass
+try:
+    from settings_local import *
+except ImportError:
+    pass
