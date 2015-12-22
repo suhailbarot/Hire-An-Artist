@@ -9,28 +9,30 @@ urlpatterns = [
 
     #user stuff
 
-    url(r'^user/register/','app.views.user_register', name='user register'),
-    url(r'^user/home/','app.views.user_home', name='logged in home user'),
-    url(r'^user/phone/','app.views.add_phone', name='add phone'),
+    url(r'^user/register/','app.views.user_register', name='user_register'),
+    url(r'^user/home/','app.views.user_home', name='user_home'),
+    url(r'^user/phone/','app.views.add_phone', name='add_phone'),
 
     #artist stuff
 
-    url(r'^artist/register/','app.views.artist_register', name='artist register'),
-    url(r'^artist/home/','app.views.artist_home', name='logged in home'),
+    url(r'^artist/register/','app.views.artist_register', name='artist_register'),
+    url(r'^artist/home/','app.views.artist_home', name='artist_home'),
 
 
     #listing stuff
 
-    url(r'listing/add/', 'app.views.add_listing', name='add a listing'),
+    url(r'listing/add/', 'app.views.add_listing', name='add_listing'),
+    url(r'artist/(?P<lid>\w+)/$', 'app.views.view_listing', name='view_listing'),
+    url(r'artist/(?P<lid>\w+)/projects/$', 'app.views.view_listing_projects', name='view_projects'),
 
 
     #password and user auth
 
-    url(r'^reset/(?P<key>\w+)/$','app.views.reset_password', name='password reset'),
-    url(r'^forgot/','app.views.forgot_password', name='forgot pass'),
-    url(r'^logout/','app.views.logout_user',name='log out'),
+    url(r'^reset/(?P<key>\w+)/$','app.views.reset_password', name='password_reset'),
+    url(r'^forgot/','app.views.forgot_password', name='forgot_pass'),
+    url(r'^logout/','app.views.logout_user',name='logout'),
     url(r'', include('social_auth.urls')),
-    url(r'^login/','app.views.user_login',name='log in'),
+    url(r'^login/','app.views.user_login',name='login'),
 
     #admin stuff
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h2>{{ listing.name }} - Projects</h2>
+<a href="/artist/{{ listing.id }}">Back</a>
+<hr>
+
+    {% for project in projects %}
+        {{ forloop.counter }}. {{ project.name }}
+        <br/>
+    Description : {{ project.description }}
+
+    <br/>
+    Contact Details <br/>
+    Name : {{ project.referral_name }} <br/>
+    Email: {{ project.referral_email }} <br/>
+    Referral Contact: {{ project.referral_contact }} <br/>
+    Contact2 : {{ project.referral_contact_2 }} <br/>
+
+    {% endfor %}
+
+</body>
+</html>

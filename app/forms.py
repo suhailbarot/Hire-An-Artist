@@ -3,6 +3,7 @@ from django import forms
 from django.core.validators import RegexValidator, URLValidator
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate
+from django.forms.models import inlineformset_factory,BaseInlineFormSet
 
 from app.models import *
 from app.utils import generate_hash
@@ -146,7 +147,29 @@ class ListingForm(forms.ModelForm):
         if commit:
             m.user = user
             m.save()
+            m.talents.all().delete()
+            m.functions.all().delete()
+            m.tags.all().delete()
+            for talent in self.cleaned_data['talents']:
+                m.talents.add(talent)
+            for fn in self.cleaned_data['functions']:
+                m.functions.add(fn)
+            for tg in self.cleaned_data['tags']:
+                m.tags.add(tg)
         return m
 
 
+class ProjectForm(forms.ModelForm):
+    # def save(self, commit=True, listing=None):
+    #     pf = super(ProjectForm,self).save(commit=False)
+    #     if commit:
+    #         pf.listing = listing
+    #         pf.save()
 
+    class Meta:
+        model = Projects
+        exclude = ('is_active','listing')
+
+
+ListingProjectFormSet = inlineformset_factory(Listing,Projects, form=ProjectForm, extra=3, can_delete=False,
+                                              validate_max=3)
