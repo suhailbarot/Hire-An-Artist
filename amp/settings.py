@@ -50,7 +50,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'app',
     'social_auth',
-    'storages'
+    'storages',
+    'bootstrapform'
 )
 
 MIDDLEWARE_CLASSES = (
