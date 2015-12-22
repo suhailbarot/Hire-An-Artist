@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<form id="filter_form" name="filter_form" method="post" action="/results/">
+
+{% csrf_token %}
+
+    {% for field in form %}
+        {{ field.label }} :
+        {{ field }}
+        {{ field.errors }}
+        <br/>
+    {% endfor %}
+
+    <input type="submit" value="search" name="filter_form">
+</form>
+
+
+<hr>
+Artist Search
+
+<form id="name_form" name="name_form" method="post" action="/results/">
+
+{% csrf_token %}
+
+    {% for field in name %}
+        {{ field.label }} :
+        {{ field }}
+        {{ field.errors }}
+        <br/>
+    {% endfor %}
+
+    <input type="submit" value="search" name="name_form">
+</form>
+
+</body>
+</html>

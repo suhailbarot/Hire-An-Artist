@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'listing/add/', 'app.views.add_listing', name='add_listing'),
     url(r'artist/(?P<lid>\w+)/$', 'app.views.view_listing', name='view_listing'),
     url(r'artist/(?P<lid>\w+)/projects/$', 'app.views.view_listing_projects', name='view_projects'),
+    url(r'^search/','app.views.search_home',name='search'),
+    url(r'^results/','app.views.search_results',name='search_results'),
 
 
     #password and user auth
