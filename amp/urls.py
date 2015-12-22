@@ -22,6 +22,8 @@ urlpatterns = [
     #listing stuff
 
     url(r'listing/add/', 'app.views.add_listing', name='add a listing'),
+    url(r'artist/(?P<lid>\w+)/$', 'app.views.view_listing', name='view listing'),
+    url(r'artist/(?P<lid>\w+)/projects/$', 'app.views.view_listing_projects', name='view projects'),
 
 
     #password and user auth

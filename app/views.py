@@ -8,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm
-from app.models import PasswordReset, UserProfile, Listing
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet
+from app.models import PasswordReset, UserProfile, Listing, Projects
 from app.utils import generate_hash
 from app.constants import VISITOR_ID,ARTIST_ID
 
@@ -139,10 +139,38 @@ def add_phone(request):
 def add_listing(request):
     if request.POST:
         form = ListingForm(data=request.POST, files=request.FILES)
+        formset = ListingProjectFormSet(request.POST)
+
         if form.is_valid():
             usr = UserProfile.objects.get(user=request.user)
-            form = form.save(commit=True,user=usr)
-            return HttpResponse("Chill")
+            k = form.save(commit=False)
+            formset = ListingProjectFormSet(request.POST, instance=k)
+            if formset.is_valid():
+                form.save(commit=True,user=usr)
+                formset.save(commit=True)
+                return HttpResponse("Done!")
     else:
         form = ListingForm()
-    return render(request,'add_listing.html',{'form':form})
+        formset = ListingProjectFormSet(instance=Listing())
+
+    return render(request,'add_listing.html',{'form':form,'formset':formset})
+
+
+def view_listing(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid, is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such listing")
+    return render(request,'view_listing.html',{'listing':listing})
+
+
+def view_listing_projects(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid, is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such Listing")
+
+    projects = Projects.objects.filter(listing=listing, is_active=1)
+
+    return render(request,"view_listing_projects.html",{'listing':listing,'projects':projects})
+

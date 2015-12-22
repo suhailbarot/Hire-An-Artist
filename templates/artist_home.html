@@ -11,8 +11,9 @@ Hi {{ up.full_name }}
 <br/>
 
 {% for listing in listings %}
-
-    {{ listing.name }}
+Listing :
+    <a href="/artist/{{ listing.id }}">{{ listing.name }}</a>
+    <br/>
 
 {% endfor %}
 

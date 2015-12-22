@@ -41,6 +41,12 @@ class UserProfile(models.Model):
     class Meta:
         app_label = 'app'
 
+    def __unicode__(self):
+        return str(self.full_name)
+
+    def __str__(self):
+        return str(self.full_name)
+
 
 class Talent(models.Model):
     name = models.CharField(max_length=100)
@@ -52,6 +58,9 @@ class Talent(models.Model):
         app_label = 'app'
 
     def __unicode__(self):
+        return str(self.name)
+
+    def __str__(self):
         return str(self.name)
 
 
@@ -67,6 +76,9 @@ class Function(models.Model):
     def __unicode__(self):
         return str(self.name)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
@@ -79,6 +91,9 @@ class Tag(models.Model):
         app_label = 'app'
 
     def __unicode__(self):
+        return str(self.name)
+
+    def __str__(self):
         return str(self.name)
 
 

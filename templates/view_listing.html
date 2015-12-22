@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+<h1>{{ listing.name }}</h1>
+
+
+
+
+<br/>
+
+<a href="projects">Projects</a>
+
+<br/>
+
+<img src="{{ listing.profile_pic.url }}" width="400" height="300">
+
+</br>
+<br/>
+
+Outstation : {{ listing.outstation }}
+
+<br/>
+<br/>
+Contact Name : {{ listing.contact_name }}
+<br/>
+Contact Email : {{ listing.contact_email }}
+<br/>
+Contact Number 1: {{ listing.contact_number }}
+<br/>
+Contact Number 2: {{ listing.contact_number2 }}
+<br/>
+Contact Number 3: {{ listing.contact_number3 }}
+
+<br/>
+<br/>
+
+Bio : {{ listing.bio }}
+
+<br/>
+
+Fees : {{ listing.feeds }}
+<br/>
+
+Comments: {{ listing.comments }}
+<br/>
+<br/>
+
+Tech Details : {{ listing.tech_details }}
+
+<br/>
+{% if listing.tech_details_file %}
+Tech Details Link Download FIle : <a href="{{ listing.tech_details_file.url }}">Read it</a>
+{% endif %}
+
+<br/>
+
+Twitter : <a href="{{ listing.twitter_link }}">Link</a>
+
+<br/>
+
+Facebook : <a href="{{ listing.fb_link }}">link</a>
+
+<br/>
+
+User : {{ listing.user }}
+
+<br/>
+
+Score : {{ listing.score }}
+
+<br/>
+
+is Approved : {{ listing.is_approved }}
+
+<br/>
+
+<br/>
+
+<br/>
+
+<h2> Talents</h2>
+
+{% for talent in listing.talents.all %}
+    {{ talent.name }},
+
+{% endfor %}
+
+<h2>Tags</h2>
+
+{% for tag in listing.tags.all %}
+{{ tag.name }},
+{% endfor %}
+
+<h2>Functions</h2>
+{% for function in listing.functions.all %}
+{{ function.name }},
+{% endfor %}
+
+
+
+</body>
+</html>

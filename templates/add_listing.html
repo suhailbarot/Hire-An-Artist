@@ -11,6 +11,8 @@
 
     {% csrf_token %}
 
+    <h2>Basics</h2>
+
     {% for field in form %}
         {{ field.label }} :
         {{ field }}
@@ -18,7 +20,22 @@
         <br/>
     {% endfor %}
 
+    <h2>Projects</h2>
 
+    {{ formset.management_form }}
+
+    {% for formi in formset %}
+        <h4>Project {{ forloop.counter }}</h4>
+
+        {% for field in formi %}
+            {% if field.label != 'Listing' and field.label != 'Id' %}
+                {{ field.label }}
+            {% endif %}
+                {{ field }}
+                {{ field.errors }}
+        <br/>
+        {% endfor %}
+    {% endfor %}
 
     <input type="submit" value="submit">
 

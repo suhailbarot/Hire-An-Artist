@@ -4,7 +4,18 @@ from app.models import *
 
 admin.site.site_header = 'HireTheArtist Admin'
 
-admin.site.register(Listing)
+class ProjectInline(admin.TabularInline):
+    model = Projects
+    extra = 1
+
+class MediaInline(admin.TabularInline):
+    model = Media
+    extra = 1
+
+class ListingAdmin(admin.ModelAdmin):
+    inlines = [ProjectInline, MediaInline]
+
+admin.site.register(Listing, ListingAdmin)
 admin.site.register(UserProfile)
 admin.site.register(Review)
 admin.site.register(Rating)
