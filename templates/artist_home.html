@@ -10,12 +10,19 @@ Hi {{ up.full_name }}
 
 <br/>
 
+<a href="{% url 'add_listing' %}"> Add Listing</a> <br/><br/>
+
+<br/>
+Your listings: <br/>
 {% for listing in listings %}
-Listing :
+Listing {{ forloop.counter }}:
     <a href="/artist/{{ listing.id }}">{{ listing.name }}</a>
     <br/>
 
 {% endfor %}
 
+{% if not listings %}
+    You have No listings!
+{% endif %}
 </body>
 </html>

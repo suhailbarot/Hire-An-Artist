@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet
 from app.models import PasswordReset, UserProfile, Listing, Projects
@@ -31,9 +32,9 @@ def user_login(request):
                 login(request, logged_in_user)
                 up = UserProfile.objects.get(user=logged_in_user)
                 if up.type == VISITOR_ID:
-                    return HttpResponseRedirect('/user/home/')
+                    return HttpResponseRedirect(reverse('user_home'))
                 else:
-                    return HttpResponseRedirect('/artist/home/')
+                    return HttpResponseRedirect(reverse('artist_home'))
             else:
                 return HttpResponse("Not active")
     else:
@@ -126,7 +127,7 @@ def add_phone(request):
             form = PhoneForm(data=request.POST)
             if form.is_valid():
                 form.save(usp)
-                return HttpResponseRedirect('/user/home/')
+                return HttpResponseRedirect(reverse('user_home'))
         else:
             form = PhoneForm()
         return render(request,'enter_phone.html',{'form':form})
@@ -146,9 +147,9 @@ def add_listing(request):
             k = form.save(commit=False)
             formset = ListingProjectFormSet(request.POST, instance=k)
             if formset.is_valid():
-                form.save(commit=True,user=usr)
+                l = form.save(commit=True,user=usr)
                 formset.save(commit=True)
-                return HttpResponse("Done!")
+                return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
     else:
         form = ListingForm()
         formset = ListingProjectFormSet(instance=Listing())
