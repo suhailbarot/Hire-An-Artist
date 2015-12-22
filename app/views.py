@@ -196,21 +196,21 @@ def search_results(request):
                 city = None
                 if request.POST['city']:
                     city = request.POST['city'] #string
-                results = results.filter(city__icontains=str(city))
+                    results = results.filter(city__icontains=str(city))
 
             if 'function_type' in request.POST:
                 function=None
                 if request.POST['function_type']:
                     function = int(request.POST['function_type'])
-                fn = Function.objects.get(id=function)
-                results = results.filter(functions__in=[fn])
+                    fn = Function.objects.get(id=function)
+                    results = results.filter(functions__in=[fn])
 
             if 'talents' in request.POST:
                 tn=None
                 if request.POST['talents']:
                     talents = request.POST['talents'] #list of talents
                     tn = [Talent.objects.get(id=i) for i in talents]
-                results = results.filter(talents__in=tn)
+                    results = results.filter(talents__in=tn)
 
             if 'budget_min' in request.POST:
                 if request.POST['budget_min']:
