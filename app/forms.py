@@ -37,6 +37,19 @@ class ForgotPasswordForm(forms.Form):
         print message
 
 
+class HomeSearchForm(forms.Form):
+    city = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'City')
+    function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'))
+    talents = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+                                             queryset=Talent.objects.filter(is_active=1), required=True)
+    budget_min = forms.IntegerField()
+    budget_max = forms.IntegerField()
+    outstation = forms.BooleanField(label=u'Outstation Artists?', widget=forms.CheckboxInput(attrs={'checked':'checked'}))
+
+
+class ArtistNameSearch(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
+
 class RegisterForm(forms.Form):
     """
     Registration form for artists

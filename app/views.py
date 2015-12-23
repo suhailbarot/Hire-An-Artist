@@ -9,8 +9,9 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet
-from app.models import PasswordReset, UserProfile, Listing, Projects
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch
+
+from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag
 from app.utils import generate_hash
 from app.constants import VISITOR_ID,ARTIST_ID
 
@@ -175,3 +176,58 @@ def view_listing_projects(request,lid):
 
     return render(request,"view_listing_projects.html",{'listing':listing,'projects':projects})
 
+
+######### HOME #########
+
+def search_home(request):
+    form = HomeSearchForm()
+    artist_search = ArtistNameSearch()
+    return render(request, 'home_search.html',{'form':form,'name':artist_search})
+
+
+def search_results(request):
+    if request.POST:
+        results = None
+        if 'filter_form' in request.POST:
+            print request.POST
+            results = Listing.objects.filter(is_active=1)
+
+            if 'city' in request.POST:
+                city = None
+                if request.POST['city']:
+                    city = request.POST['city'] #string
+                    results = results.filter(city__icontains=str(city))
+
+            if 'function_type' in request.POST:
+                function=None
+                if request.POST['function_type']:
+                    function = int(request.POST['function_type'])
+                    fn = Function.objects.get(id=function)
+                    results = results.filter(functions__in=[fn])
+
+            if 'talents' in request.POST:
+                tn=None
+                if request.POST['talents']:
+                    talents = request.POST['talents'] #list of talents
+                    tn = [Talent.objects.get(id=i) for i in talents]
+                    results = results.filter(talents__in=tn)
+
+            if 'budget_min' in request.POST:
+                if request.POST['budget_min']:
+                    budget_min = int(request.POST['budget_min']) #string
+                    results = results.filter(fees__gte=budget_min)
+
+            if 'budget_max' in request.POST:
+                if request.POST['budget_max']:
+                    budget_max = int(request.POST['budget_max'])
+                    results = results.filter(fees_lte=budget_max)
+
+            if 'outstation' in request.POST:
+                results = results.filter(outstation=True)
+            else:
+                results = results.filter(outstation=False)
+
+        elif 'name_form' in request.POST:
+            results = Listing.objects.filter(is_active=1, name__icontains=str(request.POST['name'].strip()))
+        return render(request,"search_results.html",{'result':results})
+    return HttpResponseRedirect(reverse('search'))
