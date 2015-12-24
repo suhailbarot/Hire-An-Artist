@@ -7,7 +7,6 @@ from django.forms.models import inlineformset_factory,BaseInlineFormSet
 
 from app.models import *
 from app.utils import generate_hash
-from image_cropping import ImageCropWidget
 
 attrs_dict = {'class': 'required'}
 number_validator = RegexValidator(r'^\d{10,12}$', "Please enter a valid phone number")

@@ -1,5 +1,3 @@
-from awesome_avatar.fields import AvatarField
-
 from django.db import models
 from django.contrib.auth.models import User
 
