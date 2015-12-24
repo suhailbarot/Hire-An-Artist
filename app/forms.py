@@ -7,6 +7,7 @@ from django.forms.models import inlineformset_factory,BaseInlineFormSet
 
 from app.models import *
 from app.utils import generate_hash
+from image_cropping import ImageCropWidget
 
 attrs_dict = {'class': 'required'}
 number_validator = RegexValidator(r'^\d{10,12}$', "Please enter a valid phone number")
@@ -40,8 +41,7 @@ class ForgotPasswordForm(forms.Form):
 class HomeSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'City')
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'))
-    talents = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-                                             queryset=Talent.objects.filter(is_active=1), required=True)
+    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=True)
     budget_min = forms.IntegerField()
     budget_max = forms.IntegerField()
     outstation = forms.BooleanField(label=u'Outstation Artists?', widget=forms.CheckboxInput(attrs={'checked':'checked'}))
@@ -141,13 +141,31 @@ class ListingForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                           queryset=Tag.objects.filter(is_active=1), required=False)
 
-    functions = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'checked':'checked'}),
+    functions = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                queryset=Function.objects.filter(is_active=1), required=True)
 
 
     class Meta:
         model = Listing
         exclude = ('user', 'is_approved', 'is_active', 'score')
+        widgets = {
+            'profile_pic': ImageCropWidget,
+        }
+
+
+    # def __init__(self, *args, **kwargs):
+    #     super(ListingForm, self).__init__(*args,**kwargs)
+    #     self.fields['talents'].widget = forms.CheckboxSelectMultiple()
+    #     self.fields['talents'].queryset = Talent.objects.filter(is_active=1)
+    #     self.fields['talents'].required = True
+    #
+    #     self.fields['tags'].widget = forms.CheckboxSelectMultiple()
+    #     self.fields['tags'].queryset = Tag.objects.filter(is_active=1)
+    #     self.fields['tags'].required = True
+    #
+    #     self.fields['functions'].widget = forms.CheckboxSelectMultiple()
+    #     self.fields['functions'].queryset = Fu.objects.filter(is_active=1)
+    #     self.fields['functions'].required = True
 
     def clean_functions(self):
         return self.cleaned_data['functions']
@@ -160,9 +178,9 @@ class ListingForm(forms.ModelForm):
         if commit:
             m.user = user
             m.save()
-            m.talents.all().delete()
-            m.functions.all().delete()
-            m.tags.all().delete()
+            m.talents.clear()
+            m.functions.clear()
+            m.tags.clear()
             for talent in self.cleaned_data['talents']:
                 m.talents.add(talent)
             for fn in self.cleaned_data['functions']:
@@ -184,5 +202,16 @@ class ProjectForm(forms.ModelForm):
         exclude = ('is_active','listing')
 
 
-ListingProjectFormSet = inlineformset_factory(Listing,Projects, form=ProjectForm, extra=3, can_delete=False,
-                                              validate_max=3)
+class UserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('full_name','phone')
+
+class EditPasswordForm(forms.ModelForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'passwordold')
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'password1')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'password2')
+
+
+ListingProjectFormSet = inlineformset_factory(Listing,Projects, form=ProjectForm, extra=1, can_delete=False,
+                                              validate_max=7)

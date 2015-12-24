@@ -12,6 +12,10 @@ urlpatterns = [
     url(r'^user/register/','app.views.user_register', name='user_register'),
     url(r'^user/home/','app.views.user_home', name='user_home'),
     url(r'^user/phone/','app.views.add_phone', name='add_phone'),
+    url(r'^account/update/','app.views.edit_profile', name='edit_profile'),
+    url(r'^account/password/','django.contrib.auth.views.password_change',
+        {'template_name': 'change_password.html'},
+        name='password_change_done'),
 
     #artist stuff
 
@@ -24,6 +28,7 @@ urlpatterns = [
     url(r'listing/add/', 'app.views.add_listing', name='add_listing'),
     url(r'artist/(?P<lid>\w+)/$', 'app.views.view_listing', name='view_listing'),
     url(r'artist/(?P<lid>\w+)/projects/$', 'app.views.view_listing_projects', name='view_projects'),
+    url(r'artist/(?P<lid>\w+)/edit/$', 'app.views.edit_listing', name='listing_edit'),
     url(r'^search/','app.views.search_home',name='search'),
     url(r'^results/','app.views.search_results',name='search_results'),
 

@@ -1,6 +1,7 @@
 import datetime
 import pprint
 
+
 from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -9,7 +10,8 @@ from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch
+
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm
 
 from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag
 from app.utils import generate_hash
@@ -78,6 +80,19 @@ def forgot_password(request):
     else:
         form = ForgotPasswordForm()
     return render(request,'forgot_password.html',{'form':form})
+
+
+def edit_profile(request):
+    if request.user.is_authenticated():
+        up = UserProfile.objects.get(user=request.user)
+        form = UserProfileEditForm(request.POST or None,instance=up)
+        if request.POST:
+            if 'basic' in request.POST:
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect(reverse('edit_profile'))
+        return render(request,'edit_profile.html',{'form':form})
+    return HttpResponse("Not Authorized")
 
 #####################      ARTISTS        ####################
 
@@ -158,6 +173,29 @@ def add_listing(request):
     return render(request,'add_listing.html',{'form':form,'formset':formset})
 
 
+def edit_listing(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid)
+    except Listing.DoesNotExist:
+        return HttpResponse("WTF")
+    if request.POST:
+        form = ListingForm(data=request.POST or None, files=request.FILES , instance=listing)
+        formset = ListingProjectFormSet(request.POST,instance=listing)
+        if form.is_valid():
+            usr = UserProfile.objects.get(user=request.user)
+            k = form.save(commit=False)
+            formset = ListingProjectFormSet(request.POST, instance=k)
+            if formset.is_valid():
+                l = form.save(commit=True,user=usr)
+                formset.save(commit=True)
+                return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
+    else:
+        form = ListingForm(instance=listing)
+        formset = ListingProjectFormSet(instance=listing,queryset=Projects.objects.filter(is_active=1))
+
+    return render(request,'edit_listing.html',{'form':form,'formset':formset,'listing':listing})
+
+
 def view_listing(request,lid):
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
@@ -192,25 +230,19 @@ def search_results(request):
             print request.POST
             results = Listing.objects.filter(is_active=1)
 
-            if 'city' in request.POST:
-                city = None
-                if request.POST['city']:
-                    city = request.POST['city'] #string
-                    results = results.filter(city__icontains=str(city))
-
             if 'function_type' in request.POST:
-                function=None
+                function = None
                 if request.POST['function_type']:
                     function = int(request.POST['function_type'])
                     fn = Function.objects.get(id=function)
-                    results = results.filter(functions__in=[fn])
+                    results = results.filter(functions=fn)
 
             if 'talents' in request.POST:
-                tn=None
+                tn = None
                 if request.POST['talents']:
-                    talents = request.POST['talents'] #list of talents
-                    tn = [Talent.objects.get(id=i) for i in talents]
-                    results = results.filter(talents__in=tn)
+                    talents = int(request.POST['talents']) #list of talents
+                    tn = Talent.objects.get(id=talents)
+                    results = results.filter(talents=tn)
 
             if 'budget_min' in request.POST:
                 if request.POST['budget_min']:
@@ -225,7 +257,11 @@ def search_results(request):
             if 'outstation' in request.POST:
                 results = results.filter(outstation=True)
             else:
-                results = results.filter(outstation=False)
+                if 'city' in request.POST:
+                    city = None
+                    if request.POST['city']:
+                        city = request.POST['city'] #string
+                        results = results.filter(city__icontains=str(city))
 
         elif 'name_form' in request.POST:
             results = Listing.objects.filter(is_active=1, name__icontains=str(request.POST['name'].strip()))

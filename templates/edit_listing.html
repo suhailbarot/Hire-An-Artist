@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title></title>
 
+    {{ form.media }}
 
 </head>
 <body>
+
+<h3>Editing Listing : {{ listing.name }}</h3>
 
 <form method="post" enctype="multipart/form-data">
 
 
     {% csrf_token %}
-
 
     <h2>Basics</h2>
 
