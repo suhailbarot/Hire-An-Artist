@@ -3,6 +3,14 @@ from awesome_avatar.fields import AvatarField
 from django.db import models
 from django.contrib.auth.models import User
 
+import uuid
+import os
+
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join('profile', filename)
+
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -100,7 +108,7 @@ class Tag(models.Model):
 
 
 class Listing(models.Model):
-    profile_pic = models.ImageField(upload_to='profile')
+    profile_pic = models.ImageField(upload_to=get_file_path,blank=True)
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
 
