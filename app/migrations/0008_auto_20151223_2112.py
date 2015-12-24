@@ -12,16 +12,16 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='listing',
-            name=b'cropping',
-            field=image_cropping.fields.ImageRatioField(b'image', '430x360', hide_image_field=False, size_warning=False, allow_fullsize=False, free_crop=False, adapt_rotation=False, help_text=None, verbose_name='cropping'),
-        ),
-        migrations.AlterField(
-            model_name='listing',
-            name='profile_pic',
-            field=image_cropping.fields.ImageCropField(upload_to=b'profile', blank=True),
-        ),
+        # migrations.AddField(
+        #     model_name='listing',
+        #     name=b'cropping',
+        #     field=image_cropping.fields.ImageRatioField(b'image', '430x360', hide_image_field=False, size_warning=False, allow_fullsize=False, free_crop=False, adapt_rotation=False, help_text=None, verbose_name='cropping'),
+        # ),
+        # migrations.AlterField(
+        #     model_name='listing',
+        #     name='profile_pic',
+        #     field=image_cropping.fields.ImageCropField(upload_to=b'profile', blank=True),
+        # ),
         migrations.AlterField(
             model_name='listing',
             name='tech_details_file',

@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='listing',
-            name='profile_pic',
-            field=awesome_avatar.fields.AvatarField(upload_to=b'profile'),
-        ),
+        # migrations.AlterField(
+        #     model_name='listing',
+        #     name='profile_pic',
+        #     field=awesome_avatar.fields.AvatarField(upload_to=b'profile'),
+        # ),
         migrations.RemoveField(
             model_name='listing',
             name='talents',
