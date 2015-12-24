@@ -51,7 +51,8 @@ INSTALLED_APPS = (
     'app',
     'social_auth',
     'storages',
-    'bootstrapform'
+    'bootstrapform',
+    'widget_tweaks',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
+
 
 
     {% load bootstrap %}
     {% block page_title %} Register As An Artist{% endblock %}
     {% block body_block %}
+    <p>{{tagss.name}}</p>
 <div class= "row">
     <div class = " col-md-offset-2 col-md-8" >
 
@@ -15,11 +18,32 @@
 
     <h2>Basics</h2>
 
+
     {% for field in form %}
+        
+        {% if field.name == 'tags' %}
+
+        {% for cb in field %}
+        {{cb}}
+        {%endfor%}
+        
+        
+            
+
+        {%else%}
+
         {{ field |bootstrap }}
+
+
         {{ field.errors }}
+
+        {% endif %}
+        
+
         <br/>
+
     {% endfor %}
+
 
     <h2>Projects</h2>
 

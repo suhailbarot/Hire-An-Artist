@@ -15,6 +15,8 @@ from app.models import PasswordReset, UserProfile, Listing, Projects, Function, 
 from app.utils import generate_hash
 from app.constants import VISITOR_ID,ARTIST_ID
 
+import pprint
+
 # Create your views here.
 
 ########### GENERIC ###################
@@ -140,9 +142,9 @@ def add_phone(request):
 
 def add_listing(request):
     if request.POST:
+
         form = ListingForm(data=request.POST, files=request.FILES)
         formset = ListingProjectFormSet(request.POST)
-
         if form.is_valid():
             usr = UserProfile.objects.get(user=request.user)
             k = form.save(commit=False)
@@ -153,9 +155,12 @@ def add_listing(request):
                 return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
     else:
         form = ListingForm()
+        print form
+
         formset = ListingProjectFormSet(instance=Listing())
 
-    return render(request,'add_listing.html',{'form':form,'formset':formset})
+
+    return render(request,'add_listing.html',{'form':form,'formset':formset,})
 
 
 def view_listing(request,lid):
