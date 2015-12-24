@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import image_cropping.fields
+# import image_cropping.fields
 
 
 class Migration(migrations.Migration):
