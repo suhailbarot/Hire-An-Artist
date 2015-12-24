@@ -155,6 +155,7 @@ def add_phone(request):
 
 def add_listing(request):
     if request.POST:
+
         form = ListingForm(data=request.POST, files=request.FILES)
         formset = ListingProjectFormSet(request.POST)
 

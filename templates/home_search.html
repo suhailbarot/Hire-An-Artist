@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
 
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% block page_title %}Search For An Artist{% endblock %}
+
+{% block body_block %}
+<div class= "row">
+    <div class = " col-md-offset-2 col-md-8" >
 <form id="filter_form" name="filter_form" method="post" action="/results/">
 
 {% csrf_token %}
 
     {% for field in form %}
-        {{ field.label }} :
-        {{ field }}
+        {{ field |bootstrap}}
         {{ field.errors }}
         <br/>
     {% endfor %}
 
-    <input type="submit" value="search" name="filter_form">
+    <input type="submit" value="search" class = "btn btn-default"  name="filter_form">
 </form>
 
 
@@ -29,14 +28,13 @@ Artist Search
 {% csrf_token %}
 
     {% for field in name %}
-        {{ field.label }} :
-        {{ field }}
+        {{ field |bootstrap}}
         {{ field.errors }}
         <br/>
     {% endfor %}
 
-    <input type="submit" value="search" name="name_form">
+    <input type="submit" class = "btn btn-default" value="search" name="name_form">
 </form>
-
-</body>
-</html>
+</div>
+</div>
+{% endblock %}

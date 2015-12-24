@@ -147,6 +147,8 @@ class ListingForm(forms.ModelForm):
         model = Listing
         exclude = ('user', 'is_approved', 'is_active', 'score')
 
+    def clean_functions(self):
+        return self.cleaned_data['functions']
 
     # def __init__(self, *args, **kwargs):
     #     super(ListingForm, self).__init__(*args,**kwargs)

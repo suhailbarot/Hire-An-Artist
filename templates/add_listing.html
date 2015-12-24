@@ -1,50 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 
 
-</head>
-<body>
+
+    {% load bootstrap %}
+    {% block page_title %} Register As An Artist{% endblock %}
+    {% block body_block %}
+    <p>{{tagss.name}}</p>
+<div class= "row">
+    <div class = " col-md-offset-2 col-md-8" >
 
 <form method="post" enctype="multipart/form-data">
 
 
     {% csrf_token %}
 
-
     <h2>Basics</h2>
 
+
     {% for field in form %}
-        {{ field.label }} :
-        {{ field }}
+        
+        {% if field.name == 'tags' %}
+
+        {% for cb in field %}
+        {{cb}}
+        {%endfor%}
+        
+        
+            
+
+        {%else%}
+
+        {{ field |bootstrap }}
+
+
         {{ field.errors }}
+
+        {% endif %}
+        
+
         <br/>
+
     {% endfor %}
+
 
     <h2>Projects</h2>
 
-    {{ formset.management_form }}
+    {{ formset.management_form |bootstrap}}
 
     {% for formi in formset %}
         <h4>Project {{ forloop.counter }}</h4>
 
         {% for field in formi %}
             {% if field.label != 'Listing' and field.label != 'Id' %}
-                {{ field.label }}
             {% endif %}
-                {{ field }}
+                {{ field|bootstrap }}
                 {{ field.errors }}
         <br/>
         {% endfor %}
     {% endfor %}
 
-    <input type="submit" value="submit">
+    <input type="submit" class = "btn btn-default" value="submit">
 
 </form>
-
-</form>
-
-</body>
-</html>
+</div>
+{% endblock %}
