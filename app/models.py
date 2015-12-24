@@ -100,7 +100,7 @@ class Tag(models.Model):
 
 
 class Listing(models.Model):
-    profile_pic = AvatarField(upload_to='profile', width=100, height=100)
+    profile_pic = models.ImageField(upload_to='profile')
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
 
@@ -128,7 +128,7 @@ class Listing(models.Model):
     score = models.IntegerField(default=1)
     is_approved = models.IntegerField(default=0)
 
-    talents = models.ManyToManyField(Talent) #mandatory
+    talents = models.ForeignKey(Talent,null=True,blank=True) #mandatory
     functions = models.ManyToManyField(Function) #mandatory
     tags = models.ManyToManyField(Tag,blank=True)
 

@@ -135,8 +135,7 @@ class ListingForm(forms.ModelForm):
     For Artist adding listings
     """
 
-    talents = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-                                             queryset=Talent.objects.filter(is_active=1), required=True)
+    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=True)
 
     tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                           queryset=Tag.objects.filter(is_active=1), required=False)
@@ -167,22 +166,13 @@ class ListingForm(forms.ModelForm):
     #     self.fields['functions'].queryset = Fu.objects.filter(is_active=1)
     #     self.fields['functions'].required = True
 
-    def clean_functions(self):
-        return self.cleaned_data['functions']
-
-    def clean_talents(self):
-        return self.cleaned_data['talents']
-
     def save(self, commit=True, user=None):
         m = super(ListingForm, self).save(commit=False)
         if commit:
             m.user = user
             m.save()
-            m.talents.clear()
             m.functions.clear()
             m.tags.clear()
-            for talent in self.cleaned_data['talents']:
-                m.talents.add(talent)
             for fn in self.cleaned_data['functions']:
                 m.functions.add(fn)
             for tg in self.cleaned_data['tags']:

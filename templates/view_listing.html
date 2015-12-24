@@ -87,10 +87,8 @@ is Approved : {{ listing.is_approved }}
 
 <h2> Talents</h2>
 
-{% for talent in listing.talents.all %}
-    {{ talent.name }},
+{{ listing.talents.name }}
 
-{% endfor %}
 
 <h2>Tags</h2>
 

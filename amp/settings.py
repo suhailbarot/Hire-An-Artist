@@ -51,7 +51,6 @@ INSTALLED_APPS = (
     'app',
     'social_auth',
     'storages',
-    'cicu',
 )
 
 MIDDLEWARE_CLASSES = (
