@@ -147,9 +147,6 @@ class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
         exclude = ('user', 'is_approved', 'is_active', 'score')
-        widgets = {
-            'profile_pic': ImageCropWidget,
-        }
 
 
     # def __init__(self, *args, **kwargs):
