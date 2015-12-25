@@ -142,6 +142,11 @@ class ListingForm(forms.ModelForm):
     functions = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                queryset=Function.objects.filter(is_active=1), required=True)
 
+    x = forms.IntegerField(widget=forms.HiddenInput())
+    x2 = forms.IntegerField(widget=forms.HiddenInput())
+    y = forms.IntegerField(widget=forms.HiddenInput())
+    y2 = forms.IntegerField(widget=forms.HiddenInput())
+
 
     class Meta:
         model = Listing
