@@ -7,6 +7,7 @@ from django.forms.models import inlineformset_factory,BaseInlineFormSet
 
 from app.models import *
 from app.utils import generate_hash
+from app.checkbox.iterator import AdvancedModelChoiceField
 
 attrs_dict = {'class': 'required'}
 number_validator = RegexValidator(r'^\d{10,12}$', "Please enter a valid phone number")
@@ -136,8 +137,7 @@ class ListingForm(forms.ModelForm):
 
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=True)
 
-    tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-                                          queryset=Tag.objects.filter(is_active=1), required=False)
+    tags = AdvancedModelChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Tag.objects.filter(is_active=1), required=False)
 
     functions = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                queryset=Function.objects.filter(is_active=1), required=True)
@@ -168,6 +168,13 @@ class ListingForm(forms.ModelForm):
     #     self.fields['functions'].widget = forms.CheckboxSelectMultiple()
     #     self.fields['functions'].queryset = Fu.objects.filter(is_active=1)
     #     self.fields['functions'].required = True
+
+    def clean_tags(self):
+        new_list = []
+        for tag in self.cleaned_data['tags']:
+            if tag.talent == self.cleaned_data['talents']:
+                new_list.append(tag)
+        return new_list
 
     def save(self, commit=True, user=None):
         m = super(ListingForm, self).save(commit=False)

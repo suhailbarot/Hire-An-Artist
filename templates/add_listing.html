@@ -16,6 +16,19 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+    // Dropdown change stuff
+    $(".tagged").hide();
+
+    $('.talent-'+$('select[name=talents]').val()).show();
+
+    $('select[name=talents]').change(function(){
+        $(".tagged").hide();
+        $('.talent-'+$(this).val()).show();
+    });
+
+
+    // end dropdown change stuff
+
 
 function readURL(input) {
         if (input.files && input.files[0]) {
@@ -80,7 +93,6 @@ function readURL(input) {
     $('#btnCrop').click();
   };
 
-
 });
 
 
@@ -131,8 +143,48 @@ function readURL(input) {
 <input type="hidden" name="imgCropped" id="imgCropped" />
 
 
+{#{% for field in form %}#}
+{##}
+{#        {% if field.label == 'Tags' %}#}
+{#            {% for p in field %}#}
+{##}
+{#                {{ p | bootstrap }}#}
+{##}
+{#            {% endfor %}#}
+{#        {% else %}#}
+{##}
+{#            {{ field | bootstrap }}#}
+{##}
+{#        {% endif %}#}
 
-  {{form |bootstrap}}
+{% for field in form %}
+
+    {% if field.name == 'tags' %}
+
+        <h4>{{ form.tags.name }} : </h4>
+
+            <ul>
+                {% for choice in form.tags.field.choices %}
+                    <li class="tagged talent-{{ choice.2.talent.pk }}" talent_for="{{ choice.2.talent.pk }}">
+                        <input type="checkbox"
+                               name="{{ form.tags.name }}"
+                               value="{{ choice.0 }}"
+                                {% if choice.0|safe in form.tags.value %} checked="checked" {% endif %}>
+                        <strong>{{ choice.2 }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% if form.tags.errors %}
+                <span class="help-block">{{ form.tags.errors }}</span>
+            {% endif %}
+
+    {% else %}
+        {{ field | bootstrap }}
+
+    {% endif %}
+
+{% endfor %}
 
         
   <h2>Projects</h2>
@@ -144,9 +196,9 @@ function readURL(input) {
 
         {% for field in formi %}
             {% if field.label != 'Listing' and field.label != 'Id' %}
-            {% endif %}
                 {{ field|bootstrap }}
                 {{ field.errors }}
+            {% endif %}
         <br/>
         {% endfor %}
     {% endfor %}
