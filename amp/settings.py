@@ -61,7 +61,12 @@ INSTALLED_APPS = (
     'storages',
     'bootstrapform',
     'widget_tweaks',
+
     'endless_pagination',
+
+    'django_bootstrap_dynamic_formsets',
+    'bootstrap3',
+
 )
 
 MIDDLEWARE_CLASSES = (
