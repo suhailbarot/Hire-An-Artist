@@ -142,10 +142,10 @@ class ListingForm(forms.ModelForm):
     functions = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
                                                queryset=Function.objects.filter(is_active=1), required=True)
 
-    x = forms.IntegerField(widget=forms.HiddenInput())
-    x2 = forms.IntegerField(widget=forms.HiddenInput())
-    y = forms.IntegerField(widget=forms.HiddenInput())
-    y2 = forms.IntegerField(widget=forms.HiddenInput())
+    x = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    x2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    y = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    y2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
 
 
     class Meta:
@@ -213,5 +213,5 @@ class EditPasswordForm(forms.ModelForm):
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'password2')
 
 
-ListingProjectFormSet = inlineformset_factory(Listing,Projects, form=ProjectForm, extra=1, can_delete=False,
+ListingProjectFormSet = inlineformset_factory(Listing,Projects, form=ProjectForm, extra=1, can_delete=True, can_order=True,
                                               validate_max=7)

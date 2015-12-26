@@ -139,6 +139,19 @@ class Listing(models.Model):
     functions = models.ManyToManyField(Function) #mandatory
     tags = models.ManyToManyField(Tag,blank=True)
 
+    group_key = models.CharField(max_length=15, blank=True)
+
+    param_1 = models.IntegerField(default=-1)
+    param_2 = models.IntegerField(default=-1)
+    param_3 = models.IntegerField(default=-1)
+    param_4 = models.IntegerField(default=-1)
+    param_5 = models.IntegerField(default=-1)
+    param_6 = models.IntegerField(default=-1)
+    param_7 = models.IntegerField(default=-1)
+    param_8 = models.IntegerField(default=-1)
+    param_9 = models.IntegerField(default=-1)
+    param_10 = models.IntegerField(default=-1)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.IntegerField(default=1)
