@@ -45,6 +45,13 @@ class HomeSearchForm(forms.Form):
     budget_max = forms.IntegerField()
     outstation = forms.BooleanField(label=u'Outstation Artists?', widget=forms.CheckboxInput(attrs={'checked':'checked'}))
 
+class FilterSearchForm(forms.Form):
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
+    function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
+    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('--- Talent---'))
+    budget_min = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder':'Minimum Budget'}),required=False)
+    budget_max = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder':'Maximmum Budget'}),required=False)
+    outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
 
 class ArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
