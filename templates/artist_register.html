@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+<script type="text/javascript" src="{ % static 'js/dist/js/picedit.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'js/dist/css/picedit.min.css' %}" />
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_profile_pic').picEdit();
+    });
+</script>
 
 
 	{% load bootstrap %}

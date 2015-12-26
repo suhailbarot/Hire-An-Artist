@@ -107,6 +107,7 @@ class Tag(models.Model):
 
 class Listing(models.Model):
     profile_pic = models.ImageField(upload_to=get_file_path,blank=True)
+    
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
 

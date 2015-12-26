@@ -4,48 +4,138 @@
 
 
 
+
     {% load bootstrap %}
-    {% block page_title %} Register As An Artist{% endblock %}
+    {% block page_title %}Add A Listing{% endblock %}
     {% block body_block %}
-    <p>{{tagss.name}}</p>
+   <script src="{% static 'jcrop/js/jquery.min.js' %}"></script>
+<script src="{% static 'jcrop/js/jquery.Jcrop.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'jcrop/css/jquery.Jcrop.css' %}" type="text/css" />
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+                $('.crop').Jcrop({
+      
+                  onSelect: updateCoords,
+                    
+                        bgOpacity:   .4,
+                        setSelect:   [ 100, 100, 50, 50 ],
+                        aspectRatio: 10/16
+                });
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#id_profile_pic").change(function(){
+
+        console.log(this);
+        readURL(this);
+    });
+    $('#btnCrop').click(function () {
+        
+
+        var x1 = $('#id_x').val();
+        var y1 = $('#id_y').val();
+        var width = $('#id_x2').val();
+        var height = $('#id_y2').val();
+        var canvas = $("#canvas")[0];
+        var context = canvas.getContext('2d');
+        var img = new Image();
+        img.onload = function () {
+            canvas.height = height;
+            canvas.width = width;
+            context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+            $('#imgCropped').val(canvas.toDataURL());
+        };
+        img.src = $('#blah').attr("src");
+    });
+
+  function updateCoords(c)
+  {
+    var img2 = new Image();
+
+        img2.src = $('#blah').attr("src");
+        var realwidth = img2.width;
+        var realheight = img2.height;
+        var imgheight = $('#blah').height();
+        var imgwidth = $("#blah").width();
+        var fx = realwidth/imgwidth;
+        var fy = realheight/imgheight;
+    console.log(c);
+    $('#id_x').val(parseInt(c.x*fx));
+    $('#id_y').val(parseInt(c.y*fy));
+    $('#id_x2').val(parseInt(c.w*fx));
+    $('#id_y2').val(parseInt(c.h*fy));
+    $('#btnCrop').click();
+  };
+
+
+});
+
+
+ 
+
+</script>
+<style type="text/css">
+ #blah {
+    background-color: #FFF;
+
+    font-size: 24px;
+    display: block;
+    max-height: 500px;
+    max-width: 500px;
+  }
+  #canvas{
+    width: 200px;
+    height: 320px;
+  }
+</style>
+    
 <div class= "row">
     <div class = " col-md-offset-2 col-md-8" >
 
 <form method="post" enctype="multipart/form-data">
 
-
     {% csrf_token %}
 
     <h2>Basics</h2>
+<table>
+    <tr>
+        <td>
+<img id="blah" class="crop" src="#" alt="your image" />
+
+        </td>
+        <td>
+            <canvas id="canvas" height="5" width="5"></canvas>
+
+        </td>
+
+    </tr>
 
 
-    {% for field in form %}
+</table>
+<br>
+
+<input type="button" id="btnCrop" type="hidden" style="display: none"/>
+<input type="hidden" name="imgCropped" id="imgCropped" />
+
+
+
+  {{form |bootstrap}}
+
         
-        {% if field.name == 'tags' %}
-
-        {% for cb in field %}
-        {{cb}}
-        {%endfor%}
-        
-        
-            
-
-        {%else%}
-
-        {{ field |bootstrap }}
-
-
-        {{ field.errors }}
-
-        {% endif %}
-        
-
-        <br/>
-
-    {% endfor %}
-
-
-    <h2>Projects</h2>
+  <h2>Projects</h2>
 
     {{ formset.management_form |bootstrap}}
 
