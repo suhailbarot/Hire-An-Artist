@@ -16,11 +16,12 @@
 
 <a href="projects">View Projects</a> |
 <a href="edit">Edit Listing</a>
+<a href="media">View Media</a>
 
 <br/>
-
+{% if listing.profile_pic %}
 <img src="{{ listing.profile_pic.url }}" width="200" height="320">
-
+{% endif %}
 </br>
 <br/>
 

@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse
 
 from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm
 
-from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag
+from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
 from app.utils import generate_hash
 from app.constants import VISITOR_ID,ARTIST_ID
 
@@ -288,3 +288,21 @@ def search_results(request):
             results = Listing.objects.filter(is_active=1, name__icontains=str(request.POST['name'].strip()))
         return render(request,"search_results.html",{'result':results})
     return HttpResponseRedirect(reverse('search'))
+
+
+def view_media(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid,is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such listing")
+    md = Media.objects.filter(is_active=1, listing=listing)
+    return render(request,'view_media.html', {'listing':listing,'media':md})
+
+
+def manage_media(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid,is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such listing")
+    md = Media.objects.filter(is_active=1, listing=listing)
+    return render(request,'manage_media.html', {'listing':listing,'media':md})
