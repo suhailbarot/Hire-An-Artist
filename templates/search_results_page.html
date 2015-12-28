@@ -1,0 +1,38 @@
+{% load endless %}
+
+{% paginate 2 results %}
+
+{% if not results %}
+    No Results to Display
+ {% endif %}
+{% for listing in results %}
+<div class= "row">
+    <div class = " col-md-offset-2 col-md-8" >
+<h3>{{ listing.name }}</h3>
+<br/>
+{{ listing.city }} <br/>
+
+<img src="{{ listing.profile_pic.url }}" width="100" height="100"><br/>
+
+{{ listing.bio }}
+
+<br/>
+
+{{ listing.fees }}
+<br/>
+
+{% for talent in listing.talents.all %}
+    {{ talent.name }},
+{% endfor %}
+
+{% for function in listing.functions.all %}
+{{ function.name }},
+{% endfor %}
+
+    <hr>
+</div>
+</div>
+{% endfor %}
+{% show_more %}
+
+

@@ -4,7 +4,8 @@ from PIL import Image
 from StringIO import StringIO
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
+from endless_pagination.decorators import page_template
+from django.template import RequestContext
 from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -14,9 +15,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,FilterSearchForm
 
-from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
+from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag
 from app.utils import generate_hash
 from app.constants import VISITOR_ID,ARTIST_ID
 
@@ -243,8 +244,9 @@ def search_home(request):
     artist_search = ArtistNameSearch()
     return render(request, 'home_search.html',{'form':form,'name':artist_search})
 
-
-def search_results(request):
+@page_template('search_results_page.html')  
+def search_results(request, template='search_results.html', extra_context=None):
+    filter_form = FilterSearchForm(request.GET)
     if request.POST:
         results = None
         if 'filter_form' in request.POST:
@@ -286,23 +288,40 @@ def search_results(request):
 
         elif 'name_form' in request.POST:
             results = Listing.objects.filter(is_active=1, name__icontains=str(request.POST['name'].strip()))
-        return render(request,"search_results.html",{'result':results})
-    return HttpResponseRedirect(reverse('search'))
+    if request.GET: 
+        results = Listing.objects.filter(is_active=1)
+   
+        if request.GET.get('function_type'):
+            function = int(request.GET['function_type'])
+            fn = Function.objects.get(id=function)
+            results = results.filter(functions=fn)
+            print "in fucntion"
+        if request.GET.get('talents'):
+            talents = int(request.GET['talents']) 
+            tn = Talent.objects.get(id=talents)
+            results = results.filter(talents=tn)
+            print 'in  talent '
+
+        if request.GET.get('budget_min'):
+            budget_min = int(request.GET['budget_min'])
+            results = results.filter(fees__gte=budget_min)
+            print 'in min'
+        if request.GET.get('budget_max'):
+            budget_max = int(request.GET['budget_max'])
+            results = results.filter(fees__lte=budget_max)
+            print 'in max'
+        if request.GET.get('city'):
+            city = request.GET['city'] 
+            results = results.filter(city__icontains=str(city))
+            print "IN CITY"
+        if request.GET.get('outstation'):
+            results = results.filter(outstation=True)
+    context = {'results':results,'filter_form':filter_form}
+    if extra_context is not None:
+        context.update(extra_context)
+
+    return render_to_response(
+        template, context, context_instance=RequestContext(request))
 
 
-def view_media(request,lid):
-    try:
-        listing = Listing.objects.get(id=lid,is_active=1)
-    except Listing.DoesNotExist:
-        return HttpResponse("No such listing")
-    md = Media.objects.filter(is_active=1, listing=listing)
-    return render(request,'view_media.html', {'listing':listing,'media':md})
 
-
-def manage_media(request,lid):
-    try:
-        listing = Listing.objects.get(id=lid,is_active=1)
-    except Listing.DoesNotExist:
-        return HttpResponse("No such listing")
-    md = Media.objects.filter(is_active=1, listing=listing)
-    return render(request,'manage_media.html', {'listing':listing,'media':md})
