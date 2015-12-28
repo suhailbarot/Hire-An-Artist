@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,FilterSearchForm
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,FilterSearchForm,HomeArtistNameSearch
 
 from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
 from app.utils import generate_hash
@@ -28,7 +28,9 @@ from app.utils import video_id
 
 
 def home(request):
-    return HttpResponse("Hello")
+    artist_form = HomeArtistNameSearch()
+    form = HomeSearchForm() 
+    return render(request,'home_page.html',{'form':form,'artist_form':artist_form})
 
 
 def user_login(request):
