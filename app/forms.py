@@ -38,21 +38,25 @@ class ForgotPasswordForm(forms.Form):
         print message
 
 
-class HomeSearchForm(forms.Form):
-    city = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'City')
-    function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'))
-    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=True)
-    budget_min = forms.IntegerField()
-    budget_max = forms.IntegerField()
-    outstation = forms.BooleanField(label=u'Outstation Artists?', widget=forms.CheckboxInput(attrs={'checked':'checked'}))
+
 
 class FilterSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('--- Talent---'))
-    budget_min = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder':'Minimum Budget'}),required=False)
-    budget_max = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder':'Maximmum Budget'}),required=False)
+    budget_min = forms.IntegerField(widget=forms.HiddenInput(),required=False)
+    budget_max = forms.IntegerField(widget=forms.HiddenInput(),required=False)
     outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
+
+class HomeSearchForm(forms.Form):
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
+    function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('Function'))
+    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('Talent'))
+    budget_min = forms.IntegerField(required=False,widget=forms.TextInput(attrs={'placeholder':'Min Budget '}))
+    budget_max = forms.IntegerField(required=False,widget=forms.TextInput(attrs={'placeholder':'Max Budget'}))
+    outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
+class HomeArtistNameSearch(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Artist Name'}), label=u'Name')
 
 class ArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
