@@ -1,18 +1,80 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $(".soundcloud_embed").each(function(){
+            var url = $(this).attr('url');
+            console.log(url);
+
+        settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "http://soundcloud.com/oembed",
+          "method": "POST",
+          "headers": {},
+          "data": {
+            "format": "json",
+            "url": url,
+            "maxheight" :100,
+            "maxwidth": 100
+          }
+        }
+
+            var current= $(this);
+
+        $.ajax(settings).done(function (response) {
+            current.html(response.html);
+            });
+        });
+
+
+
+    });
+
+    </script>
 
 {% if not media %}
 No Media added yet. <a href="manage">Add some ? </a>
 {% endif %}
 
-{% for md in media %}
+<br/>
+
+<h2>Photos : </h2>
+{% for image in images %}
+<img src="{{ image.url }}" width="200" height="200">
+    <br/>
+{% endfor %}
+<br/>
+
+
+    <h2>Sounds :</h2>
+
+{% for sound in sounds %}
+{{ sound.title }}
+<div class="soundcloud_embed" url="{{ sound.url }}"></div>
+<br/>
 
 {% endfor %}
+
+<h2>Videos :</h2>
+
+{% for video in videos %}
+
+<iframe id="ytplayer" type="text/html" width="300" height="200"
+  src="http://www.youtube.com/embed/{{ video.vid }}"
+  frameborder="0"/>
+
+<br/>
+{% endfor %}
+
+<br/>
+
+
+{% endblock %}
 
 </body>
 </html>

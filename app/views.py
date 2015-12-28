@@ -17,9 +17,10 @@ from django.core.urlresolvers import reverse
 
 from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,FilterSearchForm
 
-from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag
+from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
 from app.utils import generate_hash
-from app.constants import VISITOR_ID,ARTIST_ID
+from app.constants import VISITOR_ID,ARTIST_ID, VIDEO, SOUND, PHOTO
+from app.utils import video_id
 
 # Create your views here.
 
@@ -235,6 +236,37 @@ def view_listing_projects(request,lid):
     projects = Projects.objects.filter(listing=listing, is_active=1)
 
     return render(request,"view_listing_projects.html",{'listing':listing,'projects':projects})
+
+
+def view_media(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid,is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such Listing")
+    md = Media.objects.filter(is_active=1, listing=listing)
+    yt = []
+    sc = []
+    ph = []
+    for media in md:
+        if media.type == PHOTO:
+            ph.append(media)
+        if media.type == VIDEO:
+            vd = video_id(media.url)
+            media.vid = vd
+            yt.append(media)
+        if media.type == SOUND:
+            sc.append(media)
+    return render(request,'view_media.html',{'videos':yt,'sounds':sc,'images':ph})
+
+
+def manage_media(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid,is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("Hi")
+
+    return render(request,"manage_media.html",{'listing':listing})
+
 
 
 ######### HOME #########
