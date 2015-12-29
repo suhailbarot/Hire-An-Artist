@@ -52,8 +52,8 @@ class HomeSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('Function'))
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('Talent'))
-    budget_min = forms.IntegerField(required=False,widget=forms.TextInput(attrs={'placeholder':'Min Budget '}))
-    budget_max = forms.IntegerField(required=False,widget=forms.TextInput(attrs={'placeholder':'Max Budget'}))
+    budget_min = forms.IntegerField(required=False,widget=forms.HiddenInput())
+    budget_max = forms.IntegerField(required=False,widget=forms.HiddenInput())
     outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
 class HomeArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Artist Name'}), label=u'Name')
