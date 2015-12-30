@@ -12,8 +12,7 @@
 <link href="{% static 'slider/jquery-ui.theme.min.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'slider/jquery-ui.structure.min.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'icons/flaticon.css' %}" rel="stylesheet" media="screen">
-
-<script type="text/javascript">
+<link href='https://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'><script type="text/javascript">
 
 
   $(document).ready(function() {
@@ -76,7 +75,7 @@
 .navbar .navbar-header .navbar-brand {
 display:        inline;
 color:          white;                        
-font-family: 'Raleway', sans-serif;
+font-family: 'Lato', sans-serif;
 font-size:      15px;
 }
 body{
@@ -84,6 +83,11 @@ body{
 	width:100%;
 	overflow-x:hidden; 
 
+}
+label{
+	color: white;
+font-family: 'Lato', sans-serif;
+margin-right: 50px;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:hover:first-letter { 
 color:          #F64747;                      
@@ -123,6 +127,7 @@ color:          #F64747;
 }
 .form-control{
 	height: 30px;
+	border-radius: 0px;
 
 }
 .searchartistbutton{
@@ -134,9 +139,16 @@ color:          #F64747;
 	width:100%;
 	line-height: 0px;
 	padding-left: 9px;
-	background-color: #F64747;
+	background-color: #16a085;
 	color: white;
 	border: 0px;
+	border-radius: 0px;
+	font-size: 18px;
+font-family: 'Lato', sans-serif;
+}
+select {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
 }
 #slider{
 	margin-top: 10px;
@@ -150,6 +162,7 @@ color:          #F64747;
 	margin-left: 15px;
 	margin-top: 0px;
 	font-size: 1.2em;
+font-family: 'Lato', sans-serif;
 }
 .row{
 	margin-left: 0px;
@@ -177,7 +190,7 @@ color:          #F64747;
 	height: 300px;
 	position: relative;
 	background-color: #eee;
-	margin-top:10%;
+	margin-top:0%;
 }
 .img_talent{
 	width:250px;
@@ -191,6 +204,7 @@ color:          #F64747;
 	position: relative;
 	top:100px;
 	left:90px;
+font-family: 'Lato', sans-serif;
 
 }
 #img_cover{
@@ -207,6 +221,12 @@ color:          #F64747;
 
 
 }
+.glyphicon-triangle-bottom{
+	position: absolute;
+	top:25%;
+	left:75%;
+	color: #424242
+}
 #coverimage2text{
 	position: absolute;
 	vertical-align: center;
@@ -214,12 +234,36 @@ color:          #F64747;
 	left:40%;
 	color: white;
 	font-size: 100px;
+font-family: 'Lato', sans-serif;
 }
 .festival{
 	position: relative;
 	top:10%;
 	background-color: #eee;
 	height: 300px;
+}
+span{
+	color: white;
+}
+.firstbox{
+	background-color: black;
+	opacity: 0.7;
+	margin-bottom:30px;
+	padding: 10px;
+	border-radius: 1px solid black;
+	border-radius:3px;
+}
+.secondbox{
+	background-color: black;
+	opacity: 0.7;
+	margin-bottom:30px;
+	padding-top: 30px;
+	padding: 10px;
+	border-radius: 1px solid black;
+	border-radius:3px;
+}
+.firstbox .row{
+	margin-bottom: 5px;
 }
 </style>
 
@@ -264,29 +308,31 @@ color:          #F64747;
 </nav>
 <div class='box' id="searchbox">
 <div class="row">
-	<div class = "col-md-4 col-md-offset-1 innersearchbox">
-		<div class="row">
-			<div class="col-md-8">
-				{{artist_form.name|bootstrap_inline}}
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8 searchartistbutton">
-				<button type="submit" class="btn btn-success">Search</button>
-			</div>
-		</div>
-		
-
+	<div class = "col-md-3 col-md-offset-1 innersearchbox">
+		<div class="firstbox">
 		<div class="row secondform">
-			<div class="col-md-4">
+			<div class="col-md-6">
 			{{form.talents|bootstrap_inline}}
+			<span class="glyphicon glyphicon-triangle-bottom"></span>
 
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
                 {{form.function_type|bootstrap_inline}}
+			<span class="glyphicon glyphicon-triangle-bottom"></span>
 
 			</div>
 
+		</div>
+		<div class="row">
+			<div class-"col-md-4" style="padding-left:15px;">
+				<h5 style="color:white;font-size:1.2em;font-family: 'Lato', sans-serif;;
+">Outstation Artists?</h5>
+			</div>
+		<div class="row">
+			<div class-"col-md-4" style="padding-left:15px;">
+			{{form.outstation}}
+
+			</div>
 		</div>
 		
 
@@ -295,7 +341,7 @@ color:          #F64747;
 			<h4 id="budget">Budget :</h4>
 		</div>
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<div id='slider'></div>
 			</div>
 			
@@ -303,14 +349,37 @@ color:          #F64747;
 			{{form.budget_max|bootstrap_inline}}
 
 		</div>
-		
 		<div class="row">
-			<div class="col-md-8 searchartistbutton">
+			<div class="col-md-12 searchartistbutton">
 				<button type="submit" class="btn btn-success">Search</button>
 
 			</div>
 
 		</div>
+	</div>
+</div>
+		
+		
+
+		<div class="secondbox">
+	<div class="row">
+			<div class="col-md-12">
+				{{artist_form.name|bootstrap_inline}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 searchartistbutton">
+				<button type="submit" class="btn btn-success">Search</button>
+			</div>
+		</div>
+
+		</div>
+		
+		</div>
+		</div>
+		
+
+		
 	</div>
 
 </div>
@@ -420,7 +489,7 @@ color:          #F64747;
 </div>
 <div class="row" >
 	<div class="box" id= "footer">
-			<h1 style="vertical-align:middle;text-align:center;line-height:300px;color:white;">Placeholder for footer<h1>
+			<h1 style="vertical-align:middle;text-align:center;line-height:300px;color:white;font-family: 'Lato', sans-serif;">Placeholder for footer<h1>
 
 
 	</div>

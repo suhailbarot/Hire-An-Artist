@@ -8,6 +8,12 @@ from django.forms.models import inlineformset_factory,BaseInlineFormSet
 from app.models import *
 from app.utils import generate_hash
 from app.checkbox.iterator import AdvancedModelChoiceField
+from django.utils.safestring import mark_safe
+
+class HorizontalRadioRenderer(forms.RadioSelect.renderer):
+  def render(self):
+    return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
 
 attrs_dict = {'class': 'required'}
 number_validator = RegexValidator(r'^\d{10,12}$', "Please enter a valid phone number")
@@ -54,7 +60,11 @@ class HomeSearchForm(forms.Form):
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('Talent'))
     budget_min = forms.IntegerField(required=False,widget=forms.HiddenInput())
     budget_max = forms.IntegerField(required=False,widget=forms.HiddenInput())
-    outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
+    choices = ( (1,'Yes'),
+                (0,'No'),
+              )
+    outstation = forms.TypedChoiceField(widget=forms.RadioSelect(renderer=HorizontalRadioRenderer),choices=choices,coerce=int,label=u'Outstation Artists?',required=False)
+
 class HomeArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Artist Name'}), label=u'Name')
 
