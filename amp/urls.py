@@ -35,6 +35,12 @@ urlpatterns = [
     url(r'^results/','app.views.search_results',name='search_results'),
 
 
+    ## media stuff ###for
+
+    url( r'upload/', views.image_upload, name = 'jfu_upload' ),
+    url(r'media/(?P<lid>\w+)/images/$', 'app.views.image_view_api', name='img_api'),
+
+
     #password and user auth
 
     url(r'^reset/(?P<key>\w+)/$','app.views.reset_password', name='password_reset'),

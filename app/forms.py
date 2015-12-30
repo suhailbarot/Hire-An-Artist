@@ -11,6 +11,10 @@ from app.checkbox.iterator import AdvancedModelChoiceField
 
 attrs_dict = {'class': 'required'}
 number_validator = RegexValidator(r'^\d{10,12}$', "Please enter a valid phone number")
+youtube_validator= RegexValidator(r'^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$',
+                                  "Please enter a valid youtube URL")
+soundcloud_validator = RegexValidator(r'^https?:\/\/(soundcloud.com|snd.sc)\/(.*)$',
+                                      "Please enter a valid soundcloud URL")
 
 
 class ForgotPasswordForm(forms.Form):
@@ -38,8 +42,6 @@ class ForgotPasswordForm(forms.Form):
         print message
 
 
-
-
 class FilterSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
@@ -48,6 +50,7 @@ class FilterSearchForm(forms.Form):
     budget_max = forms.IntegerField(widget=forms.HiddenInput(),required=False)
     outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
 
+
 class HomeSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('Function'))
@@ -55,8 +58,11 @@ class HomeSearchForm(forms.Form):
     budget_min = forms.IntegerField(required=False,widget=forms.TextInput(attrs={'placeholder':'Min Budget '}))
     budget_max = forms.IntegerField(required=False,widget=forms.TextInput(attrs={'placeholder':'Max Budget'}))
     outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
+
+
 class HomeArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Artist Name'}), label=u'Name')
+
 
 class ArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
@@ -139,6 +145,22 @@ class PhoneForm(forms.Form):
     def save(self, user):
         user.phone = self.cleaned_data['phone']
         user.save()
+
+
+class YoutubeForm(forms.ModelForm):
+    url = forms.URLField(validators=[youtube_validator])
+
+    class Meta:
+        model = Media
+        exclude = ('is_active','type','listing')
+
+
+class SoundcloudForm(forms.ModelForm):
+    url = forms.URLField(validators=[soundcloud_validator])
+
+    class Meta:
+        model = Media
+        exclude = ('is_active','type','listing')
 
 
 class ListingForm(forms.ModelForm):

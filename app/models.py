@@ -191,7 +191,6 @@ class Media(models.Model):
     type = models.IntegerField(choices=choices)
     url = models.URLField()
     listing = models.ForeignKey(Listing)
-    order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.IntegerField(default=1)

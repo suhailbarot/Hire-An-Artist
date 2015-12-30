@@ -61,11 +61,10 @@ INSTALLED_APPS = (
     'storages',
     'bootstrapform',
     'widget_tweaks',
-
     'endless_pagination',
-
     'django_bootstrap_dynamic_formsets',
     'bootstrap3',
+    'jfu'
 
 )
 
@@ -113,6 +112,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+                'django.core.context_processors.static',
             ],
         },
     },
@@ -213,11 +214,10 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 # STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 
 STATIC_URL = '/static/'
-
+STATICFILES_LOCATION = 'static'
 STATICFILES_DIRS = (
     STATIC_PATH,
 )
-
 
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)

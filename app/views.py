@@ -2,6 +2,10 @@ import datetime
 import pprint
 from PIL import Image
 from StringIO import StringIO
+from jfu.http import upload_receive, UploadResponse, JFUResponse
+import time
+import boto
+
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from endless_pagination.decorators import page_template
@@ -13,9 +17,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core import serializers
 
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,FilterSearchForm,HomeArtistNameSearch
+
+from django.conf import settings
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, \
+    ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,\
+    FilterSearchForm,HomeArtistNameSearch, SoundcloudForm, YoutubeForm
 
 from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
 from app.utils import generate_hash
@@ -267,7 +276,60 @@ def manage_media(request,lid):
     except Listing.DoesNotExist:
         return HttpResponse("Hi")
 
-    return render(request,"manage_media.html",{'listing':listing})
+    sc = SoundcloudForm()
+    yt = YoutubeForm()
+
+    return render(request,"manage_media.html",{'listing':listing,'sc':sc,'yt':yt})
+
+
+def image_upload(request):
+
+    # The assumption here is that jQuery File Upload
+    # has been configured to send files one at a time.
+    # If multiple files can be uploaded simulatenously,
+    # 'file' may be a list of files.
+    timestamp = str(int(time.time()))
+    fn = generate_hash(timestamp)
+    file = upload_receive(request)
+    connection = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY)
+    bucket = connection.get_bucket('imgmed')
+    key = bucket.new_key('user_data/'+fn)
+    key.set_metadata('Content-Type', 'image/jpeg')
+    key.set_contents_from_file(file)
+    key.make_public()
+    url = key.generate_url(expires_in=0, query_auth=False, force_http=True)
+
+    file_dict = {
+        'name' : "image",
+        'size' : file.size,
+
+        'url': url,
+        'thumbnailUrl': url,
+
+        # 'deleteUrl': reverse('jfu_delete', kwargs = { 'pk': 1 }),
+        'deleteType': 'POST',
+    }
+
+    return UploadResponse( request, file_dict )
+
+
+def image_view_api(request,lid):
+    try:
+        listing = Listing.objects.filter(is_active=1,id=lid)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such artist name")
+    photos = Media.objects.filter(is_active=1,listing=listing,type=PHOTO)
+    serialized_obj = serializers.serialize('json', photos)
+    return HttpResponse(serialized_obj)
+
+
+def add_youtube_soundcloud(request,lid):
+    try:
+        listing = Listing.objects.filter(is_active=1,id=lid)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such artist name")
+
+
 
 
 
