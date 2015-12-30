@@ -18,26 +18,21 @@
         };
 
     $(document).ready(function(){
-
         $(".go_back").click(function(){
            return_to_original();
         });
-
         $('#add_modal').on('hidden.bs.modal', function () {
                 return_to_original();
             });
         $(".actionable").hide();
-
         $("#add_video").click(function(){
             $(".media_mg").hide();
             $(".video_add_screen").show();
         });
-
          $("#add_sound").click(function(){
             $(".media_mg").hide();
             $(".sound_add_screen").show();
         });
-
         $("#add_photo").click(function(){
             $(".media_mg").hide();
             $(".image_add_screen").show();

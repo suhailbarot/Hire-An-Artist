@@ -37,13 +37,24 @@
 
     </script>
 
-{% if not media %}
+{% if not image and not sounds and not videos %}
 No Media added yet. <a href="manage">Add some ? </a>
 {% endif %}
 
-<br/>
 
-<h2>Photos : </h2>
+    <div>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <li role="presentation"><a href="#videos" aria-controls="videos" role="tab" data-toggle="tab">Videos</a></li>
+    <li role="presentation"><a href="#sounds" aria-controls="sounds" role="tab" data-toggle="tab">Sounds</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="photos">
+
+        <h2>Photos : </h2>
 {% for image in images %}
 <img src="{{ image.url }}" width="200" height="200">
     <br/>
@@ -51,30 +62,49 @@ No Media added yet. <a href="manage">Add some ? </a>
 <br/>
 
 
-    <h2>Sounds :</h2>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="videos">
 
-{% for sound in sounds %}
-{{ sound.title }}
-<div class="soundcloud_embed" url="{{ sound.url }}"></div>
-<br/>
 
-{% endfor %}
-
-<h2>Videos :</h2>
+        <h2>Videos :</h2>
 
 {% for video in videos %}
 
-<iframe id="ytplayer" type="text/html" width="300" height="200"
-  src="http://www.youtube.com/embed/{{ video.vid }}"
-  frameborder="0"/>
+<iframe id="ytplayer" type="text/html" width="300" height="200" src="http://www.youtube.com/embed/{{video.vid}}" frameborder="0" /></iframe>
 
 <br/>
 {% endfor %}
+
+
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="sounds">
+
+            <h2>Sounds :</h2>
+
+                {% for sound in sounds %}
+                {{ sound.title }}
+                <div class="soundcloud_embed" url="{{ sound.url }}"></div>
+                <br/>
+
+            {% endfor %}
+
+
+    </div>
+  </div>
+
+</div>
+
+<br/>
+
+
+
+
+
+
+
 
 <br/>
 
 
 {% endblock %}
-
-</body>
-</html>
