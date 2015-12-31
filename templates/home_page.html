@@ -3,112 +3,363 @@
 {% load bootstrap %}
 <html>
 <head>
- <script src= "{% static 'js/jquery-min.js' %}" type="text/javascript"></script>
-    <script src="{%  static 'js/jquery-ui.min.js' %}" type="text/javascript"></script>
+<script src= "{% static 'js/jquery-min.js' %}" type="text/javascript"></script>
+<script src="{%  static 'js/jquery-ui.min.js' %}" type="text/javascript"></script>
 <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
-    <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet" media="screen">
-    <script src="{%  static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet" media="screen">
+<script src="{%  static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'slider/jquery-ui.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'slider/jquery-ui.theme.min.css' %}" rel="stylesheet" media="screen">
+<link href="{% static 'slider/jquery-ui.structure.min.css' %}" rel="stylesheet" media="screen">
+<link href="{% static 'icons/flaticon.css' %}" rel="stylesheet" media="screen">
+<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<script type="text/javascript">
+
+
+  $(document).ready(function() {
+    $('.carousel').carousel({interval: 5000});
+
+
+  $('#slider').slider({
+            animate: 'fast',
+            range: true,
+            min: 100,
+            max: 10000,
+            values: [500,5000],
+
+
+
+         });
+         $('#id_budget_min').val($('#slider').slider('values',0))
+            $('#id_budget_max').val($('#slider').slider('values',1))
+			$('#budget').text("Budget : Rs. " + $('#id_budget_min').val() +" -  Rs. " + $('#id_budget_max').val())
+
+         $( "#slider" ).slider({
+  				slide: function( event, ui ) {
+
+
+ 				 }
+		});
+      $( "#slider" ).on( "slide", function( event, ui ) {
+            $('#id_budget_min').val($('#slider').slider('values',0))
+            $('#id_budget_max').val($('#slider').slider('values',1))
+            $('#budget').text("Budget : Rs. " + $('#id_budget_min').val() +" -  Rs. " + $('#id_budget_max').val())
+
+
+      } );
+      $( "#slider" ).slider({
+  stop: function( event, ui ) {}
+});
+      $( "#slider" ).on( "slidestop", function( event, ui ) {
+      		$('#id_budget_min').val($('#slider').slider('values',0))
+            $('#id_budget_max').val($('#slider').slider('values',1))
+            $('#budget').text("Budget : Rs. " + $('#id_budget_min').val() +" -  Rs. " + $('#id_budget_max').val())
+
+      } );
+
+
+});
+
+
+
+
+</script>
+
 <style type="text/css">
 
-img{
-  -webkit-filter:brightness(40%);
-  position: relative;
-  height: 200px;
-  width: 300px;
+.navbar-right{
+	padding-top: 15px;
 }
-.overlay_talent{
+.navbar .nav > li > a, .navbar .nav > li > a:first-letter,
+.navbar .nav > li.current-menu-item > a, 
+.navbar .nav > li.current-menu-ancestor > a,
+.navbar .navbar-header .navbar-brand {
+display:        inline;
+color:          white;                        
+font-family: 'Ubuntu', sans-serif;
+font-size:      16px;
+}
+body{
+	background-color: #424242;
+	width:100%;
+	overflow-x:hidden; 
+
+}
+label{
+	color: #424242;
+font-family: 'Ubuntu', sans-serif;
+font-size: 1em;
+margin-right: 50px;
+}
+.navbar .nav > li > a:hover, .navbar .nav > li > a:hover:first-letter { 
+color:          #F64747;                      
+}
+.carousel { 
 	position: absolute;
-	top:50px;
-	left:120px;
-	color: white;
+	width:100%;
 }
-.talentdiv{
-	margin-top: 200px;
+
+
+.carousel-fade .carousel-inner .item {
+	height: 90vh;
+	width: 100%;
+  opacity: 0;
+  -webkit-transition-property: opacity ;
+  -moz-transition-property: opacity ;
+  -o-transition-property: opacity ;
+  transition-property: opacity ;
 }
-.talentrow {
-	position: relative;
-	margin-top: 200px;
+.carousel-fade .carousel-inner .active {
+  opacity: 1 !important;
 }
-.talents{
-	position: relative;
-	margin-top: 40px;
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
 }
-#search{
-	position: relative;
-	left: 14%;
-	margin-top: 2%;
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
 }
-#searchartist{
-	position: relative;
-	margin-top: 15%;
+.carousel-fade .carousel-control {
+  z-index: 2;
+}
+.carouselimg{
+	width: 100%;
+  -webkit-filter:brightness(100%);
+  height: 90vh;
+
 }
 .navbar{
 	background-color: transparent;
 	border:none;
+	position: relative;
+	top:1%;
+	width: 100%;
 
 }
- .navbar-default .navbar-brand {
-    color: white;
+
+#searchbox{
+	position: relative;
+	margin-top:20px;
+
 }
-.navbar-default .navbar-nav>li>a {
-    color: white;
+.form-control{
+	height: 30px;
+	border-radius: 0px;
+	color: #424242;
+
 }
-.carousel { z-index: -99; } /* keeps this behind all content */
-.carousel .item {
-    position: fixed; 
-    width: 100%; height: 85%;
-    -webkit-transition: opacity 1s;
-    -moz-transition: opacity 1s;
-    -ms-transition: opacity 1s;
-    -o-transition: opacity 1s;
-    transition: opacity 1s;
- 
+.searchartistbutton{
+	padding-left:15px;
+	height: 45px;
 }
-.carousel .one {
-    background: url({% static 'wall1.jpg' %});
-    background-size: cover;
-    -moz-background-size: cover;
+.btn{
+	height: 30px;
+	width:100%;
+	line-height: 0px;
+	padding-left: 9px;
+	background-color: #003171;
+	color: white;
+	border: 0px;
+	border-radius: 0px;
+	font-size: 18px;
+font-family: 'Ubuntu', sans-serif;
 }
-.carousel .two {
-    background: url({% static 'wall2.jpg' %});
-    background-size: cover;
-    -moz-background-size: cover;
+select {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
 }
-.carousel .three {
-    background: url({% static 'wall3.jpg' %});
-    background-size: cover;
-    -moz-background-size: cover;
+#slider{
+	margin-top: 10px;
+	margin-bottom: 15px;
 }
-.carousel .active.left {
-    left:0;
-    opacity:0;
-    z-index:2;
+.ui-slider-range{
+	color: red;
+}
+#budget{
+	color: #424242;
+	margin-left: 15px;
+	margin-top: 0px;
+	font-size: 1.2em;
+font-family: 'Ubuntu', sans-serif;
+}
+.row{
+	margin-left: 0px;
+	margin-right:0px;
+}
+.secondform{
+	margin-top: 20px;
+}
+#iconrow{
+	position: relative;
+	top:300px;
+}
+.icon{
+	color: white;
+	font-size: 30px;
+}
+
+.talentrow1{
+	position: relative;
+	background-color: white;
+	padding-top:50px;
+}
+.img_talent{
+	width:320px;
+	height: 160px;
+	-webkit-filter:brightness(40%);
+	display: block;
+	margin: auto;
+}
+.img_festival{
+	width:460px;
+	height: 230px;
+	-webkit-filter:brightness(40%);
+	display: block;
+	margin: auto;
+	margin: 10px;
+}
+.overlay_talent{
+	color: transparent;
+	position: relative;
+	display: block;
+	margin: auto;
+
+font-family: 'Ubuntu', sans-serif;
+}
+.left{
+	float: right;
+
+}
+.right{
+	float: left;
+}
+.talentrow1 .row{
+	position: relative;
+	left: 60px;
+}
+#img_cover{
+	  -webkit-filter:brightness(40%);
+	  	height: 85vh;
+	  	width: 100%;
+
+
+}
+#cover_image2{
+	position: relative;
+	top:20%;
+
+
+
+}
+.glyphicon-triangle-bottom{
+	position: absolute;
+	top:25%;
+	left:85%;
+	color: #424242;
+	font-size:10px;
+}
+#coverimage2text{
+	position: absolute;
+	vertical-align: center;
+	top:200px;
+	left:40%;
+	color: white;
+	font-size: 100px;
+font-family: 'Ubuntu', sans-serif;
+}
+.festival{
+	position: relative;
+	top:10%;
+	background-color: #eee;
+}
+span{
+	color: white;
+}
+
+.firstbox{
+	background-color: white;
+	opacity: 0.9;
+	margin-bottom:30px;
+	padding: 10px;
+	border-radius: 1px solid black;
+	border-radius:3px;
+}
+.secondbox{
+	background-color: white;
+	opacity: 0.9;
+	margin-bottom:30px;
+	padding-top: 30px;
+	padding: 10px;
+	border-radius: 1px solid black;
+	border-radius:3px;
+}
+.firstbox .row{
+	margin-bottom: 5px;
+}
+#headertext{
+	background-color: #eee;
+	padding: 20px;
+}
+#headertext h1{
+	font-size: 50px;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+#headertext h3{
+	font-size: 30px;
+	display: block;
+	margin: auto;
+	text-align: center;
 }
 
 
 </style>
 
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    $('.carousel').carousel({interval: 5000});
-  });
-</script>
-
-
-
-
 </head>
-<body>
-<div class="container-fluid">
-<div id="myCarousel" class="carousel container slide">
+<div id="myCarousel" class="carousel carousel-fade slide">
+  
   <div class="carousel-inner">
-            <div class="active item one"></div>
-            <div class="item two"></div>
-            <div class="item three"></div>
+    <div class="item active">
+      <img src="{% static '01.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '02.jpg' %}" class="carouselimg">
+      </div>
+    <div class="item">
+      <img src="{% static '03.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '04.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '05.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '06.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '07.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '08.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '09.jpg' %}" class="carouselimg">
+      
+    </div>
   </div>
 </div>
-
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -131,98 +382,272 @@ img{
     </div>
   </div>
 </nav>
-<div class = "row">
-<div id='searchartist'>
-	<form role="form">
-                      <div class="col-md-6 col-md-offset-3">
-                        
-                          {{artist_form.name|bootstrap_inline}}
-                        
-                      </div>
-                     
-                      
-                      <div class="col-md-2">
-                        <button type="submit" class="btn btn-default btn-success">Search</button>
-                      </div>
-                    </form>
-</div>
-</div>
+<div class='box' id="searchbox">
+<div class="row">
+	<div class = "col-md-4 col-md-offset-1 innersearchbox">
+		<div class="firstbox">
+		<div class="row secondform">
+			<div class="col-md-6">
+			{{form.talents|bootstrap_inline}}
+			<span class="glyphicon glyphicon-triangle-bottom"></span>
+
+			</div>
+			<div class="col-md-6">
+                {{form.function_type|bootstrap_inline}}
+			<span class="glyphicon glyphicon-triangle-bottom"></span>
+
+			</div>
+
+		</div>
+		<div class="row">
+			<div class-"col-md-4" style="padding-left:15px;">
+				<h5 style="color:#424242;font-size:1.2em;font-family: 'Ubuntu', sans-serif;
+">Outstation Artists?</h5>
+			</div>
+		<div class="row">
+			<div class-"col-md-4" style="padding-left:15px;">
+			{{form.outstation}}
+
+			</div>
+		</div>
+		
 
 
-<div class = "row">
-<div id='search'>
-	<form role="form">
-                      <div class="col-md-2">
-                        
-                          {{form.talents|bootstrap_inline}}
-                        
-                      </div>
-                      <div class="col-md-2">
-                        
-                          {{form.budget_min|bootstrap_inline}}
-                        
-                      </div>
-                      <div class="col-md-2">
-                        
-                          {{form.budget_max|bootstrap_inline}}
-                        
-                      </div>
-                      
-                      <div class="col-md-2">
-                        
-                          {{form.function_type|bootstrap_inline}}
-                        
-                      </div>
-                      
-                      
-                      <div class="col-md-2">
-                        <button type="submit" class="btn btn-default btn-primary">Search</button>
-                      </div>
-                    </form>
+		<div class="row">
+			<h4 id="budget">Budget :</h4>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div id='slider'></div>
+			</div>
+			
+			{{form.budget_min|bootstrap_inline}}
+			{{form.budget_max|bootstrap_inline}}
+
+		</div>
+		<div class="row">
+			<div class="col-md-12 searchartistbutton">
+				<button type="submit" class="btn btn-success">Search</button>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+		
+		
+
+		<div class="secondbox">
+	<div class="row">
+			<div class="col-md-12">
+				{{artist_form.name|bootstrap_inline}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 searchartistbutton">
+				<button type="submit" class="btn btn-success">Search</button>
+			</div>
+		</div>
+
+		</div>
+		
+		</div>
+		</div>
+		
+
+		
+	</div>
+
 </div>
 </div>
+<div class="row" id="#iconrow">
+	<div class="col-md-2">
 
-<div class = "talentdiv">
+	</div>
+	<div class="col-md-2">
 
-	<div class = "row talentrow">
+	</div>
+	<div class="col-md-2">
+
+	</div>
+	<div class="col-md-2">
+
+	</div>
+	<div class="col-md-2">
+
+	</div>
+	<div class="col-md-2">
+
+	</div>
+
+
+</div>	
+<div class = "row talentrow1">
+	<div class="row">
+			<div class="col-md-9 col-md-offset-1">
+
+
+			<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class=" left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+		</div>
 		<div class="col-md-4 talents ">
-			<img src= "{% static 'wall3.jpg' %}">
-			<h3 class='overlay_talent'> Talent</h3>
-		</div>
-		<div class="col-md-4 talents">
-			<img src= "{% static 'wall3.jpg' %}">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
 		<div class="col-md-4 talents">
-			<img src= "{% static 'wall3.jpg' %}">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent right">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
+
+
+
+		</div>
+	</div>
+		
+
+
+
+
+	<div class="row">
+	<div class="col-md-9 col-md-offset-1">
+
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class=" left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent right">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+	</div>
+
+
+	
+
+
+
 
 	</div>
-	<div class = "row ">
-		<div class="col-md-4 talents">
-			<img src= "{% static 'wall2.jpg' %}">
+	<div class="col-md-9 col-md-offset-1">
+
+		<div class="row">
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class="left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+		</div>
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
 		<div class="col-md-4 talents">
-			<img src= "{% static 'wall2.jpg' %}">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent right">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
-		<div class="col-md-4 talents">
-			<img src= "{% static 'wall2.jpg' %}">
-			<h3 class='overlay_talent'> Talent</h3>
+	</div>
 
-		</div>
+
+
+
+
 
 	</div>
+	<div class="row">
+		<div class="col-md-9 col-md-offset-1">
+
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class="left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent right">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+
+
+	
+	</div>
+</div>
+
+
+
+
+		
+	
+
+</div>
+
+<div class = "row" id="headertext" >
+		<h1>Holi Is Here</h1>
+		<br>
+		<h3>Celebrate With Your Favourite Artists.</h3>
+</div>
 
 </div>
 </div>
+<div class = 'row festival'>
+		<div class="col-md-4 col-md-offset-2 ">
+			<div class="box">
+				<img src="{% static 'wall4.jpg' %}" class="img_festival ">			
+			</div>
+
+		</div>
+		<div class="col-md-4 ">
+			<div class="box">
+				<img src="{% static 'wall4.jpg' %}" class="img_festival ">			
+
+			</div>
+
+		</div>
+
+		<div class="col-md-4 col-md-offset-2">
+			<div class="box">
+				<img src="{% static 'wall4.jpg' %}" class="img_festival">			
+			</div>
+
+		</div>
+		<div class="col-md-4 ">
+			<div class="box">
+				<img src="{% static 'wall4.jpg' %}" class="img_festival">			
+
+			</div>
+
+		</div>
+
+</div>
+<div class="row" >
+	<div class="box" id= "footer">
+			<h1 style="vertical-align:middle;text-align:center;line-height:300px;color:white;font-family: 'Lato', sans-serif;">Placeholder for footer<h1>
+
+
+	</div>
+
+
 </div>
 
 </body>
 </html>
+
+
+
+
+
+
