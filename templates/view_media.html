@@ -1,37 +1,77 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
+{% load static %}
+
+{% block header_block %}
+<link rel="stylesheet" href="{% static 'css/photoswipe/photoswipe.css' %}">
+<link rel="stylesheet" href="{% static  'css/photoswipe/default-skin/default-skin.css' %}">
+<script type="text/javascript" src="{% static 'js/photoswipe/photoswipe.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/photoswipe/photoswipe-ui-default.min.js' %}"></script>
+
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="{% static 'fancybox/source/jquery.fancybox.css' %}" type="text/css" media="screen" />
+<script type="text/javascript" src="{% static 'fancybox/source/jquery.fancybox.pack.js' %}"></script>
+
+<!-- Optionally add helpers - button, thumbnail and/or media -->
+<link rel="stylesheet" href="{% static 'fancybox/source/helpers/jquery.fancybox-buttons.css' %}" type="text/css" media="screen" />
+<script type="text/javascript" src="{% static 'fancybox/source/helpers/jquery.fancybox-buttons.js' %}"></script>
+<script type="text/javascript" src="{% static 'fancybox/source/helpers/jquery.fancybox-media.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'fancybox/source/helpers/jquery.fancybox-thumbs.css' %}" type="text/css" media="screen" />
+<script type="text/javascript" src="{% static 'fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7' %}"></script>
+{% endblock %}
 
 {% block body_block %}
     <script type="text/javascript">
 
+    sc_set = true;
+
     $(document).ready(function(){
 
-        $(".soundcloud_embed").each(function(){
-            var url = $(this).attr('url');
-            console.log(url);
-
-        settings = {
-          "async": true,
-          "crossDomain": true,
-          "url": "http://soundcloud.com/oembed",
-          "method": "POST",
-          "headers": {},
-          "data": {
-            "format": "json",
-            "url": url,
-            "maxheight" :100,
-            "maxwidth": 100
-          }
-        }
-
-            var current= $(this);
-
-        $.ajax(settings).done(function (response) {
-            current.html(response.html);
+            $('.vdmedia').fancybox({
+                openEffect  : 'none',
+                closeEffect : 'none',
+                helpers : {
+                    media : {}
+                }
             });
+
+        $(document).ready(function() {
+	$(".fancybox").fancybox({
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	});
+});
+        $('a[aria-controls="sounds"]').on('shown.bs.tab', function (e) {
+
+            if(sc_set) {
+                $(".soundcloud_embed").each(function () {
+                    var url = $(this).attr('url');
+                    console.log(url);
+
+                    settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://soundcloud.com/oembed",
+                        "method": "POST",
+                        "headers": {},
+                        "data": {
+                            "format": "json",
+                            "url": url,
+                            "maxheight": 130,
+                            "maxwidth": 600
+                        }
+                    }
+
+                    var current = $(this);
+
+                    $.ajax(settings).done(function (response) {
+                        current.html(response.html);
+                    });
+                });
+                sc_set = false;
+            }
         });
-
-
 
     });
 
@@ -54,39 +94,43 @@ No Media added yet. <a href="manage">Add some ? </a>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="photos">
 
-        <h2>Photos : </h2>
-{% for image in images %}
-<img src="{{ image.url }}" width="200" height="200">
-    <br/>
-{% endfor %}
-<br/>
+    <div class="my-gallery row" itemscope itemtype="http://schema.org/ImageGallery">
 
+    {% for image in images %}
+
+        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-2 photo-grid">
+      <a href="{{ image.url }}" itemprop="contentUrl" class="img-content">
+          <img src="{{ image.url }}" itemprop="thumbnail" alt="{{ image.title }}" />
+      </a>
+      <figcaption itemprop="caption description txt" style="display:none">{% if image.title %}{{ image.title }} - {% endif %} {{ image.caption }}</figcaption>
+        </figure>
+
+    {% endfor %}
 
     </div>
+
+    </div>
+
+
     <div role="tabpanel" class="tab-pane" id="videos">
 
-
-        <h2>Videos :</h2>
-
+            <div class="row">
 {% for video in videos %}
-
-<iframe id="ytplayer" type="text/html" width="300" height="200" src="http://www.youtube.com/embed/{{video.vid}}" frameborder="0" /></iframe>
-
-<br/>
+    <div class="col-md-2 video-grid">
+    <a class="vdmedia video-pc" rel="video-gallery" href="{{ video.url }}" title="{% if video.title  %}{{ video.title }} - {% endif %} {{ video.caption }}"><div class="playbutton"><i class="glyphicon glyphicon-play-circle"></i></div><img src="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg"></a>
+    </div>
+{#<iframe id="ytplayer" type="text/html" width="300" height="200" src="http://www.youtube.com/embed/{{video.vid}}" frameborder="0" /></iframe>#}
 {% endfor %}
+            </div>
 
 
 
     </div>
     <div role="tabpanel" class="tab-pane" id="sounds">
-
-            <h2>Sounds :</h2>
-
                 {% for sound in sounds %}
                 {{ sound.title }}
                 <div class="soundcloud_embed" url="{{ sound.url }}"></div>
                 <br/>
-
             {% endfor %}
 
 
@@ -98,13 +142,76 @@ No Media added yet. <a href="manage">Add some ? </a>
 <br/>
 
 
-
-
-
-
-
-
 <br/>
+
+
+    {# Begin the photoswipe block #}
+
+
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    {# End PhotoSwiple Block #}
 
 
 {% endblock %}

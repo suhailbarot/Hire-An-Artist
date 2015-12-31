@@ -10,6 +10,7 @@
 
 {% block body_block %}
 
+
     <script type="text/javascript">
 
     function return_to_original(){
@@ -45,64 +46,160 @@
 <h2>Hello</h2>
 
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_modal">Large modal</button>
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="add_modal" aria-labelledby="gridSystemModalLabel">
+    <div>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <li role="presentation"><a href="#videos" aria-controls="videos" role="tab" data-toggle="tab">Videos</a></li>
+    <li role="presentation"><a href="#sounds" aria-controls="sounds" role="tab" data-toggle="tab">Sounds</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="photos">
+
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#photo_modal">
+  Add Photos
+</button>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="videos">
+
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#video_modal">
+  Add Videos
+</button>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="sounds">
+
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sound_modal">
+  Add Sounds
+</button>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-          <div class="media_mg options">
-        <div class="row buttons">
-          <div class="col-md-4">
-              <button type="button" class="btn btn-primary" id="add_photo" mtype="photos">Add Photos</button>
-          </div>
-          <div class="col-md-4">
-               <button type="button" class="btn btn-primary" id="add_sound" mtype="sound">Add Soundcloud</button>
-          </div>
-            <div class="col-md-4">
-               <button type="button" class="btn btn-primary" id="add_video" mtype="video">Add Youtube</button>
-          </div>
-            </div>
-        </div>
-
-          <div class="media_mg actionable image_add_screen">
-                      {% load jfutags %}
-                      {% jfu %}
-              <button class="go_back btn btn-info">GO Back</button>
-              </div>
-
-              <div class="media_mg actionable video_add_screen">
-                <form name="video_add_form">
-                    {{ yt |bootstrap}}
-                </form>
-                  <button class="btn btn-success">Add Video</button>
-                  <button class="go_back btn btn-info">GO Back</button>
-              </div>
-
-              <div class="media_mg actionable sound_add_screen">
-
-                  <form name="sound_add_form">
-
-                    {{ sc|bootstrap}}
-
-                 </form>
-                  <button class="btn btn-success">Add Video</button>
-                  <button class="go_back btn btn-info">GO Back</button>
-
-              </div>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
+
+
+    <div class="modal fade" id="video_modal" tabindex="-1" role="dialog" aria-labelledby="video_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+         {{ yt|bootstrap }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="modal fade" id="sound_modal" tabindex="-1" role="dialog" aria-labelledby="sound_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{#    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_modal">Large modal</button>#}
+{##}
+{#    <div class="modal fade" tabindex="-1" role="dialog" id="add_modal" aria-labelledby="gridSystemModalLabel">#}
+{#  <div class="modal-dialog" role="document">#}
+{#    <div class="modal-content">#}
+{#      <div class="modal-header">#}
+{#        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+{#        <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>#}
+{#      </div>#}
+{#      <div class="modal-body">#}
+{#          <div class="media_mg options">#}
+{#        <div class="row buttons">#}
+{#          <div class="col-md-4">#}
+{#              <button type="button" class="btn btn-primary" id="add_photo" mtype="photos">Add Photos</button>#}
+{#          </div>#}
+{#          <div class="col-md-4">#}
+{#               <button type="button" class="btn btn-primary" id="add_sound" mtype="sound">Add Soundcloud</button>#}
+{#          </div>#}
+{#            <div class="col-md-4">#}
+{#               <button type="button" class="btn btn-primary" id="add_video" mtype="video">Add Youtube</button>#}
+{#          </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#          <div class="media_mg actionable image_add_screen">#}
+{#                      {% load jfutags %}#}
+{#                      {% jfu %}#}
+{#              <button class="go_back btn btn-info">GO Back</button>#}
+{#              </div>#}
+{##}
+{#              <div class="media_mg actionable video_add_screen">#}
+{#                <form name="video_add_form">#}
+{#                    {{ yt |bootstrap}}#}
+{#                </form>#}
+{#                  <button class="btn btn-success">Add Video</button>#}
+{#                  <button class="go_back btn btn-info">GO Back</button>#}
+{#              </div>#}
+{##}
+{#              <div class="media_mg actionable sound_add_screen">#}
+{##}
+{#                  <form name="sound_add_form">#}
+{##}
+{#                    {{ sc|bootstrap}}#}
+{##}
+{#                 </form>#}
+{#                  <button class="btn btn-success">Add Video</button>#}
+{#                  <button class="go_back btn btn-info">GO Back</button>#}
+{##}
+{#              </div>#}
+{##}
+{#      </div>#}
+{#      <div class="modal-footer">#}
+{#        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+{#        <button type="button" class="btn btn-primary">Save changes</button>#}
+{#      </div>#}
+{#    </div><!-- /.modal-content -->#}
+{#  </div><!-- /.modal-dialog -->#}
+{#</div><!-- /.modal -->#}
 
 {% endblock %}
 </body>
