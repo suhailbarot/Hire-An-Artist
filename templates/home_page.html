@@ -12,7 +12,8 @@
 <link href="{% static 'slider/jquery-ui.theme.min.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'slider/jquery-ui.structure.min.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'icons/flaticon.css' %}" rel="stylesheet" media="screen">
-<link href='https://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'><script type="text/javascript">
+<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<script type="text/javascript">
 
 
   $(document).ready(function() {
@@ -75,8 +76,8 @@
 .navbar .navbar-header .navbar-brand {
 display:        inline;
 color:          white;                        
-font-family: 'Lato', sans-serif;
-font-size:      15px;
+font-family: 'Ubuntu', sans-serif;
+font-size:      16px;
 }
 body{
 	background-color: #424242;
@@ -85,30 +86,49 @@ body{
 
 }
 label{
-	color: white;
-font-family: 'Lato', sans-serif;
+	color: #424242;
+font-family: 'Ubuntu', sans-serif;
+font-size: 1em;
 margin-right: 50px;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:hover:first-letter { 
 color:          #F64747;                      
 }
 .carousel { 
-	z-index: -99;
 	position: absolute;
 	width:100%;
 }
 
-.carousel .item {
 
-	z-index: -99;
-    height: 85vh;
-    width: 100%;
-   
+.carousel-fade .carousel-inner .item {
+	height: 90vh;
+	width: 100%;
+  opacity: 0;
+  -webkit-transition-property: opacity ;
+  -moz-transition-property: opacity ;
+  -o-transition-property: opacity ;
+  transition-property: opacity ;
+}
+.carousel-fade .carousel-inner .active {
+  opacity: 1 !important;
+}
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
 }
 .carouselimg{
 	width: 100%;
-  -webkit-filter:brightness(40%);
-  height: 85vh;
+  -webkit-filter:brightness(100%);
+  height: 90vh;
 
 }
 .navbar{
@@ -122,12 +142,13 @@ color:          #F64747;
 
 #searchbox{
 	position: relative;
-	margin-top:50px;
+	margin-top:20px;
 
 }
 .form-control{
 	height: 30px;
 	border-radius: 0px;
+	color: #424242;
 
 }
 .searchartistbutton{
@@ -139,12 +160,12 @@ color:          #F64747;
 	width:100%;
 	line-height: 0px;
 	padding-left: 9px;
-	background-color: #16a085;
+	background-color: #003171;
 	color: white;
 	border: 0px;
 	border-radius: 0px;
 	font-size: 18px;
-font-family: 'Lato', sans-serif;
+font-family: 'Ubuntu', sans-serif;
 }
 select {
   -webkit-appearance: none;
@@ -158,11 +179,11 @@ select {
 	color: red;
 }
 #budget{
-	color: white;
+	color: #424242;
 	margin-left: 15px;
 	margin-top: 0px;
 	font-size: 1.2em;
-font-family: 'Lato', sans-serif;
+font-family: 'Ubuntu', sans-serif;
 }
 .row{
 	margin-left: 0px;
@@ -179,33 +200,45 @@ font-family: 'Lato', sans-serif;
 	color: white;
 	font-size: 30px;
 }
-.talentrow2{
-	height: 300px;
-	position: relative;
-	top: 20%;
-	background-color: white;
 
-}
 .talentrow1{
-	height: 300px;
 	position: relative;
-	background-color: #eee;
-	margin-top:0%;
+	background-color: white;
+	padding-top:50px;
 }
 .img_talent{
-	width:250px;
-	height: 150px;
+	width:320px;
+	height: 160px;
 	-webkit-filter:brightness(40%);
-	position: absolute;
-	margin-top: 50px;
+	display: block;
+	margin: auto;
+}
+.img_festival{
+	width:460px;
+	height: 230px;
+	-webkit-filter:brightness(40%);
+	display: block;
+	margin: auto;
+	margin: 10px;
 }
 .overlay_talent{
-	color: #F64747;
+	color: transparent;
 	position: relative;
-	top:100px;
-	left:90px;
-font-family: 'Lato', sans-serif;
+	display: block;
+	margin: auto;
 
+font-family: 'Ubuntu', sans-serif;
+}
+.left{
+	float: right;
+
+}
+.right{
+	float: left;
+}
+.talentrow1 .row{
+	position: relative;
+	left: 60px;
 }
 #img_cover{
 	  -webkit-filter:brightness(40%);
@@ -224,8 +257,9 @@ font-family: 'Lato', sans-serif;
 .glyphicon-triangle-bottom{
 	position: absolute;
 	top:25%;
-	left:75%;
-	color: #424242
+	left:85%;
+	color: #424242;
+	font-size:10px;
 }
 #coverimage2text{
 	position: absolute;
@@ -234,28 +268,28 @@ font-family: 'Lato', sans-serif;
 	left:40%;
 	color: white;
 	font-size: 100px;
-font-family: 'Lato', sans-serif;
+font-family: 'Ubuntu', sans-serif;
 }
 .festival{
 	position: relative;
 	top:10%;
 	background-color: #eee;
-	height: 300px;
 }
 span{
 	color: white;
 }
+
 .firstbox{
-	background-color: black;
-	opacity: 0.7;
+	background-color: white;
+	opacity: 0.9;
 	margin-bottom:30px;
 	padding: 10px;
 	border-radius: 1px solid black;
 	border-radius:3px;
 }
 .secondbox{
-	background-color: black;
-	opacity: 0.7;
+	background-color: white;
+	opacity: 0.9;
 	margin-bottom:30px;
 	padding-top: 30px;
 	padding: 10px;
@@ -265,21 +299,63 @@ span{
 .firstbox .row{
 	margin-bottom: 5px;
 }
+#headertext{
+	background-color: #eee;
+	padding: 20px;
+}
+#headertext h1{
+	font-size: 50px;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+#headertext h3{
+	font-size: 30px;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+
+
 </style>
 
 </head>
-<div id="myCarousel" class="carousel slide">
+<div id="myCarousel" class="carousel carousel-fade slide">
   
   <div class="carousel-inner">
     <div class="item active">
-      <img src="{% static 'wall1.jpg' %}" class="carouselimg">
+      <img src="{% static '01.jpg' %}" class="carouselimg">
       
     </div>
     <div class="item">
-      <img src="{% static 'wall2.jpg' %}" class="carouselimg">
+      <img src="{% static '02.jpg' %}" class="carouselimg">
       </div>
     <div class="item">
-      <img src="{% static 'wall3.jpg' %}" class="carouselimg">
+      <img src="{% static '03.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '04.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '05.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '06.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '07.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '08.jpg' %}" class="carouselimg">
+      
+    </div>
+    <div class="item">
+      <img src="{% static '09.jpg' %}" class="carouselimg">
       
     </div>
   </div>
@@ -308,7 +384,7 @@ span{
 </nav>
 <div class='box' id="searchbox">
 <div class="row">
-	<div class = "col-md-3 col-md-offset-1 innersearchbox">
+	<div class = "col-md-4 col-md-offset-1 innersearchbox">
 		<div class="firstbox">
 		<div class="row secondform">
 			<div class="col-md-6">
@@ -325,7 +401,7 @@ span{
 		</div>
 		<div class="row">
 			<div class-"col-md-4" style="padding-left:15px;">
-				<h5 style="color:white;font-size:1.2em;font-family: 'Lato', sans-serif;;
+				<h5 style="color:#424242;font-size:1.2em;font-family: 'Ubuntu', sans-serif;
 ">Outstation Artists?</h5>
 			</div>
 		<div class="row">
@@ -407,80 +483,150 @@ span{
 
 </div>	
 <div class = "row talentrow1">
-	<div class="col-md-8 col-md-offset-2">
-		<div class="col-md-4 talents ">
-			<img src= "{% static 'wall3.jpg' %}" class="img_talent img-rounded">
+	<div class="row">
+			<div class="col-md-9 col-md-offset-1">
+
+
+			<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class=" left img_talent">
 			<h3 class='overlay_talent'> Talent</h3>
 		</div>
-		<div class="col-md-4 talents midbox">
-			<img src= "{% static 'wall3.jpg' %}" class="img_talent img-rounded">
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
 		<div class="col-md-4 talents">
-			<img src= "{% static 'wall3.jpg' %}" class="img_talent img-rounded">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent right">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
 
+
+
+		</div>
 	</div>
+		
+
+
+
+
+	<div class="row">
+	<div class="col-md-9 col-md-offset-1">
+
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class=" left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent right">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+	</div>
+
+
+	
+
+
+
+
+	</div>
+	<div class="col-md-9 col-md-offset-1">
+
+		<div class="row">
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class="left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+		</div>
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall3.jpg' %}" class="img_talent right">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+	</div>
+
+
+
+
+
+
+	</div>
+	<div class="row">
+		<div class="col-md-9 col-md-offset-1">
+
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class="left img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents ">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+		<div class="col-md-4 talents">
+			<img src= "{% static 'wall2.jpg' %}" class="img_talent right">
+			<h3 class='overlay_talent'> Talent</h3>
+
+		</div>
+
+
+	
+	</div>
+</div>
+
+
+
+
+		
 	
 
 </div>
-<div class = "row talentrow2">
-	<div class="col-md-8 col-md-offset-2">
-		<div class="col-md-4 talents">
-			<img src= "{% static 'wall2.jpg' %}" class="img_talent img-rounded">
-			<h3 class='overlay_talent'> Talent</h3>
 
-		</div>
-		<div class="col-md-4 talents mid box">
-			<img src= "{% static 'wall2.jpg' %}" class="img_talent img-rounded">
-			<h3 class='overlay_talent'> Talent</h3>
-
-		</div>
-		<div class="col-md-4 talents">
-			<img src= "{% static 'wall2.jpg' %}" class="img_talent img-rounded">
-			<h3 class='overlay_talent'> Talent</h3>
-
-		</div>
-
-
-	</div>
+<div class = "row" id="headertext" >
+		<h1>Holi Is Here</h1>
+		<br>
+		<h3>Celebrate With Your Favourite Artists.</h3>
+</div>
 
 </div>
-<div class = "row" >
-		<div id = 'cover_image2'>
-			<img src="{% static 'wall4.jpg' %}" id="img_cover">
-			<h1 id='coverimage2text'>It's Holi</h1>
-		</div>
 </div>
 <div class = 'row festival'>
-		<div class="col-md-3 col-md-offset-3 ">
+		<div class="col-md-4 col-md-offset-2 ">
 			<div class="box">
-				<img src="{% static 'wall4.jpg' %}" class="img_talent img-rounded">			
+				<img src="{% static 'wall4.jpg' %}" class="img_festival ">			
 			</div>
 
 		</div>
-		<div class="col-md-3 ">
+		<div class="col-md-4 ">
 			<div class="box">
-				<img src="{% static 'wall4.jpg' %}" class="img_talent img-rounded">			
+				<img src="{% static 'wall4.jpg' %}" class="img_festival ">			
 
 			</div>
 
 		</div>
 
-</div>
-<div class = 'row festival' style="background-color:white;">
-		<div class="col-md-3 col-md-offset-3">
+		<div class="col-md-4 col-md-offset-2">
 			<div class="box">
-				<img src="{% static 'wall4.jpg' %}" class="img_talent img-rounded">			
+				<img src="{% static 'wall4.jpg' %}" class="img_festival">			
 			</div>
 
 		</div>
-		<div class="col-md-3 ">
+		<div class="col-md-4 ">
 			<div class="box">
-				<img src="{% static 'wall4.jpg' %}" class="img_talent img-rounded">			
+				<img src="{% static 'wall4.jpg' %}" class="img_festival">			
 
 			</div>
 
