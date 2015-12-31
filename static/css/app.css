@@ -15,3 +15,7 @@
     left: 41%;
     top: 29%;
 }
+
+.playbtn {
+    text-shadow: 4px 4px #000000;
+}
