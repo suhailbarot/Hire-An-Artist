@@ -66,6 +66,10 @@
 
     $(document).ready(function(){
 
+        $("#photo_modal").on('hide.bs.modal', function(){
+            changed=true;
+        });
+
         var hash = document.location.hash;
         if (hash) {
             $('.nav-tabs a[href='+hash+']').tab('show');
@@ -114,6 +118,7 @@
                     dataType    : 'json', // what type of data do we expect back from the server
                     encode          : true
                 }).done(function(data){
+                    changed=true;
                     $('#epm').modal('hide');
                 }).error(function(err){
                     alert("Unable to delete.");
@@ -137,6 +142,7 @@
                     encode          : true
                 }).done(function(data){
                     alert("deleted!");
+                    changed=true;
                     $('#update_video_modal').modal('hide');
                     $('#sound_edit_modal').modal('hide');
                 }).error(function(err){
@@ -214,6 +220,7 @@
                     encode          : true
                 }).done(function(data){
                     alert("Added!");
+                    changed=true;
                     $('#sound_modal').modal('hide');
                 }).error(function(err){
                     alert("Unable to Add");
@@ -241,6 +248,7 @@
                     encode          : true
                 }).done(function(data){
                     alert("Added!");
+                    changed=true;
                     $('#video_modal').modal('hide');
                 }).error(function(err){
                     alert("Unable to Add");
@@ -301,6 +309,7 @@
             dataType    : 'json', // what type of data do we expect back from the server
             encode          : true
         }).done(function(data){
+            changed=true;
            $("#success-update-alert").show();
             $("#success-update-alert").fadeTo(2000, 500).slideUp(500, function(){
                $("#success-update-alert").hide();
@@ -332,6 +341,7 @@
             dataType    : 'json', // what type of data do we expect back from the server
             encode          : true
         }).done(function(data){
+            changed=true;
            $("#success-sound-alert").show();
             $("#success-sound-alert").fadeTo(2000, 500).slideUp(500, function(){
                $("#success-sound-alert").hide();
@@ -364,7 +374,7 @@
             dataType    : 'json', // what type of data do we expect back from the server
             encode          : true
         }).done(function(data){
-            console.log("jere");
+            changed=true;
            $("#success-alert").show();
             $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
                $("#success-alert").hide();
