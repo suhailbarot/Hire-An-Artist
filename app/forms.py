@@ -10,6 +10,7 @@ from app.utils import generate_hash
 from app.checkbox.iterator import AdvancedModelChoiceField
 from django.utils.safestring import mark_safe
 
+
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
   def render(self):
     return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
@@ -68,12 +69,14 @@ class HomeSearchForm(forms.Form):
               )
     outstation = forms.TypedChoiceField(widget=forms.RadioSelect(renderer=HorizontalRadioRenderer),choices=choices,coerce=int,label=u'Outstation Artists?',required=False)
 
+
 class HomeArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Artist Name'}), label=u'Name')
 
 
 class ArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
+
 
 class RegisterForm(forms.Form):
     """
@@ -153,22 +156,6 @@ class PhoneForm(forms.Form):
     def save(self, user):
         user.phone = self.cleaned_data['phone']
         user.save()
-
-
-class YoutubeForm(forms.ModelForm):
-    url = forms.URLField(validators=[youtube_validator])
-
-    class Meta:
-        model = Media
-        exclude = ('is_active','type','listing')
-
-
-class SoundcloudForm(forms.ModelForm):
-    url = forms.URLField(validators=[soundcloud_validator])
-
-    class Meta:
-        model = Media
-        exclude = ('is_active','type','listing')
 
 
 class ListingForm(forms.ModelForm):

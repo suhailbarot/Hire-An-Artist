@@ -37,8 +37,15 @@ urlpatterns = [
 
     ## media stuff ###for
 
-    url( r'upload/', views.image_upload, name = 'jfu_upload' ),
+    url( r'media/upload/', views.image_upload, name='jfu_upload'),
+    url( r'^media/delete/(?P<pk>\d+)$', views.upload_delete, name='jfu_delete'),
+    url( r'^media/image_update/$', views.image_update, name='image_update'),
+    url( r'^video_audio/add/$', views.video_audio_add, name='video_add'),
+    url( r'^video/update/$', views.video_update, name='video_update'),
+    url( r'^sound/update/$', views.sound_update, name='sound_update'),
+    url( r'^video_audio/delete/$', views.youtube_soundcloud_delete, name='yt_sc_delete'),
     url(r'media/(?P<lid>\w+)/images/$', 'app.views.image_view_api', name='img_api'),
+
 
 
     #password and user auth

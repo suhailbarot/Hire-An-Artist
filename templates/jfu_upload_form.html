@@ -1,0 +1,39 @@
+{% extends 'jfu/upload_form.html' %}
+
+{% block JS_JQUERY %}
+{% endblock %}
+
+{% block CSS_BOOTSTRAP %}
+{% endblock %}
+
+{% block UPLOAD_FORM_EXTRA %}
+    <input type="hidden" name="listing" value="{{ listing.pk }}">
+{% endblock %}
+
+{% block JS_DOWNLOAD_TEMPLATE_PREVIEW %}
+        <td>
+            <span class="preview">
+                {{ JQ_OPEN }} if (file.thumbnailUrl) { {{ JQ_CLOSE }}
+                    <a href="{{ JQ_OPEN }}=file.url{{ JQ_CLOSE }}"
+                     title="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}"
+                     download="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}"
+                     data-gallery><img width="200px" height="200px" src="{{ JQ_OPEN }}=file.thumbnailUrl{{ JQ_CLOSE }}"
+                    ></a>
+                {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+            </span>
+        </td>
+{% endblock %}
+
+{% block JS_OPTS %}
+acceptFileTypes: /(\.|\/)(png|jpg|jpeg|gif)$/i,
+autoUpload: true,
+sequentialUploads: true
+{% endblock %}
+
+{% block UPLOAD_FORM_BUTTON_BAR_CONTROL %}
+            <button type="button" class="btn btn-danger delete">
+                <i class="glyphicon glyphicon-trash"></i>
+                <span>Delete</span>
+            </button>
+            Select All : <input type="checkbox" class="toggle">
+{% endblock %}

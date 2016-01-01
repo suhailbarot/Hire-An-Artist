@@ -64,7 +64,7 @@ INSTALLED_APPS = (
     'endless_pagination',
     'django_bootstrap_dynamic_formsets',
     'bootstrap3',
-    'jfu'
+    'jfu',
 
 )
 
@@ -222,6 +222,9 @@ STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'amp.custom_storage.MediaStorage'
+
+TASK_UPLOAD_FILE_TYPES = ['jpeg','png','jpg','gif']
+TASK_UPLOAD_FILE_MAX_SIZE = 10000000
 
 try:
     from settings_local import *

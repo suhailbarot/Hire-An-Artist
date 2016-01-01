@@ -219,5 +219,5 @@ initPhotoSwipeFromDOM = function(gallerySelector) {
         initPhotoSwipeFromDOM('.my-gallery');
     });
 
-
 });
+

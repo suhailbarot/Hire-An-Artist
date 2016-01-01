@@ -47,7 +47,6 @@
             if(sc_set) {
                 $(".soundcloud_embed").each(function () {
                     var url = $(this).attr('url');
-                    console.log(url);
 
                     settings = {
                         "async": true,
@@ -77,7 +76,7 @@
 
     </script>
 
-{% if not image and not sounds and not videos %}
+{% if not images and not sounds and not videos %}
 No Media added yet. <a href="manage">Add some ? </a>
 {% endif %}
 

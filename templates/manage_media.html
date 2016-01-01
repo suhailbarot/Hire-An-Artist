@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
+{% load jfutags %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -10,36 +11,379 @@
 
 {% block body_block %}
 
-
     <script type="text/javascript">
 
-    function return_to_original(){
-            $(".actionable").hide();
-            $(".options").show();
-        };
+    changed= false;
+
+    sc_set = true;
 
     $(document).ready(function(){
-        $(".go_back").click(function(){
-           return_to_original();
-        });
-        $('#add_modal').on('hidden.bs.modal', function () {
-                return_to_original();
-            });
-        $(".actionable").hide();
-        $("#add_video").click(function(){
-            $(".media_mg").hide();
-            $(".video_add_screen").show();
-        });
-         $("#add_sound").click(function(){
-            $(".media_mg").hide();
-            $(".sound_add_screen").show();
-        });
-        $("#add_photo").click(function(){
-            $(".media_mg").hide();
-            $(".image_add_screen").show();
+        $('.nav-tabs a[href=#sounds]').on('show.bs.tab', function () {
+
+    //this must go before hash
+
+            if(sc_set) {
+                $(".soundcloud_embed").each(function () {
+                    var url = $(this).attr('url');
+
+                    settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://soundcloud.com/oembed",
+                        "method": "POST",
+                        "headers": {},
+                        "data": {
+                            "format": "json",
+                            "url": url,
+                            "maxheight": 130,
+                            "maxwidth": 500
+                        }
+                    };
+
+                    var current = $(this);
+
+                    $.ajax(settings).done(function (response) {
+                        current.html(response.html);
+                    });
+                });
+                sc_set = false;
+            }
         });
 
     });
+
+
+
+    function validate_youtube(url) {
+        var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        return (url.match(p)) ? RegExp.$1 : false;
+    }
+
+    function validate_soundcloud(url) {
+        var p = /^((https:\/\/)|(http:\/\/)|(www.)|(\s))+(soundcloud.com\/)+[a-zA-Z0-9\-\.]+(\/)+[a-zA-Z0-9\-\.]+$/;
+        return (url.match(p)) ? RegExp.$1 : false;
+    }
+
+    $(document).ready(function(){
+
+        var hash = document.location.hash;
+        if (hash) {
+            $('.nav-tabs a[href='+hash+']').tab('show');
+        }
+
+        $('.nav-tabs').on('shown.bs.tab', function (e) {
+            window.location.hash =$(this).find("li[class=active]").find("a").attr("href");
+        });
+
+        function reflect_changes(){
+            location.reload();
+        }
+
+        $('.modal').on('hidden.bs.modal', function () {
+            if(changed)
+                reflect_changes();
+        });
+
+        $("#sound-link").keyup(function(){
+            var slink = $(this).val();
+            if(validate_soundcloud(slink))
+            {
+                $(this).parent().parent().removeClass("has-error");
+                $(this).parent().parent().addClass("has-success");
+                $("#add-sound").prop('disabled', false);
+            }
+            else
+            {
+                $(this).parent().parent().removeClass("has-success");
+                 $(this).parent().parent().addClass("has-error");
+                $('#add-sound').prop('disabled', true);
+            }
+        });
+
+
+        function delete_photo(mid) {
+            if(confirm("Are you sure you want to delete the photo?"))
+            {
+                var formdata = {
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+                };
+                $.ajax({
+                    type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url         : '/media/delete/'+String(mid), // the url where we want to POST
+                    data        : formdata, // our data object
+                    dataType    : 'json', // what type of data do we expect back from the server
+                    encode          : true
+                }).done(function(data){
+                    $('#epm').modal('hide');
+                }).error(function(err){
+                    alert("Unable to delete.");
+                });
+            }
+        };
+
+
+        function delete_video_audio(mid) {
+            if(confirm("Are you sure you want to delete the media?"))
+            {
+                var formdata = {
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val(),
+                    'mid' : mid
+                };
+                $.ajax({
+                    type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url         : '/video_audio/delete/', // the url where we want to POST
+                    data        : formdata, // our data object
+                    dataType    : 'json', // what type of data do we expect back from the server
+                    encode          : true
+                }).done(function(data){
+                    alert("deleted!");
+                    $('#update_video_modal').modal('hide');
+                    $('#sound_edit_modal').modal('hide');
+                }).error(function(err){
+                    alert("Unable to delete.");
+                });
+            }
+        };
+
+
+        $("#delete-update-video").click(function(){
+            var mid = $("#video-mid").val();
+            delete_video_audio(mid);
+        });
+
+        $("#delete-update-sound").click(function(){
+           var mid = $("#sound-update-mid").val();
+            delete_video_audio(mid);
+        });
+
+
+        $("#video-link").keyup(function(){
+            var vlink = $(this).val();
+            if(validate_youtube(vlink))
+            {
+                $(this).parent().parent().removeClass("has-error");
+                $(this).parent().parent().addClass("has-success");
+                $("#video-save").prop('disabled', false);
+            }
+            else
+            {
+                $(this).parent().parent().removeClass("has-success");
+                 $(this).parent().parent().addClass("has-error");
+                $('#video-save').prop('disabled', true);
+            }
+        });
+
+        $(".edit-sound").click(function(e){
+            e.preventDefault();
+
+            var scembed = $(this).parent().parent().find(".soundcloud_embed").html()
+
+            $(".soundcloud_placeholder").html(scembed);
+
+            var title = $(this).attr('data-title');
+            var caption = $(this).attr('data-caption');
+            var mid = $(this).attr('data-mid');
+
+            $("#sound-update-caption").val(caption);
+            $("#sound-update-title").val(title);
+            $("#sound-update-mid").val(mid);
+
+            $("#success-sound-alert").hide();
+            $("#error-sound-alert").hide();
+
+            $("#sound_edit_modal").modal('show');
+
+        });
+
+
+        $("#add-sound").click(function(e){
+            e.preventDefault();
+            var formdata = {
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val(),
+                    'link': $("#sound-link").val(),
+                    'title': $("#sound-title").val(),
+                    'caption':$("#sound-caption").val(),
+                    'listing':$("#sound-listing").val(),
+                    'type' : {{ SOUND }}
+                };
+                $.ajax({
+                    type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url         : '/video_audio/add/', // the url where we want to POST
+                    data        : formdata, // our data object
+                    dataType    : 'json', // what type of data do we expect back from the server
+                    encode          : true
+                }).done(function(data){
+                    alert("Added!");
+                    $('#sound_modal').modal('hide');
+                }).error(function(err){
+                    alert("Unable to Add");
+                });
+
+
+        });
+
+
+        $("#video-save").click(function(e){
+            e.preventDefault();
+            var formdata = {
+                    'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val(),
+                    'link': $("#video-link").val(),
+                    'title': $("#video-title").val(),
+                    'caption':$("#video-caption").val(),
+                    'listing':$("#video-listing").val(),
+                    'type' : {{ VIDEO }}
+                };
+                $.ajax({
+                    type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url         : '/video_audio/add/', // the url where we want to POST
+                    data        : formdata, // our data object
+                    dataType    : 'json', // what type of data do we expect back from the server
+                    encode          : true
+                }).done(function(data){
+                    alert("Added!");
+                    $('#video_modal').modal('hide');
+                }).error(function(err){
+                    alert("Unable to Add");
+                });
+        });
+
+        $("#delete_edit_photo").click(function(e){
+            e.preventDefault();
+            var mid  = $("#edit-mid").val();
+            delete_photo(mid);
+        });
+
+
+        $(".img-content").click(function(e){
+            e.preventDefault();
+            $("#success-alert").hide();
+            $("#error-alert").hide();
+            var src=$(this).attr("href");
+            var title = $(this).attr("data-title");
+            var caption = $(this).attr("data-caption");
+            var mid = $(this).attr("data-mid");
+            $("#edit-thumbnail").attr("src",src);
+            $("#edit-caption").val(caption);
+            $("#edit-title").val(title);
+            $("#edit-mid").val(mid);
+            $('#epm').modal('show');
+        });
+
+        $(".video-pc").click(function(e){
+            e.preventDefault();
+            $("#success-update-alert").hide();
+            $("#error-update-alert").hide();
+            var src=$(this).attr("data-thumb");
+            var title = $(this).attr("data-title");
+            var caption = $(this).attr("data-caption");
+            var mid = $(this).attr("data-mid");
+            $("#vid-thumb").attr("src",src);
+            $("#video-update-caption").val(caption);
+            $("#video-update-title").val(title);
+            $("#video-mid").val(mid);
+            $('#update_video_modal').modal('show');
+        });
+
+
+        $("#update-video").click(function(e){
+
+            var formdata = {
+            'title'              : $('#video-update-title').val(),
+            'caption'             : $('#video-update-caption').val(),
+            'mid'    : $('#video-mid').val(),
+            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+        };
+
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : '/video/update/', // the url where we want to POST
+            data        : formdata, // our data object
+            dataType    : 'json', // what type of data do we expect back from the server
+            encode          : true
+        }).done(function(data){
+           $("#success-update-alert").show();
+            $("#success-update-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#success-update-alert").hide();
+            });
+        }).error(function(err){
+          $("#error-update-alert").show();
+            $("#error-update-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#error-update-alert").hide();
+            });
+        });
+
+            e.preventDefault();
+
+        });
+
+        $("#save-update-sound").click(function(e){
+
+            var formdata = {
+            'title'              : $('#sound-update-title').val(),
+            'caption'             : $('#sound-update-caption').val(),
+            'mid'    : $('#sound-update-mid').val(),
+            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+        };
+
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : '/sound/update/', // the url where we want to POST
+            data        : formdata, // our data object
+            dataType    : 'json', // what type of data do we expect back from the server
+            encode          : true
+        }).done(function(data){
+           $("#success-sound-alert").show();
+            $("#success-sound-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#success-sound-alert").hide();
+            });
+        }).error(function(err){
+          $("#error-sound-alert").show();
+            $("#error-sound-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#error-sound-alert").hide();
+            });
+        });
+
+            e.preventDefault();
+
+        });
+
+
+        $("#save_edit_photo").click(function(e){
+
+            var formdata = {
+            'title'              : $('#edit-title').val(),
+            'caption'             : $('#edit-caption').val(),
+            'mid'    : $('#edit-mid').val(),
+            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+        };
+
+        $.ajax({
+            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url         : '/media/image_update/', // the url where we want to POST
+            data        : formdata, // our data object
+            dataType    : 'json', // what type of data do we expect back from the server
+            encode          : true
+        }).done(function(data){
+            console.log("jere");
+           $("#success-alert").show();
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#success-alert").hide();
+            });
+        }).error(function(err){
+          $("#error-alert").show();
+            $("#error-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#error-alert").hide();
+            });
+        });
+
+            e.preventDefault();
+
+        });
+
+    });
+
+
+
 
     </script>
 
@@ -59,6 +403,24 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="photos">
 
+
+        <div class="row" itemscope itemtype="http://schema.org/ImageGallery">
+
+    {% for image in images %}
+
+        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-2 photo-grid">
+      <a href="{{ image.url }}" itemprop="contentUrl" class="img-content"
+         data-title="{{ image.title }}" data-caption="{{ image.caption }}" data-mid="{{ image.pk }}">
+          <img src="{{ image.url }}" itemprop="thumbnail" alt="{{ image.title }}" />
+      </a>
+      <figcaption itemprop="caption description txt" style="display:none">{% if image.title %}{{ image.title }} - {% endif %} {{ image.caption }}</figcaption>
+        </figure>
+
+    {% endfor %}
+
+    </div>
+
+
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#photo_modal">
   Add Photos
 </button>
@@ -66,15 +428,40 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="videos">
 
+         <div class="row">
+{% for video in videos %}
+    <div class="col-md-2 video-grid">
+    <a class="vdmedia video-pc" rel="video-gallery" href="{{ video.url }}" title="{% if video.title  %}{{ video.title }} - {% endif %} {{ video.caption }}"
+       data-title="{{ video.title }}" data-caption="{{ video.caption }}" data-mid="{{ video.pk }}" data-thumb="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg">
+        <div class="playbutton"><i class="glyphicon glyphicon-play-circle playbtn"></i></div><img src="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg"></a>
+    </div>
+{% endfor %}
+            </div>
+
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#video_modal">
   Add Videos
 </button>
     </div>
     <div role="tabpanel" class="tab-pane" id="sounds">
+    <div class="container-fluid">
+        {% for sound in sounds %}
+            <div class="row">
+            <div class="col-md-5">
+                {{ sound.title }}
+                <div class="soundcloud_embed" url="{{ sound.url }}"></div>
+            </div>
+            <div class="col-md-3">
+                <a class="edit-sound" href="#" data-title="{{ sound.title }}" data-caption="{{ sound.caption }}" data-mid="{{ sound.pk }}">
+                <h2><i class="glyphicon glyphicon-edit"></i></h2>
+                </a>
+            </div>
+            </div>
+            {% endfor %}
 
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sound_modal">
   Add Sounds
 </button>
+    </div>
     </div>
   </div>
 
@@ -83,38 +470,172 @@
 
 
 <!-- Modal -->
+    {# add photos modal #}
 <div class="modal fade" id="photo_modal" tabindex="-1" role="dialog" aria-labelledby="photo_modal">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Add Photos</h4>
       </div>
       <div class="modal-body">
-
+            {% jfu 'jfu_upload_form.html' %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
+    {# edit photos modal #}
 
-    <div class="modal fade" id="video_modal" tabindex="-1" role="dialog" aria-labelledby="video_modal">
+<div class="modal fade" id="epm" tabindex="-1" role="dialog" aria-labelledby="epm">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title">Edit Photo</h4>
       </div>
       <div class="modal-body">
-         {{ yt|bootstrap }}
+
+          <div class="alert alert-success" id="success-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Success! </strong>
+                    Changes Saved!
+            </div>
+
+          <div class="alert alert-danger" id="error-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Error! </strong>
+                    There was some error trying to save the changes!
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6 col-md-6 col-md-offset-3">
+                    <a href="#" class="thumbnail">
+                        <img src="" id="edit-thumbnail" alt="">
+                    </a>
+                </div>
+            </div>
+
+            <form class="form-horizontal" role="form" id="edit_photo_form" name="edit_photo_form">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="title">Title:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="title" id="edit-title" placeholder="Enter title">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="caption">Caption:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="caption" id="edit-caption" placeholder="Enter caption">
+                </div>
+              </div>
+                <input type="hidden" name="mid" id="edit-mid" value="">
+                {% csrf_token %}
+            </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save_edit_photo">Save Details</button>
+        <button type="button" class="btn btn-danger" id="delete_edit_photo">Delete Image</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="modal fade" id="video_modal" tabindex="-1" role="dialog" aria-labelledby="video_modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add a Video</h4>
+      </div>
+      <div class="modal-body">
+
+            <form class="form-horizontal" role="form" id="add_video_form" name="add_video_form">
+                <div class="form-group">
+                <label class="control-label col-sm-2" for="video-link">Youtube Link:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="video-link" id="video-link" placeholder="Enter link">
+                    <p class="help-block">The link must be of the form https://www.youtube.com/watch?v=EgqUJOudrcM</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="video-title">Title:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="video-title" id="video-title" placeholder="Enter title">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="video-caption">Caption:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="video-caption" id="video-caption" placeholder="Enter caption">
+                </div>
+              </div>
+                <input type="hidden" name="listing" id="video-listing" value="{{ listing.pk }}">
+            </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" disabled="true" id="video-save">Add Video</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="modal fade" id="update_video_modal" tabindex="-1" role="dialog" aria-labelledby="update_video_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update Video</h4>
+      </div>
+      <div class="modal-body">
+
+          <div class="alert alert-success" id="success-update-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Success! </strong>
+                    Changes Saved!
+            </div>
+
+          <div class="alert alert-danger" id="error-update-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Error! </strong>
+                    There was some error trying to save the changes!
+          </div>
+
+          <div class="row">
+                <div class="col-xs-6 col-md-6 col-md-offset-3">
+                    <a href="#" class="thumbnail">
+                        <img src="" id="vid-thumb" alt="">
+                    </a>
+                </div>
+          </div>
+
+
+         <form class="form-horizontal" role="form" id="update_video_form" name="update_video_form">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="video-title">Title:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="video-title" id="video-update-title" placeholder="Enter title">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="video-caption">Caption:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="video-caption" id="video-update-caption" placeholder="Enter caption">
+                </div>
+              </div>
+                <input type="hidden" name="mid" id="video-mid" value="">
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="delete-update-video">Delete Video</button>
+        <button type="button" class="btn btn-primary" id="update-video">Save changes</button>
       </div>
     </div>
   </div>
@@ -122,84 +643,100 @@
 
 
     <div class="modal fade" id="sound_modal" tabindex="-1" role="dialog" aria-labelledby="sound_modal">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title">Modal title</h4>
       </div>
       <div class="modal-body">
+
+           <form class="form-horizontal" role="form" id="add_sound_form" name="add_sound_form">
+                <div class="form-group">
+                <label class="control-label col-sm-2" for="sound-link">Soundcloud Link:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="sound-link" id="sound-link" placeholder="Enter link">
+                    <p class="help-block">The link must be of the form https://soundcloud.com/user/track-name</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="sound-title">Title:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="sound-title" id="sound-title" placeholder="Enter title">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="sound-caption">Caption:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="sound-caption" id="sound-caption" placeholder="Enter caption">
+                </div>
+              </div>
+                <input type="hidden" name="listing" id="sound-listing" value="{{ listing.pk }}">
+            </form>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" disabled='true' id="add-sound">Add Sound</button>
       </div>
     </div>
   </div>
 </div>
 
+    <div class="modal fade" id="sound_edit_modal" tabindex="-1" role="dialog" aria-labelledby="sound_edit_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Sound Link</h4>
+      </div>
+      <div class="modal-body">
 
+          <div class="alert alert-success" id="success-sound-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Success! </strong>
+                    Changes Saved!
+            </div>
 
+          <div class="alert alert-danger" id="error-sound-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong>Error! </strong>
+                    There was some error trying to save the changes!
+          </div>
 
-{#    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_modal">Large modal</button>#}
-{##}
-{#    <div class="modal fade" tabindex="-1" role="dialog" id="add_modal" aria-labelledby="gridSystemModalLabel">#}
-{#  <div class="modal-dialog" role="document">#}
-{#    <div class="modal-content">#}
-{#      <div class="modal-header">#}
-{#        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
-{#        <h4 class="modal-title" id="gridSystemModalLabel">Modal title</h4>#}
-{#      </div>#}
-{#      <div class="modal-body">#}
-{#          <div class="media_mg options">#}
-{#        <div class="row buttons">#}
-{#          <div class="col-md-4">#}
-{#              <button type="button" class="btn btn-primary" id="add_photo" mtype="photos">Add Photos</button>#}
-{#          </div>#}
-{#          <div class="col-md-4">#}
-{#               <button type="button" class="btn btn-primary" id="add_sound" mtype="sound">Add Soundcloud</button>#}
-{#          </div>#}
-{#            <div class="col-md-4">#}
-{#               <button type="button" class="btn btn-primary" id="add_video" mtype="video">Add Youtube</button>#}
-{#          </div>#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#          <div class="media_mg actionable image_add_screen">#}
-{#                      {% load jfutags %}#}
-{#                      {% jfu %}#}
-{#              <button class="go_back btn btn-info">GO Back</button>#}
-{#              </div>#}
-{##}
-{#              <div class="media_mg actionable video_add_screen">#}
-{#                <form name="video_add_form">#}
-{#                    {{ yt |bootstrap}}#}
-{#                </form>#}
-{#                  <button class="btn btn-success">Add Video</button>#}
-{#                  <button class="go_back btn btn-info">GO Back</button>#}
-{#              </div>#}
-{##}
-{#              <div class="media_mg actionable sound_add_screen">#}
-{##}
-{#                  <form name="sound_add_form">#}
-{##}
-{#                    {{ sc|bootstrap}}#}
-{##}
-{#                 </form>#}
-{#                  <button class="btn btn-success">Add Video</button>#}
-{#                  <button class="go_back btn btn-info">GO Back</button>#}
-{##}
-{#              </div>#}
-{##}
-{#      </div>#}
-{#      <div class="modal-footer">#}
-{#        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
-{#        <button type="button" class="btn btn-primary">Save changes</button>#}
-{#      </div>#}
-{#    </div><!-- /.modal-content -->#}
-{#  </div><!-- /.modal-dialog -->#}
-{#</div><!-- /.modal -->#}
+          <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <div class="soundcloud_placeholder">
+                </div>
+              </div>
+          </div>
+
+          <form class="form-horizontal" role="form" id="update_sound_form" name="update_sound_form">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="video-title">Title:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="sound-title" id="sound-update-title" placeholder="Enter title">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="sound-caption">Caption:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="sound-caption" id="sound-update-caption" placeholder="Enter caption">
+                </div>
+              </div>
+                <input type="hidden" name="mid" id="sound-update-mid" value="">
+            </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="delete-update-sound">Delete Sound</button>
+        <button type="button" class="btn btn-primary" id="save-update-sound">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}
 </body>
