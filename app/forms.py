@@ -10,6 +10,7 @@ from app.utils import generate_hash
 from app.checkbox.iterator import AdvancedModelChoiceField
 from django.utils.safestring import mark_safe
 
+
 class HorizontalRadioRenderer(forms.RadioSelect.renderer):
   def render(self):
     return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
@@ -17,6 +18,10 @@ class HorizontalRadioRenderer(forms.RadioSelect.renderer):
 
 attrs_dict = {'class': 'required'}
 number_validator = RegexValidator(r'^\d{10,12}$', "Please enter a valid phone number")
+youtube_validator= RegexValidator(r'^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$',
+                                  "Please enter a valid youtube URL")
+soundcloud_validator = RegexValidator(r'^https?:\/\/(soundcloud.com|snd.sc)\/(.*)$',
+                                      "Please enter a valid soundcloud URL")
 
 
 class ForgotPasswordForm(forms.Form):
@@ -44,8 +49,6 @@ class ForgotPasswordForm(forms.Form):
         print message
 
 
-
-
 class FilterSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
@@ -53,6 +56,7 @@ class FilterSearchForm(forms.Form):
     budget_min = forms.IntegerField(widget=forms.HiddenInput(),required=False)
     budget_max = forms.IntegerField(widget=forms.HiddenInput(),required=False)
     outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
+
 
 class HomeSearchForm(forms.Form):
     city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
@@ -65,11 +69,14 @@ class HomeSearchForm(forms.Form):
               )
     outstation = forms.TypedChoiceField(widget=forms.RadioSelect(renderer=HorizontalRadioRenderer),choices=choices,coerce=int,label=u'Outstation Artists?',required=False)
 
+
 class HomeArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Artist Name'}), label=u'Name')
 
+
 class ArtistNameSearch(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
+
 
 class RegisterForm(forms.Form):
     """

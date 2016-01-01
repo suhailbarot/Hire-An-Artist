@@ -28,9 +28,24 @@ urlpatterns = [
     url(r'listing/add/', 'app.views.add_listing', name='add_listing'),
     url(r'artist/(?P<lid>\w+)/$', 'app.views.view_listing', name='view_listing'),
     url(r'artist/(?P<lid>\w+)/projects/$', 'app.views.view_listing_projects', name='view_projects'),
+    url(r'artist/(?P<lid>\w+)/media/manage/$', 'app.views.manage_media', name='manage_media'),
+    url(r'artist/(?P<lid>\w+)/media/$', 'app.views.view_media', name='view_media'),
     url(r'artist/(?P<lid>\w+)/edit/$', 'app.views.edit_listing', name='listing_edit'),
     url(r'^search/','app.views.search_home',name='search'),
     url(r'^results/','app.views.search_results',name='search_results'),
+
+
+    ## media stuff ###for
+
+    url( r'media/upload/', views.image_upload, name='jfu_upload'),
+    url( r'^media/delete/(?P<pk>\d+)$', views.upload_delete, name='jfu_delete'),
+    url( r'^media/image_update/$', views.image_update, name='image_update'),
+    url( r'^video_audio/add/$', views.video_audio_add, name='video_add'),
+    url( r'^video/update/$', views.video_update, name='video_update'),
+    url( r'^sound/update/$', views.sound_update, name='sound_update'),
+    url( r'^video_audio/delete/$', views.youtube_soundcloud_delete, name='yt_sc_delete'),
+    url(r'media/(?P<lid>\w+)/images/$', 'app.views.image_view_api', name='img_api'),
+
 
 
     #password and user auth

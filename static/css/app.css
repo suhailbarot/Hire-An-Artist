@@ -1,0 +1,21 @@
+.photo-grid img {
+    height: 175px;
+    width: 175px;
+}
+
+.video-grid img{
+    height: 160px;
+    width: 200px;
+}
+
+.playbutton {
+    font-size: 55px;
+    color:#FFFFFF;
+    position: absolute;
+    left: 41%;
+    top: 29%;
+}
+
+.playbtn {
+    text-shadow: 4px 4px #000000;
+}

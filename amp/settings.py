@@ -61,11 +61,10 @@ INSTALLED_APPS = (
     'storages',
     'bootstrapform',
     'widget_tweaks',
-
     'endless_pagination',
-
     'django_bootstrap_dynamic_formsets',
     'bootstrap3',
+    'jfu',
 
 )
 
@@ -113,6 +112,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+                'django.core.context_processors.static',
             ],
         },
     },
@@ -212,10 +213,18 @@ STATICFILES_LOCATION = 'static'
 STATICFILES_STORAGE = 'amp.custom_storage.StaticStorage'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 
+# STATIC_URL = '/static/'
+# STATICFILES_LOCATION = 'static'
+# STATICFILES_DIRS = (
+#     STATIC_PATH,
+# )
 
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'amp.custom_storage.MediaStorage'
+
+TASK_UPLOAD_FILE_TYPES = ['jpeg','png','jpg','gif']
+TASK_UPLOAD_FILE_MAX_SIZE = 10000000
 
 try:
     from settings_local import *

@@ -2,6 +2,12 @@ import datetime
 import pprint
 from PIL import Image
 from StringIO import StringIO
+from jfu.http import upload_receive, UploadResponse, JFUResponse
+import time
+import boto
+import json
+
+from django.views.decorators.http import require_POST
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from endless_pagination.decorators import page_template
@@ -13,13 +19,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core import serializers
 
 
-from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,FilterSearchForm,HomeArtistNameSearch
 
-from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag
+from django.conf import settings
+from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, \
+    ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,\
+    FilterSearchForm,HomeArtistNameSearch
+
+from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
 from app.utils import generate_hash
-from app.constants import VISITOR_ID,ARTIST_ID
+from app.constants import VISITOR_ID,ARTIST_ID, VIDEO, SOUND, PHOTO
+from app.utils import video_id
 
 # Create your views here.
 
@@ -117,7 +129,7 @@ def artist_register(request):
 def artist_home(request):
     if request.user.is_authenticated():
         up = UserProfile.objects.get(user=request.user)
-        ls = Listing.objects.filter(user=up)
+        ls = Listing.objects.filter(is_active=1,user=up)
         return render(request,'artist_home.html',{'listings':ls,'up':up})
     return HttpResponse("I don't think we have met before")
 
@@ -164,28 +176,20 @@ def add_listing(request):
 
         form = ListingForm(data=request.POST, files=request.FILES)
         formset = ListingProjectFormSet(request.POST)
- 
-
         if form.is_valid():
             usr = UserProfile.objects.get(user=request.user)
             im = Image.open(form.cleaned_data['profile_pic'])
             box=(int(form.cleaned_data['x']),int(form.cleaned_data['y']),int(form.cleaned_data['x'])+int(form.cleaned_data['x2']),int(form.cleaned_data['y2'])+int(form.cleaned_data['y']))
-            print box
             im2 = im.crop(box)
-
             img_io = StringIO()
             im2.save(img_io, format='JPEG')
             img_content = InMemoryUploadedFile(img_io, None, 'foo.jpg', 'image/jpeg',
                                   img_io.len, None)
-
-          
             k = form.save(commit=False)
             k.profile_pic = img_content
             formset = ListingProjectFormSet(request.POST, instance=k)
             if formset.is_valid():
-
                 l = form.save(commit=True,user=usr)
-
                 formset.save(commit=True)
                 return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
     else:
@@ -221,8 +225,6 @@ def edit_listing(request,lid):
 def view_listing(request,lid):
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
-
-        
     except Listing.DoesNotExist:
         return HttpResponse("No such listing")
     return render(request,'view_listing.html',{'listing':listing})
@@ -239,12 +241,219 @@ def view_listing_projects(request,lid):
     return render(request,"view_listing_projects.html",{'listing':listing,'projects':projects})
 
 
+##### MEDIA STUFF #########
+
+def view_media(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid,is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such Listing")
+    md = Media.objects.filter(is_active=1, listing=listing)
+    yt = []
+    sc = []
+    ph = []
+    for media in md:
+        if media.type == PHOTO:
+            ph.append(media)
+        if media.type == VIDEO:
+            vd = video_id(media.url)
+            media.vid = vd
+            yt.append(media)
+        if media.type == SOUND:
+            sc.append(media)
+    return render(request,'view_media.html',{'videos':yt,'sounds':sc,'images':ph})
+
+
+def manage_media(request,lid):
+    try:
+        listing = Listing.objects.get(id=lid,is_active=1)
+    except Listing.DoesNotExist:
+        return HttpResponse("Hi")
+    md = Media.objects.filter(is_active=1, listing=listing)
+    yt = []
+    sc = []
+    ph = []
+    for media in md:
+        if media.type == PHOTO:
+            ph.append(media)
+        if media.type == VIDEO:
+            vd = video_id(media.url)
+            media.vid = vd
+            yt.append(media)
+        if media.type == SOUND:
+            sc.append(media)
+    return render(request,"manage_media.html",{'listing':listing,'sounds':sc,'videos':yt,'images':ph,
+                                               'VIDEO':VIDEO,'SOUND':SOUND,'PHOTO':PHOTO})
+
+
+@require_POST
+def image_upload(request):
+    file = upload_receive(request)
+    lid = request.POST.get('listing')
+    file_type = file.content_type.split('/')[0]
+    error = None
+    if not file:
+        return HttpResponse(status=400)
+    try:
+        if len(file.name.split('.')) == 1:
+            error = "File type not supported. Only JPEG,JPG,PNG and GIF are allowed."
+        if file.content_type.split('/')[1] in settings.TASK_UPLOAD_FILE_TYPES:
+            if file._size > settings.TASK_UPLOAD_FILE_MAX_SIZE:
+                error = "File size over limit. Image must be below 10MB"
+        else:
+            error = "File type not supported. Only JPEG,JPG,PNG and GIF are allowed"
+    except:
+        pass
+    try:
+        usp = UserProfile.objects.get(user=request.user,is_active=1)
+        listing = Listing.objects.get(is_active=1,pk=int(lid),user=usp)
+    except Listing.DoesNotExist:
+        return HttpResponse("Listing does not exist",status=400)
+
+    if error:
+        file_dict = {
+        'error': error,
+        'name' : file.name,
+        'size' : file.size
+    }
+    else:
+        timestamp = str(int(time.time()))
+        fn = generate_hash(timestamp+str(file.name))
+        connection = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY)
+        bucket = connection.get_bucket('imgmed')
+        key = bucket.new_key('user_data/'+fn+"."+file.content_type.split('/')[1])
+        key.set_metadata('Content-Type', file.content_type)
+        key.set_contents_from_file(file)
+        key.make_public()
+        url = key.generate_url(expires_in=0, query_auth=False, force_http=True)
+        print url
+        print "herer"
+        md = Media.objects.create(listing=listing,url=url,type=PHOTO)
+        file_dict = {
+            'name' : file.name,
+            'size' : file.size,
+            'url': url,
+            'thumbnailUrl': url,
+            'deleteUrl': reverse('jfu_delete', kwargs = { 'pk': md.pk }),
+            'deleteType': 'POST',
+        }
+    return UploadResponse(request,file_dict)
+
+
+@require_POST
+def upload_delete(request,pk):
+    success = True
+    try:
+        md = Media.objects.get(is_active=1,pk=pk)
+        connection = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY)
+        md.url = md.url.replace("http://", "")
+        md.url = md.url.replace("https://", "")
+        rest = md.url.split("/")[1:]
+        if len(rest) == 0:
+            success = False
+        else:
+            vxs = '/'.join(md.url.split("/")[1:])
+            bucket = connection.get_bucket('imgmed')
+            bucket.delete_key(vxs)
+            md.delete()
+    except Media.DoesNotExist:
+        success = False
+    return JFUResponse(request,success)
+
+
+@require_POST
+def image_update(request):
+    mid = request.POST.get('mid')
+    title = request.POST.get('title')
+    caption = request.POST.get('caption')
+    try:
+        usp = UserProfile.objects.get(user=request.user,is_active=1)
+        md = Media.objects.get(is_active=1,listing__user=usp,pk=mid)
+    except:
+        error = "Media object does not exist."
+        response = {'error':error}
+        return HttpResponse(json.dumps(response),status=400)
+    md.title = title
+    md.caption = caption
+    md.save()
+    return HttpResponse(json.dumps({'success':'true'}))
+
+
+@require_POST
+def video_audio_add(request):
+    listing = request.POST.get('listing')
+    link = request.POST.get('link')
+    title = request.POST.get('title')
+    caption = request.POST.get('caption')
+    type = request.POST.get('type')
+    try:
+        usp = UserProfile.objects.get(is_active=1,user=request.user)
+        listing = Listing.objects.get(is_active=1,pk=int(listing),user=usp)
+        md = Media.objects.create(url=link,title=title,caption=caption,type=type,listing=listing)
+    except:
+        return HttpResponse(json.dumps({'error':'unable to add video'}), status=400)
+    return HttpResponse(json.dumps({'success':'true'}))
+
+
+@require_POST
+def video_update(request):
+    mid = request.POST.get('mid')
+    title = request.POST.get('title')
+    caption = request.POST.get('caption')
+    try:
+        usp = UserProfile.objects.get(is_active=1,user=request.user)
+        md = Media.objects.get(is_active=1,pk=int(mid),listing__user=usp)
+    except:
+        return HttpResponse(json.dumps({'error':'unable to modify video'}), status=400)
+    md.title = title
+    md.caption = caption
+    md.save()
+    return HttpResponse(json.dumps({'success':'true'}))
+
+@require_POST
+def sound_update(request):
+    mid = request.POST.get('mid')
+    title = request.POST.get('title')
+    caption = request.POST.get('caption')
+    try:
+        usp = UserProfile.objects.get(is_active=1,user=request.user)
+        md = Media.objects.get(is_active=1,pk=int(mid),listing__user=usp)
+    except:
+        return HttpResponse(json.dumps({'error':'unable to modify sound'}), status=400)
+    md.title = title
+    md.caption = caption
+    md.save()
+    return HttpResponse(json.dumps({'success':'true'}))
+
+@require_POST
+def youtube_soundcloud_delete(request):
+    mid = request.POST.get('mid')
+    try:
+        usp = UserProfile.objects.get(is_active=1,user=request.user)
+        md = Media.objects.get(is_active=1,pk=mid,listing__user=usp)
+        md.delete()
+    except:
+        return HttpResponse(json.dumps({'error':'unable to delete video'}), status=400)
+    return HttpResponse(json.dumps({'success':'true'}))
+
+def image_view_api(request,lid):
+    try:
+        listing = Listing.objects.filter(is_active=1,id=lid)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such artist name")
+    photos = Media.objects.filter(is_active=1,listing=listing,type=PHOTO)
+    serialized_obj = serializers.serialize('json', photos)
+    return HttpResponse(serialized_obj)
+
+
+
 ######### HOME #########
 
 def search_home(request):
     form = HomeSearchForm()
     artist_search = ArtistNameSearch()
     return render(request, 'home_search.html',{'form':form,'name':artist_search})
+
 
 @page_template('search_results_page.html')  
 def search_results(request, template='search_results.html', extra_context=None):
