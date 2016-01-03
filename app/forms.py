@@ -50,7 +50,7 @@ class ForgotPasswordForm(forms.Form):
 
 
 class FilterSearchForm(forms.Form):
-    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
+    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('--- Talent---'))
     budget_min = forms.IntegerField(widget=forms.HiddenInput(),required=False)
@@ -59,15 +59,15 @@ class FilterSearchForm(forms.Form):
 
 
 class HomeSearchForm(forms.Form):
-    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False,)
+    city = forms.CharField(widget=forms.HiddenInput(), label=u'City',required=True)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('Function'))
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('Talent'))
     budget_min = forms.IntegerField(required=False,widget=forms.HiddenInput())
     budget_max = forms.IntegerField(required=False,widget=forms.HiddenInput())
-    choices = ( (1,'Yes'),
+    choices = ((None,'Outstation?'), (1,'Yes'),
                 (0,'No'),
               )
-    outstation = forms.TypedChoiceField(widget=forms.RadioSelect(renderer=HorizontalRadioRenderer),choices=choices,coerce=int,label=u'Outstation Artists?',required=False)
+    outstation = forms.ChoiceField(choices=choices,required=False,)
 
 
 class HomeArtistNameSearch(forms.Form):
