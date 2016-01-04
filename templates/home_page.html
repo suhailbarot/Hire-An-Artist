@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 {% load static %}
 {% load bootstrap %}
@@ -29,11 +31,25 @@
 })
   	$("#myModal").keydown(function (e) {
   if (e.keyCode == 13) {
+  	$("#id_city").val($("#cityinput").val());
     $('#myModal').modal('hide');
   }
 });
 
         var slider = document.getElementById('slider');
+
+
+        $(".citylink").click(function(){
+        	var city = $(this).text();
+
+
+        	$("#cityinput").val(city);
+        	var e = $.Event('keydown');
+   			e.keyCode = 13;
+    		$('#myModal').trigger(e);
+
+
+        });
 
 
 
@@ -140,14 +156,24 @@ $('#nameform').fadeToggle(200);
 });
             $('#id_budget_min').val(slider.noUiSlider.get()[0]);
             $('#id_budget_max').val(slider.noUiSlider.get()[1]);
+            $('#budgetmin').text("Rs. " + Math.ceil($('#id_budget_min').val()));
+            $('#budgetmax').text("Rs. " + Math.ceil($('#id_budget_max').val()));
 			
 
 slider.noUiSlider.on('slide', function(){
 $('#id_budget_min').val(slider.noUiSlider.get()[0]);
             $('#id_budget_max').val(slider.noUiSlider.get()[1]);
+            $('#budgetmin').text("Rs. " + Math.ceil($('#id_budget_min').val()));
+            $('#budgetmax').text("Rs. " + Math.ceil($('#id_budget_max').val()));
+
+        });
+slider.noUiSlider.on('change', function(){
+$('#id_budget_min').val(slider.noUiSlider.get()[0]);
+            $('#id_budget_max').val(slider.noUiSlider.get()[1]);
             $('#dropdownMenu1').text("Rs. " + Math.ceil($('#id_budget_min').val()) +" -  " + Math.ceil($('#id_budget_max').val()));
 
         });
+$('#dropdownMenu1').text("Budget")
   
       	
 
@@ -180,6 +206,8 @@ body{
 	background-color: #424242;
 	width:100%;
 	overflow-x:hidden; 
+	font-family: 'Ubuntu', sans-serif;
+
 
 }
 label{
@@ -196,16 +224,11 @@ color:          #F64747;
 	width:100%;
 	background-color: black;
 }
-#categoryform{
-	    border: 1px solid;
-    border-color: rgb(252, 96, 66);
-    border-radius: 1px;
-}
 
 
 .carousel-fade .carousel-inner > .item {
 
-	min-height: 90vh;
+	min-height: 100%;
 	min-width: 100%;
   opacity: 1;
   -webkit-transition-property: opacity;
@@ -234,8 +257,8 @@ color:          #F64747;
 .carouselimg{
 	min-width: 100%;
   -webkit-filter:brightness(60%);
-  min-height: 90vh;
-
+	height:700px !important;
+	overflow-y: hidden;  
 }
 #cityinput{
 	width: 72.5%;
@@ -268,16 +291,26 @@ color:          #F64747;
 
 
 }
-#nameform{
-	  border: 1px solid;
-    border-color: rgb(252, 96, 66);
-    border-radius: 1px;
+.noUi-handle:before,.noUi-handle:after {
+
+    display: none;
 }
+.noUi-horizontal {
+    height: 10px;
+
+}
+.noUi-horizontal .noUi-handle {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    top:-11px;
+    }
+
 
 .searchbox{
 
 	position: relative;
-	top:10vh;
+	top:7vh;
 	display: block;
 	margin: auto;
 
@@ -296,6 +329,22 @@ color:          #F64747;
 	font-size: 15px;
 	min-width: 150px;
 
+}
+#budgetmin{
+	position: absolute;
+    margin-left: 6.5%;
+}
+.noUi-connect {
+    background: #FC6042;
+    }
+#budgetmax {
+	position: absolute;
+
+    margin-left: 78%;
+}
+#dash{
+	position: absolute;
+	margin-left:50%; 
 }
 
 .styleb{
@@ -329,11 +378,11 @@ color:          #F64747;
 #slider{
 
 	margin:auto;
-	width: 60%;
+	width: 80%;
+	margin-top:20px;
+	margin-bottom: 10px;
 }
-.ui-slider-range{
-	color: red;
-}
+
 #budget{
 	color: #424242;
 	margin-left: 15px;
@@ -357,13 +406,18 @@ font-family: 'Ubuntu', sans-serif;
 	display: table;
 	margin-bottom: 20px;
 	font-size: 20px;
+	color: white;
+}
+
+.citylink:hover{
+	color: rgb(252, 96, 66);
+	text-decoration: none;
 
 
-    
-    color: white;
 }
 .bodymodal{
 		padding: 30px;
+		padding-bottom: 10px;
 	}
 
 .secondform{
@@ -378,8 +432,7 @@ font-family: 'Ubuntu', sans-serif;
 	text-align: center;
 	position: relative;
 	background-color: white;
-	padding-top:50px;
-	margin-top: 0px
+	padding-top:10px;
 }
 .img_talent{
 	height: 160px;
@@ -428,6 +481,9 @@ font-family: 'Ubuntu', sans-serif;
 
 
 }
+.iconcaption:hover{
+	text-decoration: none;
+}
 #cover_image2{
 	position: relative;
 	top:20%;
@@ -456,11 +512,24 @@ font-family: 'Ubuntu', sans-serif;
 	padding-bottom:30px; 
 }
 .citylink{
-	color: 
+	color: #424242;
 
 }
-span{
+#budgetli{
+	margin-top: 15px;
+	margin-bottom: 10px;
+	display: flex;
+}
+#citylinkp{
+	text-align: center;
+
+}
+.textfooter, .textfooter a h6{
 	color: white;
+}
+ .textfooter a h6 :hover{
+	color: white;
+	text-decoration: none;
 }
 
 .firstbox{
@@ -510,15 +579,21 @@ span{
 .flaticon::before{
 	display: table;
 	margin: auto;
-font-size: 50px;
+font-size: 40px;
 color: white;
 
 
 }
+#footer{
+	background-color: #1a1a1a;
+	text-align: center;
+}
 #iconrow{
-	margin-top: 28vh;
+	margin-top: 20vh;
 	position: relative;
 	display: block;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	background-color: black;
 	opacity: 0.7;
 
@@ -555,6 +630,10 @@ color: white;
     color: #424242;
     font-size: 40px;
 
+}
+.cname,.wname{
+	color: white;
+	margin-top: 20px;
 }
 .modalhead{
 	text-align: center;
@@ -684,7 +763,7 @@ color: white;
       		<input type="text" id="cityinput"  placeholder="City"></input>
       		<br>
       		<hr>
-      		<p><a class="citylink" href="#">Mumbai </a> &bull;<a class="citylink"  href="#">Bangalore </a> &bull;<a class="citylink"  href="#">Chennai </a> &bull;<a class="citylink"   href="#">Delhi </a>  &bull;<a class="citylink"  href="#">Pune </a> </p>
+      		<p id="citylinkp"><a class="citylink" href="#">Mumbai </a> &bull; <a class="citylink"  href="#">Bangalore </a> &bull; <a class="citylink"  href="#">Chennai </a> &bull; <a class="citylink"   href="#">Delhi </a>  &bull; <a class="citylink"  href="#">Pune </a> </p>
          
       </div>
     </div>
@@ -741,12 +820,12 @@ color: white;
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li><a href="#">Logged in as {{user.get_username}}</a></li>
-        <li><a href="#">Log Out</a></li>
+        <li><a href="/logout">Log Out</a></li>
 
 
         {% else %}
-        <li><a href="#"> Login</a></li>
-        <li><a href="#"> Sign Up</a></li>
+        <li><a href="/login"> Login</a></li>
+        <li><a href="/user/register"> Sign Up</a></li>
 
         {% endif %}
       </ul>
@@ -773,9 +852,10 @@ color: white;
     Budget
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-  	<li><p id="budget"> Budget : </p></li>
     <li><div id='slider'>
     </div></li>
+      	<li id="budgetli"><p id="budgetmin"></p><p id="dash">-</p><p id="budgetmax"></p></li>
+
 {{form.budget_min|bootstrap_inline}}
 			{{form.budget_max|bootstrap_inline}}
   </ul>
@@ -803,49 +883,49 @@ color: white;
 
 
 <div class="row" id="iconrow">
-	<div class="col-md-10 col-md-offset-1">
-		<div class='row'>
+	<div class="col-md-12 col-md-offset-1">
+
 
 				<div class="col-md-2">
-		 <i class="flaticon-dance16 flaticon"></i> 
-		 <h4 class="iconcaption">Dance</h4>
+		<a href="#">
+					<i class="flaticon-dance16 flaticon"></i> 
+				 		 <h5 class="iconcaption" >Dance</h4>
+				</a> 
 
 	</div>
 	<div class="col-md-2">
-				 <i class="flaticon-glasses50 flaticon"></i> 
-				 		 <h4 class="iconcaption" >Hire</h4>
-
-
-
-	</div>
-	<div class="col-md-2">
-				 <i class="flaticon-dance16 flaticon"></i> 
-				 		 <h4 class="iconcaption">Dance</h4>
+				<a href="#">
+					<i class="flaticon-glasses50 flaticon"></i> 
+				 		 <h5 class="iconcaption" >Hire</h4>
+				</a> 
 
 
 
 	</div>
+	
 	<div class="col-md-2">
-				 <i class="flaticon-hot-food flaticon"></i> 
-				 		 <h4 class="iconcaption">Pay</h4>
+				 <a href="#">
+					<i class="flaticon-hot-food flaticon"></i> 
+				 		 <h5 class="iconcaption" >Enjoy</h4>
+				</a> 
 
-
-
-	</div>
-	<div class="col-md-2">
-				 <i class="flaticon-makeup13 flaticon"></i>
-				 		 <h4 class="iconcaption">Enjoy</h4>
- 
 
 
 	</div>
 	<div class="col-md-2">
-				 <i class="flaticon-musicplayer111 flaticon"></i> 
-				 		 <h4 class="iconcaption">Make-up</h4>
-
+				<a href="#">
+					<i class="flaticon-photography106 flaticon"></i> 
+				 		 <h5 class="iconcaption" >Find</h4>
+				</a> 
 
 
 	</div>
+	<div class="col-md-2">
+				 <a href="#">
+					<i class="flaticon-musicplayer111 flaticon"></i> 
+				 		 <h5 class="iconcaption" >Music</h4>
+				</a> 
+
 
 		</div>
 
@@ -871,11 +951,11 @@ color: white;
 
 
 			<div class="col-md-4 talents col-sm-12 imgcol ">
-			<img src= "{% static 'Photographer.jpg' %}" class=" left img_talent img-responsive">
+			<img src= "{% static 'Food artist.jpg' %}" class=" left img_talent img-responsive">
 			<h3 class='overlay_talent'> Talent</h3>
 		</div>
 		<div class="col-md-4 talents col-sm-12 imgcol">
-			<img src= "{% static 'Entertainers.jpg' %}" class="img_talent img-responsive">
+			<img src= "{% static 'Makeup artist.jpg' %}" class="img_talent img-responsive">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
@@ -946,28 +1026,7 @@ color: white;
 
 
 	</div>
-	<div class="row">
-		<div class="col-md-9 col-md-offset-1">
 
-		<div class="col-md-4 talents col-sm-12 imgcol ">
-			<img src= "{% static 'Food artist.jpg' %}" class="left img_talent img-responsive">
-			<h3 class='overlay_talent'> Talent</h3>
-
-		</div>
-		<div class="col-md-4 talents col-sm-12 imgcol  ">
-			<img src= "{% static 'Light artist.jpg' %}" class="img_talent img-responsive">
-			<h3 class='overlay_talent'> Talent</h3>
-
-		</div>
-		<div class="col-md-4 talents col-sm-12 imgcol ">
-			<img src= "{% static 'Makeup artist.jpg' %}" class="img_talent right img-responsive">
-			<h3 class='overlay_talent'> Talent</h3>
-
-		</div>
-
-
-	
-	</div>
 </div>
 
 
@@ -1018,8 +1077,56 @@ color: white;
 </div>
 <div class="row" >
 	<div class="box" id= "footer">
-			<h1 style="vertical-align:middle;text-align:center;line-height:300px;color:white;font-family: 'Lato', sans-serif;">Placeholder for footer<h1>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="row">
+					<h3 class="wname">WebsiteName</h3></div>
+					<br>
+					<div class="row textfooter"><h5>Tagline</h5></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
 
+
+
+				</div>
+
+
+			<div class="col-md-4">
+				<div class="row">
+					<h4 class="cname">Header</h4></div>
+					<br>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+
+
+
+				</div>
+			<div class="col-md-4">
+				<div class="row">
+					<h4 class="cname">Header</h4></div>
+					<br>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+
+
+
+				</div>
+
+
+
+
+			</div>
+			<div class="row textfooter">
+				<p>This spans throughtout the footer for copyright etc.</p>
+
+			</div>
+		</div>
+			
 
 	</div>
 
