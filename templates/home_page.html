@@ -35,7 +35,6 @@
     $('#myModal').modal('hide');
   }
 });
-
         var slider = document.getElementById('slider');
 
 
@@ -144,13 +143,13 @@ $('#nameform').fadeToggle(200);
   			$("#id_city").val($("#cityinput").val());
   		});
   		noUiSlider.create(slider, {
-	start: [500, 5000],
+	start: [10000, 100000],
 	connect: true,
 	range: {
 		'min': 0,
-		'max': 10000
+		'max': 200000
 	},
-	step: 1,
+	step: 1000,
 
 
 });
@@ -279,7 +278,7 @@ color:          #F64747;
 	width: 100%;
 
 }
-.dropdown:hover .dropdown-menu {
+.mydrp:hover .dropdown-menu {
     display: block;
 }
 #id_talents{
@@ -291,6 +290,9 @@ color:          #F64747;
 
 
 }
+.dropdown-menu{
+	min-width: 240px;
+}
 .noUi-handle:before,.noUi-handle:after {
 
     display: none;
@@ -300,10 +302,10 @@ color:          #F64747;
 
 }
 .noUi-horizontal .noUi-handle {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    top:-11px;
+    width: 25px;
+    height: 25px;
+    border-radius: 12.5px;
+    top:-9px;
     }
 
 
@@ -340,9 +342,10 @@ color:          #F64747;
 #budgetmax {
 	position: absolute;
 
-    margin-left: 78%;
+    margin-left: 65%;
 }
 #dash{
+	display: none;
 	position: absolute;
 	margin-left:50%; 
 }
@@ -388,7 +391,6 @@ color:          #F64747;
 	margin-left: 15px;
 	margin-top: 0px;
 	font-size: 1.2em;
-font-family: 'Ubuntu', sans-serif;
 }
 .row{
 	margin-left: 0px;
@@ -424,7 +426,7 @@ font-family: 'Ubuntu', sans-serif;
 	margin-top: 20px;
 }
 
-.dropdown .dropdown-menu{
+.dropdown .drpmenu{
 	min-width: 400px;
 }
 
@@ -462,7 +464,6 @@ font-family: 'Ubuntu', sans-serif;
     margin:auto;
 
 
-font-family: 'Ubuntu', sans-serif;
 }
 
 .talentrow1 .row{
@@ -576,11 +577,21 @@ font-family: 'Ubuntu', sans-serif;
 #id_name{
 	width:300px;
 }
-.flaticon::before{
+.onerowfest{
+	margin-bottom: 30px;
+}
+.flaticon:before{
 	display: table;
 	margin: auto;
 font-size: 40px;
 color: white;
+
+
+}
+a:hover{
+
+color: red;
+text-decoration: none;
 
 
 }
@@ -696,6 +707,9 @@ color: white;
  	margin-top:10vh;
  	margin-bottom: 40vh;
  }
+ .onerowfest{
+ 	margin-bottom: 0px;
+ }
 }
 @media screen and (max-width: 767px){ 
 
@@ -728,7 +742,7 @@ color: white;
     margin-bottom: 15px;
     padding-right: 90%;
 }
-.dropdown {
+.mydrp {
     display: block;
     
     width: 100%;
@@ -847,11 +861,11 @@ color: white;
 
 					{{form.talents|bootstrap_inline}}
 					{{form.function_type|bootstrap_inline}}
-					<div class="dropdown">
+					<div class="dropdown mydrp">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     Budget
   </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+  <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
     <li><div id='slider'>
     </div></li>
       	<li id="budgetli"><p id="budgetmin"></p><p id="dash">-</p><p id="budgetmax"></p></li>
@@ -1046,7 +1060,8 @@ color: white;
 </div>
 </div>
 <div class = 'row festival'>
-		<div class="col-md-3 ">
+	<div class="row onerowfest">
+		<div class="col-md-3 col-md-offset-3 ">
 			<div class="box">
 				<img src="{% static '01.jpg' %}" class="img_festival ">			
 			</div>
@@ -1059,8 +1074,10 @@ color: white;
 			</div>
 
 		</div>
+	</div>
+	<div class="row onerowfest">
 
-		<div class="col-md-3">
+		<div class="col-md-3 col-md-offset-3">
 			<div class="box">
 				<img src="{% static '03.jpg' %}" class="img_festival">			
 			</div>
@@ -1073,6 +1090,8 @@ color: white;
 			</div>
 
 		</div>
+	</div>
+
 
 </div>
 <div class="row" >
