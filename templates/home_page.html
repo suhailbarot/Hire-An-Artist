@@ -25,11 +25,18 @@
   $(document).ready(function() {
   	$('#myModal').modal({
   backdrop: 'static',
-  keyboard: false
+  keyboard: true
 })
-        $('#myModal').modal('hide');
+  	$("#myModal").keydown(function (e) {
+  if (e.keyCode == 13) {
+    $('#myModal').modal('hide');
+  }
+});
 
         var slider = document.getElementById('slider');
+
+
+
 
 
 
@@ -187,7 +194,7 @@ color:          #F64747;
 .carousel { 
 	position: absolute;
 	width:100%;
-	background-color: white;
+	background-color: black;
 }
 #categoryform{
 	    border: 1px solid;
@@ -197,13 +204,16 @@ color:          #F64747;
 
 
 .carousel-fade .carousel-inner > .item {
+
 	min-height: 90vh;
 	min-width: 100%;
-  opacity: 0;
-  -webkit-transition-property: .6s ease-in-out  opacity ;
-  -moz-transition-property: .6s ease-in-out  opacity ;
-  -o-transition-property: .6s ease-in-out  opacity ;
-  transition-property: .6s ease-in-out  opacity ;
+  opacity: 1;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity ;
+  -o-transition-property: opacity ;
+  transition-property: opacity ;
+
+}
 }
 .carousel-fade .carousel-inner .active {
   opacity: 1 !important;
@@ -317,8 +327,9 @@ color:          #F64747;
 
 }
 #slider{
-	margin-top: 10px;
-	margin-bottom: 15px;
+
+	margin:auto;
+	width: 60%;
 }
 .ui-slider-range{
 	color: red;
@@ -346,12 +357,15 @@ font-family: 'Ubuntu', sans-serif;
 	display: table;
 	margin-bottom: 20px;
 	font-size: 20px;
-	  -webkit-filter:brightness(80%);
 
 
     
     color: white;
 }
+.bodymodal{
+		padding: 30px;
+	}
+
 .secondform{
 	margin-top: 20px;
 }
@@ -440,6 +454,10 @@ font-family: 'Ubuntu', sans-serif;
 	position: relative;
 	background-color: #eee;
 	padding-bottom:30px; 
+}
+.citylink{
+	color: 
+
 }
 span{
 	color: white;
@@ -648,22 +666,26 @@ color: white;
 
 
 
+
 </style>
 
 </head>
 <body>
 	<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modalhead">
+  <div class="modal-dialog ">
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header ">
+      <div class="modal-header modalhead ">
         <h4 class="modal-title">We Need Your City Before You Proceed</h4>
       </div>
-      <div class="modal-body">
-      	<form>
+      <div class="modal-body bodymodal">
+      	
       		<input type="text" id="cityinput"  placeholder="City"></input>
-        </form> 
+      		<br>
+      		<hr>
+      		<p><a class="citylink" href="#">Mumbai </a> &bull;<a class="citylink"  href="#">Bangalore </a> &bull;<a class="citylink"  href="#">Chennai </a> &bull;<a class="citylink"   href="#">Delhi </a>  &bull;<a class="citylink"  href="#">Pune </a> </p>
+         
       </div>
     </div>
 
