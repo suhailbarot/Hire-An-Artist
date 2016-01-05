@@ -24,16 +24,25 @@
 <link href="{% static 'icons/flaticon.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'css/homepage.css' %}" rel="stylesheet">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-{% if set_city == '' %}
+
     <script type="text/javascript">
 $(function(){
+
+    {% if set_city == '' %}
           $('#cityModal').modal({
               backdrop: 'static',
               keyboard: false
           });
+
+    {% endif %}
+
+
+
 });
+
+
     </script>
-{% endif %}
+
 
 </head>
 <body>
@@ -63,31 +72,31 @@ $(function(){
       </div>
     <div class="item">
       <img src="{% static '03.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
     <div class="item">
       <img src="{% static '04.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
     <div class="item">
       <img src="{% static '05.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
     <div class="item">
       <img src="{% static '06.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
     <div class="item">
       <img src="{% static '07.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
     <div class="item">
       <img src="{% static '08.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
     <div class="item">
       <img src="{% static '09.jpg' %}" class="carouselimg img-responsive">
-      
+
     </div>
   </div>
 </div>
@@ -121,7 +130,7 @@ $(function(){
 <div class='searchbox'>
 	<h2 id="headtext">Some text here</h2>
 		<h2 id="secondtext">Some more text here, because why not.</h2>
-	<form class="form-inline" id="categoryform">
+	<form class="form-inline" id="categoryform" action="/search">
 										      		      	{{ form.city|bootstrap_inline }}
 					{{form.talents|bootstrap_inline}}
 					{{form.function_type|bootstrap_inline}}
@@ -144,64 +153,36 @@ $(function(){
 </form>
 <form class="form-inline" id="nameform" style="display: none;">
 							{{artist_form.name|bootstrap_inline}}
-							<button class="btn btn-primary styleb">Search</button>
-
-
+							<button class="btn btn-primary styleb" onclick="return false">Search</button>
 </form>
 								<a  id="toggle" href="#"><u>Search By Name?</u></a>
-
-
-
 </div>
 
 
 
 <div class="row" id="iconrow">
 	<div class="col-md-12 col-md-offset-1">
-
-
-				<div class="col-md-2">
-		<a href="#">
-					<i class="flaticon-dance16 flaticon"></i> 
-				 		 <h5 class="iconcaption" >Dance</h4>
-				</a> 
-
+				<div class="col-md-2 text-center">
+					<div class="row"><a href="#"><i class="flaticon-dance16 flaticon row-icon"></i></a></div>
+				 		<div class="row"> <a href="#"><p class="icon-text">Dance</p></a></div>
 	</div>
-	<div class="col-md-2">
-				<a href="#">
-					<i class="flaticon-glasses50 flaticon"></i> 
-				 		 <h5 class="iconcaption" >Hire</h4>
-				</a> 
-
-
-
+	<div class="col-md-2 text-center">
+					<div class="row"><a href="#"><i class="flaticon-glasses50 flaticon row-icon"></i> </a></div>
+				 		 <div class="row"><a href="#"><p class="icon-text">Hire</p></a></div>
 	</div>
 	
-	<div class="col-md-2">
-				 <a href="#">
-					<i class="flaticon-hot-food flaticon"></i> 
-				 		 <h5 class="iconcaption" >Enjoy</h4>
-				</a> 
-
-
-
+	<div class="col-md-2 text-center">
+					<div class="row"><a href="#"><i class="flaticon-hot-food flaticon row-icon"></i> </a></div>
+				 		<div class="row"> <a href="#"><p class="icon-text">Enjoy</p></a></div>
 	</div>
-	<div class="col-md-2">
-				<a href="#">
-					<i class="flaticon-photography106 flaticon"></i> 
-				 		 <h5 class="iconcaption" >Find</h4>
-				</a> 
-
-
+	<div class="col-md-2 text-center">
+					<div class="row"><a href="#"><i class="flaticon-photography106 flaticon row-icon"></i></a></div>
+				 		<div class="row"><a href="#"><p class="icon-text">Find</p></a></div>
 	</div>
-	<div class="col-md-2">
-				 <a href="#">
-					<i class="flaticon-musicplayer111 flaticon"></i> 
-				 		 <h5 class="iconcaption" >Music</h4>
-				</a> 
-
-
-		</div>
+	<div class="col-md-2 text-center">
+					<div class="row"><a href="#"><i class="flaticon-musicplayer111 flaticon row-icon"></i></a></div>
+				 		 <div class="row"> <a href="#"><p class="icon-text">Music</p></a> </div>
+    </div>
 
 	</div>
 

@@ -1,30 +1,19 @@
 $(document).ready(function() {
 
-      $("#cityinput").autocomplete({
-          source : cityList,
-          minLength: 2,
-          open: function () {
-        autoComplete.zIndex(dlg.zIndex()+1);
-    },
-          select: function(e,ui){
-              window.location = "/set_city?city=" + ui.item.label.toLowerCase() + "&next={{ request.path }}"
-          }
-      });
-
     $('.carousel').carousel({interval: 4321});
 
     $('#toggle').click(function(){
     	if($('#nameform').css('display')=='none'){
             $('#toggle').text('');
-$('#categoryform').fadeToggle(200,function() {
-    $('#nameform').fadeToggle(200, function(){
+$('#categoryform').fadeToggle(100,function() {
+    $('#nameform').fadeToggle(100, function(){
          $('#toggle').text('Search By Category?');
     });
 })};
    if($('#categoryform').css('display')=='none'){
        $('#toggle').text('');
-$('#nameform').fadeToggle(200, function(){
-    $('#categoryform').fadeToggle(200,function(){
+$('#nameform').fadeToggle(100, function(){
+    $('#categoryform').fadeToggle(100,function(){
         $('#toggle').text('Search By Name?');
     });
 })};
@@ -58,5 +47,58 @@ $('#id_budget_min').val(slider.noUiSlider.get()[0]);
 
         });
 $('#dropdownMenu1').text("Budget");
+
+
+    $("#nameform input").autocomplete({
+          source : function(request, response){
+              $.ajax({
+                  url: '/api/listing_name',
+                  data: {
+                      term: request.term
+                  },
+                  success: function(data) {
+                      data = JSON.parse(data);
+                      if(data.length == 0)
+                      {
+                          data.push({
+                              slug:"0",
+                              label:"No listings found."
+                          });
+                      }
+                      response(data);
+                  }
+              });
+          },
+          minLength: 2,
+          select: function(e,ui){
+              if(ui.item.slug == '0') {
+                  e.preventDefault();
+              }
+              else {
+                  window.location = ui.item.slug;
+              }
+              return false;
+          }
+      });
+
+    $("#cityinput").autocomplete({
+          source : function(request,response) {
+              var results = $.ui.autocomplete.filter(cityList, request.term);
+              if (!results.length) {
+                results = ['Sorry, we are not present in your city'];
+            }
+            response(results);
+          },
+          minLength: 2,
+          select: function(e,ui){
+              if(ui.item.label == 'Sorry, we are not present in your city') {
+                  e.preventDefault();
+              }
+              else {
+                  window.location = "/set_city?city=" + ui.item.label.toLowerCase();
+              }
+
+          }
+      });
 
 });

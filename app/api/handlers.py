@@ -2,8 +2,9 @@ import json
 
 from django.http import HttpResponse,HttpResponseRedirect
 
-from app.models import City
 
+from app.models import City, Listing
+from app.utils import generate_listing_slug
 
 def city_list(request):
     cities = City.objects.filter(is_active=1).values_list('name',flat=True)
@@ -20,3 +21,14 @@ def set_city(request):
     response = HttpResponseRedirect(goto)
     response.set_cookie('city',str(city),expires=max_age)
     return response
+
+
+def get_listing_autocomplete(request):
+    query = request.GET.get('term')
+    listings = Listing.objects.filter(name__icontains=query).values('id','name')
+    resp = []
+    for listing in listings:
+        ac = {}
+        ac = {'label':listing['name'].capitalize(),'slug':generate_listing_slug(listing['id'],listing['name'])}
+        resp.append(ac)
+    return HttpResponse(json.dumps(resp))
