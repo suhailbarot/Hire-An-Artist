@@ -28,7 +28,7 @@ from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, Listi
     ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,\
     FilterSearchForm,HomeArtistNameSearch
 
-from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media
+from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media, City
 from app.utils import generate_hash
 from app.constants import VISITOR_ID,ARTIST_ID, VIDEO, SOUND, PHOTO
 from app.utils import video_id
@@ -40,8 +40,9 @@ from app.utils import video_id
 
 def home(request):
     artist_form = HomeArtistNameSearch()
-    form = HomeSearchForm() 
-    return render(request,'home_page.html',{'form':form,'artist_form':artist_form})
+    form = HomeSearchForm()
+    cities = City.objects.filter(is_active=1,is_popular=1).order_by('name')
+    return render(request,'home_page.html',{'form':form,'artist_form':artist_form,'cities':cities})
 
 
 def user_login(request):
@@ -533,6 +534,3 @@ def search_results(request, template='search_results.html', extra_context=None):
 
     return render_to_response(
         template, context, context_instance=RequestContext(request))
-
-
-

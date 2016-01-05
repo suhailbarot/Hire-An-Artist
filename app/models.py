@@ -234,3 +234,19 @@ class PasswordReset(models.Model):
 
     class Meta:
         app_label = 'app'
+
+
+class City(models.Model):
+    name = models.CharField(max_length=100)
+    is_popular = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    is_active = models.IntegerField(default=1)
+
+    def __unicode__(self):
+        return str(self.name)
+
+    class Meta:
+        app_label = 'app'
+        verbose_name_plural = 'cities'
+

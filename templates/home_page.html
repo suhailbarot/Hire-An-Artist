@@ -1,8 +1,8 @@
-
-
 <!DOCTYPE html>
 {% load static %}
 {% load bootstrap %}
+{% load extra %}
+{% cookie_city as set_city %}
 <html>
 <head>
 <meta name="viewport" content="width=device-width" />
@@ -12,773 +12,40 @@
 <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet" media="screen">
 <script src="{%  static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+<script src="{%  static 'js/homepage.js' %}" type="text/javascript"></script>
 <link href="{% static 'nouislider.min.css' %}" rel="stylesheet">
 <script src="{% static 'nouislider.min.js' %}"></script>
 
-
+{# Stuff for autocomplete #}
+<script src="{% url 'city_list' %}"></script>
+<link href="{% static 'css/autocomp.css' %}" rel="stylesheet">
+{# end stuff for autocomplete #}
 
 <link href="{% static 'icons/flaticon.css' %}" rel="stylesheet" media="screen">
-
-<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
-<script type="text/javascript">
-
-
-
-  $(document).ready(function() {
-  	$('#myModal').modal({
-  backdrop: 'static',
-  keyboard: true
-})
-  	$("#myModal").keydown(function (e) {
-  if (e.keyCode == 13) {
-  	$("#id_city").val($("#cityinput").val());
-    $('#myModal').modal('hide');
-  }
+<link href="{% static 'css/homepage.css' %}" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+{% if set_city == '' %}
+    <script type="text/javascript">
+$(function(){
+          $('#cityModal').modal({
+              backdrop: 'static',
+              keyboard: false
+          });
 });
-        var slider = document.getElementById('slider');
-
-
-        $(".citylink").click(function(){
-        	var city = $(this).text();
-
-
-        	$("#cityinput").val(city);
-        	var e = $.Event('keydown');
-   			e.keyCode = 13;
-    		$('#myModal').trigger(e);
-
-
-        });
-
-
-
-
-
-
-
-
-  	$('.styleb').hover(
-				
-               function () {
-                  $(this).animate({"background-color":"#1BBC9B"});
-                  $('#categoryform').animate({"border-color":"#1BBC9B"});
-                  $('#nameform').animate({"border-color":"#1BBC9B"});
-
-               }, 
-				
-               function () {
-                  $(this).animate({"background-color":"#FC6042"});
-                  $('#categoryform').animate({"border-color":"#FC6042"});
-                  $('#nameform').animate({"border-color":"#FC6042"});
-               }
-            );
-  	$(".styleb").mouseleave(function(){
-  		                  $(this).animate({"background-color":"#FC6042"});
-  		                  $('#categoryform').animate({"border-color":"#FC6042"});
-                  $('#nameform').animate({"border-color":"#FC6042"});
-
-
-});
-  	$('#toggle').hover(
-				
-               function () {
-                  $(this).animate({"color":"#FC6042"});
-               }, 
-				
-               function () {
-                  $(this).animate({"color":"white"});
-               }
-            );
-  	$("#toggle").mouseleave(function(){
-  		                  $(this).animate({"color":"white"});
-
-
-});
-
-				
-    
-
-
-  	$("#nameform").hide();
-    $('.carousel').carousel({interval: 5000});
-    $('#toggle').click(function(){
-    	if($('#nameform').css('display')=='none'){
-
-$('#categoryform').fadeToggle(200);
-		$('#toggle').text('Search By Category?')
-    	setTimeout(function(){
-    	$('#nameform').fadeToggle(200);
-}, 200);
-
-    	return;
-
-    	};
-
-   if($('#categoryform').css('display')=='none'){
-
-$('#nameform').fadeToggle(200);
-		$('#toggle').text('Search By Name?')
-
-    	setTimeout(function(){
-    	$('#categoryform').fadeToggle(200);
-}, 200);
-
-
-    	};
-  
-  
- 
- 
- 
-
-
-    });
- 
-
-
-
-  
-  		$('#citysubmit').click(function(){
-
-  			$("#id_city").val($("#cityinput").val());
-  		});
-  		noUiSlider.create(slider, {
-	start: [10000, 100000],
-	connect: true,
-	range: {
-		'min': 0,
-		'max': 200000
-	},
-	step: 1000,
-
-
-});
-            $('#id_budget_min').val(slider.noUiSlider.get()[0]);
-            $('#id_budget_max').val(slider.noUiSlider.get()[1]);
-            $('#budgetmin').text("Rs. " + Math.ceil($('#id_budget_min').val()));
-            $('#budgetmax').text("Rs. " + Math.ceil($('#id_budget_max').val()));
-			
-
-slider.noUiSlider.on('slide', function(){
-$('#id_budget_min').val(slider.noUiSlider.get()[0]);
-            $('#id_budget_max').val(slider.noUiSlider.get()[1]);
-            $('#budgetmin').text("Rs. " + Math.ceil($('#id_budget_min').val()));
-            $('#budgetmax').text("Rs. " + Math.ceil($('#id_budget_max').val()));
-
-        });
-slider.noUiSlider.on('change', function(){
-$('#id_budget_min').val(slider.noUiSlider.get()[0]);
-            $('#id_budget_max').val(slider.noUiSlider.get()[1]);
-            $('#dropdownMenu1').text("Rs. " + Math.ceil($('#id_budget_min').val()) +" -  " + Math.ceil($('#id_budget_max').val()));
-
-        });
-$('#dropdownMenu1').text("Budget")
-  
-      	
-
-
-});
-
-
-
-
-</script>
-
-<style type="text/css">
-
-
-
-
-.navbar-right{
-	padding-top: 15px;
-}
-.navbar .nav > li > a, .navbar .nav > li > a:first-letter,
-.navbar .nav > li.current-menu-item > a, 
-.navbar .nav > li.current-menu-ancestor > a,
-.navbar .navbar-header .navbar-brand {
-display:        inline;
-color:          white;                        
-font-family: 'Ubuntu', sans-serif;
-font-size:      16px;
-}
-body{
-	background-color: #424242;
-	width:100%;
-	overflow-x:hidden; 
-	font-family: 'Ubuntu', sans-serif;
-
-
-}
-label{
-	color: #424242;
-font-family: 'Ubuntu', sans-serif;
-font-size: 1em;
-margin-right: 50px;
-}
-.navbar .nav > li > a:hover, .navbar .nav > li > a:hover:first-letter { 
-color:          #F64747;                      
-}
-.carousel { 
-	position: absolute;
-	width:100%;
-	background-color: black;
-}
-
-
-.carousel-fade .carousel-inner > .item {
-
-	min-height: 100%;
-	min-width: 100%;
-  opacity: 1;
-  -webkit-transition-property: opacity;
-  -moz-transition-property: opacity ;
-  -o-transition-property: opacity ;
-  transition-property: opacity ;
-
-}
-}
-.carousel-fade .carousel-inner .active {
-  opacity: 1 !important;
-}
-.carousel-fade .carousel-inner .active.left,
-.carousel-fade .carousel-inner .active.right {
-  left: 0;
-  opacity: 0;
-  z-index: 1;
-}
-.carousel-fade .carousel-inner .next.left,
-.carousel-fade .carousel-inner .prev.right {
-  opacity: 1;
-}
-.carousel-fade .carousel-control {
-  z-index: 2;
-}
-.carouselimg{
-	min-width: 100%;
-  -webkit-filter:brightness(60%);
-	height:700px !important;
-	overflow-y: hidden;  
-}
-#cityinput{
-	width: 72.5%;
-	height: 40px;
-	position: relative;
-	top:1px;
-	margin: auto;
-	display: block;
-	padding-left: 10px;
-
-
-}
-.navbar{
-	background-color: transparent;
-	border:none;
-	position: relative;
-	top:1%;
-	width: 100%;
-
-}
-.mydrp:hover .dropdown-menu {
-    display: block;
-}
-#id_talents{
-	border-right: 0px;
-	 border-top: 0px;
-  border-bottom:0px;
-    -webkit-border-radius: 0px;
-  -webkit-appearance: none;
-
-
-}
-.dropdown-menu{
-	min-width: 240px;
-}
-.noUi-handle:before,.noUi-handle:after {
-
-    display: none;
-}
-.noUi-horizontal {
-    height: 10px;
-
-}
-.noUi-horizontal .noUi-handle {
-    width: 25px;
-    height: 25px;
-    border-radius: 12.5px;
-    top:-9px;
-    }
-
-
-.searchbox{
-
-	position: relative;
-	top:7vh;
-	display: block;
-	margin: auto;
-
-}
-.form-control{
-	height: 40px;
-	border-radius: 0px;
-	min-width:150px;
-	font-size: 15px;
-
-}
-#dropdownMenu1{
-	height: 40px;
-	border-radius: 0px;
-	border: none;
-	font-size: 15px;
-	min-width: 150px;
-
-}
-#budgetmin{
-	position: absolute;
-    margin-left: 6.5%;
-}
-.noUi-connect {
-    background: #FC6042;
-    }
-#budgetmax {
-	position: absolute;
-
-    margin-left: 65%;
-}
-#dash{
-	display: none;
-	position: absolute;
-	margin-left:50%; 
-}
-
-.styleb{
-	height: 40px;
-	border-radius: 0px;
-	border-bottom-right-radius: 1px;
-	border-top-right-radius: 1px;
-
-	border: none;
-	font-size: 15px;
-	border-right: 0px;
-	background-color: #FC6042;
-	border-color: #FC6042;
-	min-width: 150px;
-	color: white;
-}
-.caret{
-	color: #424242
-
-}
-
-
-#id_outstation,#id_function_type {
-  -webkit-border-radius: 0px;
-  -webkit-appearance: none;
-  border-radius: 0px;
-  border-top: 0px;
-  border-bottom:0px;
-
-}
-#slider{
-
-	margin:auto;
-	width: 80%;
-	margin-top:20px;
-	margin-bottom: 10px;
-}
-
-#budget{
-	color: #424242;
-	margin-left: 15px;
-	margin-top: 0px;
-	font-size: 1.2em;
-}
-.row{
-	margin-left: 0px;
-	margin-right:0px;
-}
-.form-inline{
-	position: relative;
-	margin: auto;
-	display: table;
-	margin-bottom: 20px;
-}
-#toggle{
-	position: relative;
-	margin: auto;
-	display: table;
-	margin-bottom: 20px;
-	font-size: 20px;
-	color: white;
-}
-
-.citylink:hover{
-	color: rgb(252, 96, 66);
-	text-decoration: none;
-
-
-}
-.bodymodal{
-		padding: 30px;
-		padding-bottom: 10px;
-	}
-
-.secondform{
-	margin-top: 20px;
-}
-
-.dropdown .drpmenu{
-	min-width: 400px;
-}
-
-.talentrow1{
-	text-align: center;
-	position: relative;
-	background-color: white;
-	padding-top:10px;
-}
-.img_talent{
-	height: 160px;
-	-webkit-filter:brightness(60%);
-	display: block;
-	margin: auto;
-	width: 100%;
-	max-width: 400px;
-	z-index: -99;
-	float: inherit;
-}
-.img_festival{
-	width:100%;
-	height: 160px;
-	display: block;
-	margin: auto;
-}
-.overlay_talent{
-	color: white;
-	left: 0;
-    position:absolute;
-    text-align:center;
-    line-height: 160px;
-    vertical-align: middle;
-    width: 100%;
-    display: block;
-    margin:auto;
-
-
-}
-
-.talentrow1 .row{
-	position: relative;
-	left: 60px;
-}
-.imgcol{
-	text-align: center;
-	vertical-align: middle;
-	margin-bottom: 20px;
-}
-#img_cover{
-	  -webkit-filter:brightness(40%);
-	  	height: 85vh;
-	  	width: 100%;
-
-
-}
-.iconcaption:hover{
-	text-decoration: none;
-}
-#cover_image2{
-	position: relative;
-	top:20%;
-
-}
-
-.glyphicon-triangle-bottom{
-	position: absolute;
-	top:25%;
-	left:85%;
-	color: #424242;
-	font-size:10px;
-}
-#coverimage2text{
-	position: absolute;
-	vertical-align: center;
-	top:200px;
-	left:40%;
-	color: white;
-	font-size: 100px;
-font-family: 'Ubuntu', sans-serif;
-}
-.festival{
-	position: relative;
-	background-color: #eee;
-	padding-bottom:30px; 
-}
-.citylink{
-	color: #424242;
-
-}
-#budgetli{
-	margin-top: 15px;
-	margin-bottom: 10px;
-	display: flex;
-}
-#citylinkp{
-	text-align: center;
-
-}
-.textfooter, .textfooter a h6{
-	color: white;
-}
- .textfooter a h6 :hover{
-	color: white;
-	text-decoration: none;
-}
-
-.firstbox{
-	background-color: white;
-	opacity: 0.9;
-	margin-bottom:30px;
-	padding: 10px;
-	border-radius: 1px solid black;
-	border-radius:3px;
-}
-.secondbox{
-	background-color: white;
-	opacity: 0.9;
-	margin-bottom:30px;
-	padding-top: 30px;
-	padding: 10px;
-	border-radius: 1px solid black;
-	border-radius:3px;
-}
-.firstbox .row{
-	margin-bottom: 5px;
-}
-#headertext{
-	background-color: #eee;
-	padding: 20px;
-}
-#headertext h1{
-	font-size: 50px;
-	display: block;
-	margin: auto;
-	text-align: center;
-}
-#headertext h3{
-	font-size: 30px;
-	display: block;
-	margin: auto;
-	text-align: center;
-}
-.dropdown{
-	display: inline-block;
-	font-size: 	17px;
-	color: #424242;
-}
-#id_name{
-	width:300px;
-}
-.onerowfest{
-	margin-bottom: 30px;
-}
-.flaticon:before{
-	display: table;
-	margin: auto;
-font-size: 40px;
-color: white;
-
-
-}
-a:hover{
-
-color: red;
-text-decoration: none;
-
-
-}
-#footer{
-	background-color: #1a1a1a;
-	text-align: center;
-}
-#iconrow{
-	margin-top: 20vh;
-	position: relative;
-	display: block;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	background-color: black;
-	opacity: 0.7;
-
-}
-.iconcaption{
-	margin: auto;
-	display: table;
-	color: white;
-	margin-bottom: 10px;
-}
-#headtext{
-	font-family: 'Ubuntu', sans-serif;
-
-    margin: auto;
-    display: table;
-    margin-bottom: 25px;
-    color: white;
-    font-size: 60px;
-
-}
-#secondtext{
-	font-family: 'Ubuntu', sans-serif;
-
-    margin: auto;
-    display: table;
-    margin-bottom: 40px;
-    color: white;
-    font-size: 30px;
-
-}
-#talenthead{
-	font-family: 'Ubuntu', sans-serif;
-	margin-bottom: 5px;
-    color: #424242;
-    font-size: 40px;
-
-}
-.cname,.wname{
-	color: white;
-	margin-top: 20px;
-}
-.modalhead{
-	text-align: center;
-	border-bottom: 0px;
-	padding-bottom: 0px;
-	-webkit-border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
-    border-radius: 0px !important; 
-}
-#myModal{
--webkit-border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
-    border-radius: 0px !important; 
-}
-}
-#talenthr{
-	margin: auto;
-	display: block;
-	border-color: #424242;
-	border:1px solid;
-	margin-bottom: 40px;
-
-}
-
-
-@media screen and (max-width: 992px){ 
-
-#iconrow{
-	display: none;
-}
-.talentrow1 .row {
-    position: relative;
-    left: 0px;
-
-}
-.img_talent{
-	float: none;
-	margin: auto;
-	display: block;
-	width:380px; 
-	height:160px;
-}
-.img_festival {
-    height: 180px;
-    display: block;
-    margin: auto;
-    margin-bottom: 20px;
-    width: 380px;
-}
-.overlay_talent {
-    top: 0;
-    left: -1px;
-
-
- }
- #headtext,#secondtext{
- 	display: none;
- }
- .searchbox{
- 	margin-top:10vh;
- 	margin-bottom: 40vh;
- }
- .onerowfest{
- 	margin-bottom: 0px;
- }
-}
-@media screen and (max-width: 767px){ 
-
-	.searchbox{
-		margin-bottom: 12vh;
-	}
-
-
-	#categoryform {
-     border: none;
-
-    border-radius: 1px;
-    display: block;
-    width: 70%;
-}
-#id_name{
-	width: 100%;
-}
-
-#nameform {
-     border: none;
-
-    border-radius: 1px;
-    display: block;
-    width: 70%;
-}
-#dropdownMenu1 {
-   
-    width: 100%;
-    margin-bottom: 15px;
-    padding-right: 90%;
-}
-.mydrp {
-    display: block;
-    
-    width: 100%;
-}
-
-.img_talent,.img_festival{
-	width: 300px;
-
-}
-	}
-
-
-
-
-
-
-
-</style>
+    </script>
+{% endif %}
 
 </head>
 <body>
-	<div id="myModal" class="modal fade" role="dialog">
+	<div id="cityModal" class="modal fade" role="dialog">
   <div class="modal-dialog ">
-
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header modalhead ">
-        <h4 class="modal-title">We Need Your City Before You Proceed</h4>
-      </div>
       <div class="modal-body bodymodal">
-      	
-      		<input type="text" id="cityinput"  placeholder="City"></input>
-      		<br>
-      		<hr>
-      		<p id="citylinkp"><a class="citylink" href="#">Mumbai </a> &bull; <a class="citylink"  href="#">Bangalore </a> &bull; <a class="citylink"  href="#">Chennai </a> &bull; <a class="citylink"   href="#">Delhi </a>  &bull; <a class="citylink"  href="#">Pune </a> </p>
-         
+                <div class="cityselecttext"><input type="text" id="cityinput"  placeholder="Enter your city"></input></div>
+      		    <hr>
+                <h4 class="cityselecttext">Popular</h4>
+      		    <p id="citylinkp">{% for city in cities %}<a class="citylink" href="/set_city?city={{ city.name|lower }}">{{ city.name|title }} </a> {% if not forloop.last %}&bull; {% endif %}{% endfor %}</p>
       </div>
     </div>
 
@@ -832,6 +99,12 @@ text-decoration: none;
     <div>
       
       <ul class="nav navbar-nav navbar-right">
+      <li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
+            {{ set_city|title }}
+        {% else %}
+            Select City
+        {% endif %}
+        </a></li>
         {% if user.is_authenticated %}
         <li><a href="#">Logged in as {{user.get_username}}</a></li>
         <li><a href="/logout">Log Out</a></li>
@@ -840,7 +113,6 @@ text-decoration: none;
         {% else %}
         <li><a href="/login"> Login</a></li>
         <li><a href="/user/register"> Sign Up</a></li>
-
         {% endif %}
       </ul>
     </div>
@@ -849,16 +121,8 @@ text-decoration: none;
 <div class='searchbox'>
 	<h2 id="headtext">Some text here</h2>
 		<h2 id="secondtext">Some more text here, because why not.</h2>
-
-
-								
-
-
-
 	<form class="form-inline" id="categoryform">
 										      		      	{{ form.city|bootstrap_inline }}
-
-
 					{{form.talents|bootstrap_inline}}
 					{{form.function_type|bootstrap_inline}}
 					<div class="dropdown mydrp">
@@ -878,13 +142,9 @@ text-decoration: none;
 <button class="btn btn-primary styleb">Search</button>
 
 </form>
-<form class="form-inline" id="nameform">
+<form class="form-inline" id="nameform" style="display: none;">
 							{{artist_form.name|bootstrap_inline}}
 							<button class="btn btn-primary styleb">Search</button>
-
-
-
-
 
 
 </form>
@@ -1050,13 +310,11 @@ text-decoration: none;
 	
 
 </div>
-
 <div class = "row" id="headertext" >
 		<h1>Holi Is Here</h1>
 		<br>
 		<h3>Celebrate With Your Favourite Artists.</h3>
 </div>
-
 </div>
 </div>
 <div class = 'row festival'>
@@ -1065,34 +323,25 @@ text-decoration: none;
 			<div class="box">
 				<img src="{% static '01.jpg' %}" class="img_festival ">			
 			</div>
-
 		</div>
 		<div class="col-md-3 ">
 			<div class="box">
-				<img src="{% static '02.jpg' %}" class="img_festival ">			
-
+				<img src="{% static '02.jpg' %}" class="img_festival ">
 			</div>
-
 		</div>
 	</div>
 	<div class="row onerowfest">
-
 		<div class="col-md-3 col-md-offset-3">
 			<div class="box">
 				<img src="{% static '03.jpg' %}" class="img_festival">			
 			</div>
-
 		</div>
 		<div class="col-md-3 ">
 			<div class="box">
-				<img src="{% static '04.jpg' %}" class="img_festival">			
-
+				<img src="{% static '04.jpg' %}" class="img_festival">
 			</div>
-
 		</div>
 	</div>
-
-
 </div>
 <div class="row" >
 	<div class="box" id= "footer">
@@ -1105,23 +354,6 @@ text-decoration: none;
 					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
 					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
 					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
-
-
-
-				</div>
-
-
-			<div class="col-md-4">
-				<div class="row">
-					<h4 class="cname">Header</h4></div>
-					<br>
-					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
-					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
-					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
-					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
-
-
-
 				</div>
 			<div class="col-md-4">
 				<div class="row">
@@ -1131,14 +363,16 @@ text-decoration: none;
 					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
 					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
 					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
-
-
-
 				</div>
-
-
-
-
+			<div class="col-md-4">
+				<div class="row">
+					<h4 class="cname">Header</h4></div>
+					<br>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+					<div class="row textfooter"><a href=""><h6>Random Text</h6></a></div>
+				</div>
 			</div>
 			<div class="row textfooter">
 				<p>This spans throughtout the footer for copyright etc.</p>
@@ -1154,9 +388,3 @@ text-decoration: none;
 
 </body>
 </html>
-
-
-
-
-
-
