@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from app import views
+from django.views.generic import TemplateView
 urlpatterns = [
     # Examples:
     # url(r'^$', 'amp.views.home', name='home'),
@@ -33,6 +34,7 @@ urlpatterns = [
     url(r'artist/(?P<lid>\w+)/edit/$', 'app.views.edit_listing', name='listing_edit'),
     url(r'^search/','app.views.search_home',name='search'),
     url(r'^results/','app.views.search_results',name='search_results'),
+    url(r'base/',TemplateView.as_view(template_name='root/base.html')),
 
 
     ## media stuff ###for

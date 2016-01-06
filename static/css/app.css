@@ -33,3 +33,37 @@
 .playbtn {
     text-shadow: 4px 4px #000000;
 }
+
+/* BEGIN GENERIC */
+
+body{
+	width:100%;
+	overflow-x:hidden;
+	font-family: 'Open Sans', sans-serif;
+}
+
+/* END GENERIC */
+
+
+/* BEGIN NAVBAR */
+
+nav.navbar-findcond { background: #fff; border-color: #d1d1d1; }
+nav.navbar-findcond a { color: #FC6042; }
+nav.navbar-findcond ul.navbar-nav a { color: #FC6042; border-style: solid; border-width: 0 0 2px 0; border-color: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover,
+nav.navbar-findcond ul.navbar-nav a:visited,
+nav.navbar-findcond ul.navbar-nav a:focus,
+nav.navbar-findcond ul.navbar-nav a:active { background: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover { border-color: #FC6042; }
+nav.navbar-findcond li.divider { background: #ccc; }
+nav.navbar-findcond button.navbar-toggle { background: #FC6042; border-radius: 2px; }
+nav.navbar-findcond button.navbar-toggle:hover { background: #999; }
+nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
+nav.navbar-findcond ul.dropdown-menu { border: 0; background: #fff; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; margin-right: 2px;}
+nav.navbar-findcond ul.dropdown-menu > li > a { color: #444; }
+nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #FC6042; color: #fff; }
+nav.navbar-findcond span.badge { background: #FC6042; font-weight: normal; font-size: 11px; margin: 0 4px; }
+nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {  border-color: #FC6042;  }
+
+/* END NAVBAR */
