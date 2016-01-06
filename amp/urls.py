@@ -58,5 +58,12 @@ urlpatterns = [
 
     #admin stuff
 
-    url(r'^admin/', include(admin.site.urls))
+    url(r'^admin/', include(admin.site.urls)),
+
+    ## helper stuff
+
+    url(r'^api/city_list/$','app.api.handlers.city_list', name='city_list'),
+    url(r'^set_city/$','app.api.handlers.set_city', name='set_city'),
+    url(r'^api/listing_name/$','app.api.handlers.get_listing_autocomplete', name='listing_autocomplete')
+
 ]

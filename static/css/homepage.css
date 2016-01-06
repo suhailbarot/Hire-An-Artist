@@ -1,0 +1,565 @@
+html {
+    overflow-x:hidden;
+    position: relative;
+}
+.navbar-right{
+	padding-top: 15px;
+}
+.navbar .nav > li > a, .navbar .nav > li > a:first-letter,
+.navbar .nav > li.current-menu-item > a,
+.navbar .nav > li.current-menu-ancestor > a,
+.navbar .navbar-header .navbar-brand {
+display:        inline;
+color:          white;
+font-family: 'Open Sans', sans-serif;
+font-size:      16px;
+}
+body{
+	background-color: #424242;
+	width:100%;
+	overflow-x:hidden;
+	font-family: 'Open Sans', sans-serif;
+}
+label{
+	color: #424242;
+font-family: 'Open Sans', sans-serif;
+font-size: 1em;
+margin-right: 50px;
+}
+.navbar .nav > li > a:hover, .navbar .nav > li > a:hover:first-letter {
+color:  #F64747;
+}
+.carousel {
+	position: absolute;
+	width:100%;
+	background-color: black;
+}
+
+
+.carousel-fade .carousel-inner > .item {
+
+	min-height: 100%;
+	min-width: 100%;
+  opacity: 1;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity ;
+  -o-transition-property: opacity ;
+  transition-property: opacity ;
+
+}
+
+.carousel-fade .carousel-inner .active {
+  opacity: 1 !important;
+}
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
+}
+.carouselimg{
+	min-width: 100%;
+  -webkit-filter:brightness(60%);
+	height:700px !important;
+	overflow-y: hidden;
+}
+#cityinput{
+	width: 72.5%;
+	height: 40px;
+	position: relative;
+	top:1px;
+	margin: auto;
+	display: block;
+	padding-left: 10px;
+}
+
+#cityinput:focus {
+    outline: none;
+}
+
+.navbar{
+	background-color: transparent;
+	border:none;
+	position: relative;
+	top:1%;
+	width: 100%;
+
+}
+.mydrp:hover .dropdown-menu {
+    display: block;
+}
+#id_talents{
+	border-right: 0px;
+	 border-top: 0px;
+  border-bottom:0px;
+    -webkit-border-radius: 0px;
+  -webkit-appearance: none;
+
+
+}
+.dropdown-menu{
+	min-width: 240px;
+}
+.noUi-handle:before,.noUi-handle:after {
+
+    display: none;
+}
+.noUi-horizontal {
+    height: 10px;
+
+}
+.noUi-horizontal .noUi-handle {
+    width: 25px;
+    height: 25px;
+    border-radius: 12.5px;
+    top:-9px;
+    }
+
+
+.searchbox{
+	min-height: 300px;
+	position: relative;
+	top: 60px;
+	display: block;
+	margin: auto;
+
+}
+.form-control{
+	height: 40px;
+	border-radius: 0px;
+	min-width:150px;
+	font-size: 15px;
+
+}
+#dropdownMenu1{
+	height: 40px;
+	border-radius: 0px;
+	border: none;
+	font-size: 15px;
+	min-width: 150px;
+
+}
+#budgetmin{
+	position: absolute;
+    margin-left: 6.5%;
+}
+.noUi-connect {
+    background: #FC6042;
+    }
+#budgetmax {
+	position: absolute;
+
+    margin-left: 65%;
+}
+#dash{
+	display: none;
+	position: absolute;
+	margin-left:50%;
+}
+
+.styleb{
+	height: 40px;
+    border-radius: 0 1px 1px 0;
+    font-size: 15px;
+    background-color: #FC6042;
+    border: none #FC6042;
+    border-right-width: 0px;
+    min-width: 150px;
+	color: white;
+    transition: all 0.3s;
+}
+
+.styleb:hover{
+    background-color: #1BBC9B;
+}
+.caret{
+	color: #424242
+
+}
+
+
+#id_outstation,#id_function_type {
+  -webkit-border-radius: 0px;
+  -webkit-appearance: none;
+  border-radius: 0px;
+  border-top: 0px;
+  border-bottom:0px;
+
+}
+#slider{
+
+	margin:auto;
+	width: 80%;
+	margin-top:20px;
+	margin-bottom: 10px;
+}
+
+#budget{
+	color: #424242;
+	margin-left: 15px;
+	margin-top: 0px;
+	font-size: 1.2em;
+}
+.row{
+	margin-left: 0px;
+	margin-right:0px;
+}
+.form-inline{
+	position: relative;
+	margin: auto;
+	display: table;
+	margin-bottom: 20px;
+}
+#toggle{
+	position: relative;
+	margin: auto;
+	display: table;
+	margin-bottom: 20px;
+	font-size: 15px;
+	color: white;
+    transition: all 0.3s;
+}
+
+#toggle:hover {
+    color : #FC6042;
+}
+
+.citylink:hover{
+	color: rgb(252, 96, 66);
+	text-decoration: none;
+
+
+}
+.bodymodal{
+		padding: 30px;
+		padding-bottom: 10px;
+	}
+
+.secondform{
+	margin-top: 20px;
+}
+
+.dropdown .drpmenu{
+	min-width: 400px;
+}
+
+.talentrow1{
+	text-align: center;
+	position: relative;
+	background-color: white;
+	padding-top:10px;
+}
+.img_talent{
+	height: 160px;
+	-webkit-filter:brightness(60%);
+	display: block;
+	margin: auto;
+	width: 100%;
+	max-width: 400px;
+	z-index: -99;
+	float: inherit;
+}
+.img_festival{
+	width:100%;
+	height: 160px;
+	display: block;
+	margin: auto;
+}
+.overlay_talent{
+	color: white;
+	left: 0;
+    position:absolute;
+    text-align:center;
+    line-height: 160px;
+    vertical-align: middle;
+    width: 100%;
+    display: block;
+    margin:auto;
+
+
+}
+
+.talentrow1 .row{
+	position: relative;
+	left: 60px;
+}
+.imgcol{
+	text-align: center;
+	vertical-align: middle;
+	margin-bottom: 20px;
+}
+
+.icon-text {
+	font-size: 15px;
+	color: #FFFFFF;
+}
+
+#img_cover{
+	  -webkit-filter:brightness(40%);
+	  	height: 85vh;
+	  	width: 100%;
+
+
+}
+
+#cover_image2{
+	position: relative;
+	top:20%;
+
+}
+
+.glyphicon-triangle-bottom{
+	position: absolute;
+	top:25%;
+	left:85%;
+	color: #424242;
+	font-size:10px;
+}
+#coverimage2text{
+	position: absolute;
+	vertical-align: center;
+	top:200px;
+	left:40%;
+	color: white;
+	font-size: 100px;
+font-family: 'Open Sans', sans-serif;
+}
+.festival{
+	position: relative;
+	background-color: #eee;
+	padding-bottom:30px;
+}
+.citylink{
+	color: #424242;
+
+}
+#budgetli{
+	margin-top: 15px;
+	margin-bottom: 10px;
+	display: flex;
+}
+#citylinkp{
+	text-align: center;
+
+}
+.cityselecttext {
+    text-align: center;
+}
+.textfooter, .textfooter a h6{
+	color: white;
+}
+ .textfooter a h6 :hover{
+	color: white;
+	text-decoration: none;
+}
+
+.firstbox{
+	background-color: white;
+	opacity: 0.9;
+	margin-bottom:30px;
+	padding: 10px;
+	border-radius:3px;
+}
+.secondbox{
+	background-color: white;
+	opacity: 0.9;
+	margin-bottom:30px;
+	padding: 10px;
+	border-radius:3px;
+}
+.firstbox .row{
+	margin-bottom: 5px;
+}
+#headertext{
+	background-color: #eee;
+	padding: 20px;
+}
+#headertext h1{
+	font-size: 50px;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+#headertext h3{
+	font-size: 30px;
+	display: block;
+	margin: auto;
+	text-align: center;
+}
+.dropdown{
+	display: inline-block;
+	font-size: 	16px;
+	color: #424242;
+}
+#id_name{
+	width:300px;
+}
+.onerowfest{
+	margin-bottom: 30px;
+}
+
+a:hover{
+color: red;
+text-decoration: none;
+}
+
+#footer{
+	background-color: #1a1a1a;
+	text-align: center;
+}
+#iconrow{
+	margin-top: 100px;
+	position: relative;
+	display: block;
+    max-height: 90px;
+	background-color: black;
+	opacity: 0.7;
+}
+#headtext{
+	font-family: 'Open Sans', sans-serif;
+
+    margin: auto;
+    display: table;
+    margin-bottom: 25px;
+    color: white;
+    font-size: 60px;
+
+}
+#secondtext{
+	font-family: 'Open Sans', sans-serif;
+
+    margin: auto;
+    display: table;
+    margin-bottom: 40px;
+    color: white;
+    font-size: 30px;
+
+}
+#talenthead{
+	font-family: 'Open Sans', sans-serif;
+	margin-bottom: 5px;
+    color: #424242;
+    font-size: 40px;
+
+}
+.cname,.wname{
+	color: white;
+	margin-top: 20px;
+}
+.modalhead{
+	text-align: center;
+	border-bottom: 0;
+	padding-bottom: 0;
+	-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+#cityModal {
+-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+#talenthr{
+    display: block;
+	border-top: 3px solid #eee;
+    margin: 15px 25px 35px 25px;
+}
+
+
+@media screen and (max-width: 992px){
+
+#iconrow{
+	display: none;
+}
+.talentrow1 .row {
+    position: relative;
+    left: 0px;
+}
+.img_talent{
+	float: none;
+	margin: auto;
+	display: block;
+	width:380px;
+	height:160px;
+}
+.img_festival {
+    height: 180px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    width: 380px;
+}
+.overlay_talent {
+    top: 0;
+    left: -1px;
+
+
+ }
+ #headtext,#secondtext{
+ 	display: none;
+ }
+ .searchbox{
+ 	margin-top:10vh;
+ 	margin-bottom: 40vh;
+ }
+ .onerowfest{
+ 	margin-bottom: 0px;
+ }
+}
+@media screen and (max-width: 767px) {
+
+    .searchbox {
+        margin-bottom: 12vh;
+    }
+
+    #categoryform {
+        border: none;
+
+        border-radius: 1px;
+        display: block;
+        width: 70%;
+    }
+
+    #id_name {
+        width: 100%;
+    }
+
+    #nameform {
+        border: none;
+
+        border-radius: 1px;
+        display: block;
+        width: 70%;
+    }
+
+    #dropdownMenu1 {
+
+        width: 100%;
+        margin-bottom: 15px;
+        padding-right: 90%;
+    }
+
+    .mydrp {
+        display: block;
+
+        width: 100%;
+    }
+
+    .img_talent, .img_festival {
+        width: 300px;
+
+    }
+}
+
+#cityModal .modal-dialog{
+    width:40%;
+}
+

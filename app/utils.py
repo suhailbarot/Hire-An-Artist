@@ -2,6 +2,7 @@ import hashlib
 from app.constants import SALT
 import datetime
 import urlparse
+import re
 
 
 def generate_hash(content):
@@ -28,3 +29,10 @@ def video_id(value):
             return query.path.split('/')[2]
     # fail?
     return None
+
+
+def generate_listing_slug(listing_id,listing_name):
+    listname = re.sub(r'[^a-zA-Z0-9\s]',r'',listing_name)
+    listname = '-'.join(listname.split())
+    prepend = '/listing/'+str(listing_id)+"-"+listname.lower()
+    return prepend

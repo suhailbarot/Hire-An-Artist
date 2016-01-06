@@ -60,8 +60,8 @@ class FilterSearchForm(forms.Form):
 
 class HomeSearchForm(forms.Form):
     city = forms.CharField(widget=forms.HiddenInput(), label=u'City',required=True)
-    function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('Function'))
-    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('Talent'))
+    function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('Event type'))
+    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('Looking for..'))
     budget_min = forms.IntegerField(required=False,widget=forms.HiddenInput())
     budget_max = forms.IntegerField(required=False,widget=forms.HiddenInput())
     choices = ((None,'Outstation?'), (1,'Yes'),
