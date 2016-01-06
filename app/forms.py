@@ -82,12 +82,12 @@ class RegisterForm(forms.Form):
     """
     Registration form for artists
     """
-    email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'email')
-    name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'name')
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'E-mail')
+    name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
     phone = forms.CharField(validators=[number_validator], widget=forms.TextInput(attrs=dict(maxlength=12)),
                             label=u'phone')
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'password1')
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'password2')
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'Password')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'Re-Type Password')
 
     def clean_email(self):
         """
@@ -128,8 +128,8 @@ class LoginForm(forms.Form):
     """
     Login form for all
     """
-    email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'email')
-    password = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'password')
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'E-mail')
+    password = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'Password')
 
     def clean(self):
         """

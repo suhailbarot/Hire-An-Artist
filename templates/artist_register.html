@@ -1,33 +1,178 @@
 {% extends 'base.html' %}
 {% load static %}
-<script type="text/javascript" src="{ % static 'js/dist/js/picedit.min.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'js/dist/css/picedit.min.css' %}" />
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#id_profile_pic').picEdit();
-    });
-</script>
-
 
 	{% load bootstrap %}
-    {% block page_title %} Register As An Artist{% endblock %}
+
+
+    {% block header_block %}
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+
+
+
+
+
+    });
+        
+    </script>
+         <style type="text/css">
+    #registerform,#loginform{
+    margin: auto;
+    display: block;
+    width: 80%;
+
+}
+body{
+    background:#E0FFFF;
+    font-family: 'Open Sans', sans-serif;
+}
+#registerform .form-control, #loginform .form-control{
+    border-radius: 0px;
+    margin-bottom: 22px;
+    height: 37px;
+    font-size: 15px;
+    border-color: #a8a8a8;
+
+}
+textarea:focus, input:focus, .uneditable-input:focus {   
+    border: 1px solid #00868B !important;
+    box-shadow: none!important;
+    outline: 0 none !important;
+}
+.vline{
+    border-right: 1px solid #585858;
+}
+#forgot{
+    float:right;
+    margin-bottom: 20px;
+}
+#regtext,#logtext{
+    margin: auto;
+        margin-bottom: 20px;
+        margin-top: 20px;
+
+    display: table;
+    background-color: #1abc9c;
+}
+.buttonsubmit{
+    border-radius: 2px;
+    width:100%;
+    height: 37px;
+        background: #00868B;
+        border-color: #00868B;
+        color: white;
+        font-size: 15px;
+
+
+}
+
+.well-reg,.well-log{
+    margin: auto;
+    display: block;
+    width: 50%;
+    padding-bottom: 40px;
+    background-color: white;
+}
+.well-reg{
+    margin-right: 0px;
+}
+.well-log{
+    margin-left: 0px;
+}
+.well-why{
+     margin: auto;
+    display: block;
+    width: 70%;
+    margin-left: 0px;
+    margin-top: 20px;
+    background: white;
+    display: none;
+}
+.well-head{
+    margin: auto;
+    display: block;
+    width: 69.25%;
+    margin-bottom: 20px;
+    background-color: white;
+    display: none;
+}
+#loginglyph{
+    font-size: 30px;
+    color: white;
+}
+#logtext{
+    padding: 25px;
+    border-radius: 80px;
+    margin-bottom: 40px;
+}
+#regtext{
+     padding: 25px;
+    border-radius: 80px;
+    margin-bottom: 40px;
+
+}
+
+    </style>
+
+    {% endblock %}
     {% block body_block %}
+
+   
 <div class= "row">
-    <div class = " col-md-offset-2 col-md-8" >
-<form method="post">
+    <div class="well well-head">
+
+    </div>
+    <div class = " col-md-6 " >
+        <div class="well well-reg">
+<form method="post" id="registerform">
 
     {% csrf_token %}
 
 
-    {{ form|bootstrap }}
+    {{ form_register|bootstrap}}
 
-    <input class = "btn btn-default" type="submit" value="submit">
-    <p>OR</p>
-    <a href="/login"><input class = "btn btn-default" value="Login"></a>
-
+    <input class = "btn btn-default buttonsubmit" type="submit" value="Sign Up">
+ 
 
 
 </form>
 </div>
+</div>
+
+<div class="col-md-6">
+    <div class="well well-log">
+
+
+
+    <form method="post" id="loginform">
+
+    {% csrf_token %}
+
+    {{ form_login |bootstrap}}
+<a><input class = "btn btn-default buttonsubmit" value="Login"></a>
+        <a href="#" id="forgot">Forgot Password?</a>
+
+
+
+
+</form>
+
+</div>
+<div class="well well-why">
+
+    <h3>Why Register?</h3>
+    <ul>
+    <li><h5>Why RegisterWhy RegisterWhy RegisterWhy Register</h5></li>
+        <li><h5>Why RegisterWhy RegisterWhy RegisterWhy Register</h5></li>
+
+</ol>
+
+
+</div>
+</div>
+
+</div>
+
 {% endblock %}
