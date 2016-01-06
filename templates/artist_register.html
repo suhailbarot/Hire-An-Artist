@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'root/base.html' %}
 {% load static %}
 
 	{% load bootstrap %}
@@ -17,110 +17,7 @@
     });
         
     </script>
-         <style type="text/css">
-    #registerform,#loginform{
-    margin: auto;
-    display: block;
-    width: 80%;
-
-}
-body{
-    background:#f2f1ef;
-    font-family: 'Open Sans', sans-serif;
-    overflow-x:hidden 
-}
-#registerform .form-control, #loginform .form-control{
-    border-radius: 0px;
-    margin-bottom: 22px;
-    height: 37px;
-    font-size: 15px;
-    border-color: #a8a8a8;
-
-}
-textarea:focus, input:focus, .uneditable-input:focus {   
-    border: 1px solid #ff692e !important;
-    box-shadow: none!important;
-    outline: 0 none !important;
-}
-.vline{
-    border-right: 1px solid #585858;
-}
-#forgot{
-    float:right;
-    margin-bottom: 20px;
-}
-#regtext,#logtext{
-    margin: auto;
-        margin-bottom: 0px;
-        margin-top: 20px;
-
-    display: table;
-    color: #424242
-}
-.buttonsubmit{
-    border-radius: 2px;
-    margin: auto;
-    display: block;
-    width:100%;
-    height: 37px;
-        background: #FC6042;
-        border-color: #ff692e;
-        color: white;
-        font-size: 15px;
-
-
-}
-
-.well-reg,.well-log{
-    margin: auto;
-    display: block;
-    width: 70%;
-    padding-bottom: 40px;
-    border: 1px solid #d1d1d1;
-    box-shadow: none;
-    background-color: white;
-    border-radius: 0px;
-
-}
-
-.well-reg{
-}
-.well-log{
-}
-.well-why{
-     margin: auto;
-    display: block;
-    width: 70%;
-    margin-left: 0px;
-    margin-top: 20px;
-    background: white;
-    display: none;
-}
-.well-head{
-    margin: auto;
-    display: block;
-    width: 69.25%;
-    margin-bottom: 20px;
-    background-color: white;
-    display: none;
-}
-#loginglyph{
-    font-size: 30px;
-    color: white;
-}
-#logtext{
-    margin-bottom: 20px;
-}
-#regtext{
-    margin-bottom: 20px;
-
-}
-.logcol{
-    position: relative;
-    margin-top: 9%;
-}
-
-    </style>
+  
 
     {% endblock %}
     {% block body_block %}

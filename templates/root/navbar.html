@@ -1,0 +1,42 @@
+{% load extra %}
+<nav class="navbar navbar-findcond navbar-fixed-top">
+    <div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">HireTheArtist</a>
+		</div>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="nav navbar-nav navbar-right">
+								{% if user.is_authenticated %}
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Your Listings </a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{% url 'add_listing' %}">Add a new listing</a></li>
+						<li><a href="{% url 'artist_home' %}">Manage listings </a></li>
+					</ul>
+				</li>
+{#				<li class="active"><a href="#">Ana Sayfa <span class="sr-only">(current)</span></a></li>#}
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% get_user_name %} <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+						<li><a href="{% url 'password_change_done' %}">Change Password</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+					</ul>
+				</li>
+				{% else %}
+
+        <li><a href="/login"> Login</a></li>
+        <li><a href="/user/register"> Sign Up</a></li>
+
+        {% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>

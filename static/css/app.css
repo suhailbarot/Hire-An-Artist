@@ -33,3 +33,141 @@
 .playbtn {
     text-shadow: 4px 4px #000000;
 }
+
+/* BEGIN GENERIC */
+
+body{
+	width:100%;
+	overflow-x:hidden;
+	font-family: 'Open Sans', sans-serif;
+}
+
+/* END GENERIC */
+
+
+/* BEGIN NAVBAR */
+
+nav.navbar-findcond { background: #fff; border-color: #d1d1d1; }
+nav.navbar-findcond a { color: #FC6042; }
+nav.navbar-findcond ul.navbar-nav a { color: #FC6042; border-style: solid; border-width: 0 0 2px 0; border-color: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover,
+nav.navbar-findcond ul.navbar-nav a:visited,
+nav.navbar-findcond ul.navbar-nav a:focus,
+nav.navbar-findcond ul.navbar-nav a:active { background: #fff; }
+nav.navbar-findcond ul.navbar-nav a:hover { border-color: #FC6042; }
+nav.navbar-findcond li.divider { background: #ccc; }
+nav.navbar-findcond button.navbar-toggle { background: #FC6042; border-radius: 2px; }
+nav.navbar-findcond button.navbar-toggle:hover { background: #999; }
+nav.navbar-findcond button.navbar-toggle > span.icon-bar { background: #fff; }
+nav.navbar-findcond ul.dropdown-menu { border: 0; background: #fff; border-radius: 4px; margin: 4px 0; box-shadow: 0 0 4px 0 #ccc; margin-right: 2px;}
+nav.navbar-findcond ul.dropdown-menu > li > a { color: #444; }
+nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #FC6042; color: #fff; }
+nav.navbar-findcond span.badge { background: #FC6042; font-weight: normal; font-size: 11px; margin: 0 4px; }
+nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {  border-color: #FC6042;  }
+
+/* END NAVBAR */
+ #registerform,#loginform{
+    margin: auto;
+    display: block;
+    width: 80%;
+
+}
+body{
+    background:#f2f1ef;
+    font-family: 'Open Sans', sans-serif;
+    overflow-x:hidden 
+}
+#registerform .form-control, #loginform .form-control{
+    border-radius: 0px;
+    margin-bottom: 22px;
+    height: 37px;
+    font-size: 15px;
+    border-color: #a8a8a8;
+
+}
+textarea:focus, input:focus, .uneditable-input:focus {   
+    border: 1px solid #ff692e !important;
+    box-shadow: none!important;
+    outline: 0 none !important;
+}
+.vline{
+    border-right: 1px solid #585858;
+}
+#forgot{
+    float:right;
+    margin-bottom: 20px;
+}
+#regtext,#logtext{
+    margin: auto;
+        margin-bottom: 0px;
+        margin-top: 20px;
+
+    display: table;
+    color: #424242
+}
+.buttonsubmit{
+    border-radius: 2px;
+    margin: auto;
+    display: block;
+    width:100%;
+    height: 37px;
+        background: #FC6042;
+        border-color: #ff692e;
+        color: white;
+        font-size: 15px;
+
+
+}
+.mainrow{
+    margin-top: 60px;
+}
+
+.well-reg,.well-log{
+    margin: auto;
+    display: block;
+    width: 70%;
+    padding-bottom: 40px;
+    border: 1px solid #d1d1d1;
+    box-shadow: none;
+    background-color: white;
+    border-radius: 0px;
+
+}
+
+.well-reg{
+}
+.well-log{
+}
+.well-why{
+     margin: auto;
+    display: block;
+    width: 70%;
+    margin-left: 0px;
+    margin-top: 20px;
+    background: white;
+    display: none;
+}
+.well-head{
+    margin: auto;
+    display: block;
+    width: 69.25%;
+    margin-bottom: 20px;
+    background-color: white;
+    display: none;
+}
+#loginglyph{
+    font-size: 30px;
+    color: white;
+}
+#logtext{
+    margin-bottom: 20px;
+}
+#regtext{
+    margin-bottom: 20px;
+
+}
+.logcol{
+    position: relative;
+    margin-top: 9%;
+}
