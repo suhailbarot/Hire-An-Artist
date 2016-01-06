@@ -118,27 +118,31 @@ def edit_profile(request):
 
 def artist_register(request):
     if request.POST:
-        form1 = RegisterForm(data=request.POST, files=request.FILES)
-        form2 = LoginForm(data=request.POST)
-
-        if form1.is_valid():
-            new_user = form1.save(actype=ARTIST_ID)
-            return HttpResponse("done")
-        elif form2.is_valid():
-            logged_in_user = form2.save()
-            if logged_in_user.is_active == 1:
-                login(request, logged_in_user)
-                up = UserProfile.objects.get(user=logged_in_user)
-                if up.type == VISITOR_ID:
-                    return HttpResponseRedirect(reverse('user_home'))
+        if "register" in request.POST:
+            form1 = RegisterForm(data=request.POST, files=request.FILES)
+            form2=LoginForm()
+            if form1.is_valid():
+                new_user = form1.save(actype=ARTIST_ID)
+                return HttpResponse("done")
+        elif "login" in request.POST:
+            form2 = LoginForm(data=request.POST)
+            form1=RegisterForm()
+            if form2.is_valid():
+                logged_in_user = form2.save()
+                if logged_in_user.is_active == 1:
+                    login(request, logged_in_user)
+                    up = UserProfile.objects.get(user=logged_in_user)
+                    if up.type == VISITOR_ID:
+                        return HttpResponseRedirect(reverse('user_home'))
+                    else:
+                        return HttpResponseRedirect(reverse('artist_home'))
                 else:
-                    return HttpResponseRedirect(reverse('artist_home'))
-            else:
-                return HttpResponse("Not active")
+                    return HttpResponse("Not active")
     else:
         form1 = RegisterForm()
         form2 = LoginForm()
     return render(request,'artist_register.html',{'form_register':form1,'form_login':form2})
+
 
 @login_required(login_url='/login')
 def artist_home(request):

@@ -85,7 +85,7 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'E-mail')
     name = forms.CharField(widget=forms.TextInput(attrs=dict(attrs_dict, maxlength=75)), label=u'Name')
     phone = forms.CharField(validators=[number_validator], widget=forms.TextInput(attrs=dict(maxlength=12)),
-                            label=u'phone')
+                            label=u'Phone ')
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'Password')
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False), label=u'Re-Type Password')
 

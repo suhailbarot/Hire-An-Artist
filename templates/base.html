@@ -23,12 +23,19 @@
 
 }
 .pagenav{
-  background-color: #00868B ;
+  background-color: white ;
   border-radius: 0px;
+  border: 1px solid #d1d1d1;
 
 }
 .navbar-brand{
-  color: white;
+  color: #ff692e;
+}
+.navbar-right{
+  margin-right: 20px;
+}
+.nav li a{
+  color: #ff692e;
 }
 
     </style>
@@ -41,6 +48,7 @@
    <div class="navbar-header">
  
       <a class="navbar-brand" href="/">WebsiteName</a>
+    </div>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li><a href="#">Logged in as {{user.get_username}}</a></li>
@@ -55,7 +63,7 @@
       </ul>
   </nav>
 
-</div>
+
 
   
 
