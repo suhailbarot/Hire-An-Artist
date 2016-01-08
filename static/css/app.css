@@ -97,7 +97,8 @@ textarea:focus, input:focus, .uneditable-input:focus {
 #forgot{
     float:right;
     margin-top: 20px;
-    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #424242;
 }
 #regtext,#logtext{
     margin: auto;
@@ -145,9 +146,11 @@ textarea:focus, input:focus, .uneditable-input:focus {
 
 }
 
+
 .well-reg{
 }
 .well-log{
+    padding-bottom: 60px;
 }
 .well-why{
      margin: auto;

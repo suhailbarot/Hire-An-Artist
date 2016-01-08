@@ -166,6 +166,25 @@ def user_register(request):
         form = RegisterForm()
     return render(request,'user_register.html',{'form':form})
 
+def user_login(request):
+    if request.POST:
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            logged_in_user = form.save()
+            if logged_in_user.is_active == 1:
+                login(request, logged_in_user)
+                up = UserProfile.objects.get(user=logged_in_user)
+                if up.type == VISITOR_ID:
+                    return HttpResponseRedirect(reverse('user_home'))
+                else:
+                    return HttpResponseRedirect(reverse('artist_home'))
+            else:
+                return HttpResponse("Not active")
+    else:
+        form = LoginForm()
+    return render(request,'user_login.html',{'form_login':form})
+
+
 
 def user_home(request):
     if request.user.is_authenticated():
@@ -184,6 +203,8 @@ def add_phone(request):
         else:
             form = PhoneForm()
         return render(request,'enter_phone.html',{'form':form})
+
+
 
 
 
