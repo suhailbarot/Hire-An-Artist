@@ -1,25 +1,63 @@
-{% extends 'base.html' %}
+{% extends 'root/base.html' %}
 {% load static %}
 
 
 	{% load bootstrap %}
     {% block page_title %} Register As A User{% endblock %}
     {% block body_block %}
-<div class= "row">
-    <div class = " col-md-offset-2 col-md-8" >
-<form method="post">
+
+    <style type="text/css">
+
+    .mainrow{
+    	margin-top: 8%;
+    }
+    .regwell{
+    	background: white;
+    	padding-bottom: 30px;
+    	padding-top: 30px;
+    }
+    .regcol{
+    	border-right: 1px solid #d1d1d1;
+    }
+    .socialcol2{
+    	margin-top: 17%;
+    }
+
+
+
+    </style>
+<div class= "row mainrow">
+    <div class = " col-md-offset-2 col-md-8 well regwell" >
+
+    		<div class="col-md-6 regcol">
+
+
+    		<form method="post" id="registerform">
 
     {% csrf_token %}
 
     {{ form | bootstrap }}
 
-    <input type="submit" class="btn btn-default" value="submit">
-    <a href="/login"><input class = "btn btn-default" value="Login"></a>
+    <input type="submit" class="btn btn-default buttonsubmit" value="Sign Up">
 
 </form>
 
 
-<a href='{% url "socialauth_begin" "facebook" %}' /> Login with Fb </a>
-<a href='{% url "socialauth_begin" "google-oauth2" %}' /> Login with Google </a>
+    		</div>
+    		<div class="col-md-6 socialcol socialcol2">
+    <a href='{% url "socialauth_begin" "facebook" %}' /><img src="{% static 'google.png' %}" class='logimg'></a>
+<a href='{% url "socialauth_begin" "google-oauth2" %}' /><img src="{% static 'facebook.png' %}" class='facebook'></a>
+
+</div>
+    		
+
+
+
+    </div>
+</div>
+
+
+
+
 </div>
 {% endblock %}

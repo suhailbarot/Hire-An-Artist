@@ -184,3 +184,28 @@ textarea:focus, input:focus, .uneditable-input:focus {
     position: relative;
     margin-top: 9%;
 }
+.logcol2{
+            margin-top: 0px;
+            border-right:1px solid #d1d1d1;
+            padding-top: 2%;
+
+        }
+
+        .logimg{
+            height:50px;
+            width:270px;
+        }
+        .maincol{
+            margin-top: 10%;
+            background-color: white;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        .socialcol{
+            margin-top: 8%;
+            text-align: center;
+        }
+        .facebook{
+                height: 62px;
+            margin-top: 20px;
+        }
