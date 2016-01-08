@@ -30,9 +30,6 @@ body.modal-open {
 overflow-y: scroll;
 padding-right: 0 !important;
 }
-.modal {
-margin-left: 17px;
-}
 
 label{
 	color: #424242;
