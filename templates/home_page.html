@@ -128,26 +128,10 @@ $(function(){
   </div>
 </nav>
 <div class='searchbox'>
-	<h2 id="headtext">Some text here</h2>
-		<h2 id="secondtext">Some more text here, because why not.</h2>
+	<h2 id="headtext">Discover best <br/>artists for your event</h2>
 	<form class="form-inline" id="categoryform" action="/search">
-										      		      	{{ form.city|bootstrap_inline }}
 					{{form.talents|bootstrap_inline}}
 					{{form.function_type|bootstrap_inline}}
-					<div class="dropdown mydrp">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Budget
-  </button>
-  <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
-    <li><div id='slider'>
-    </div></li>
-      	<li id="budgetli"><p id="budgetmin"></p><p id="dash">-</p><p id="budgetmax"></p></li>
-
-{{form.budget_min|bootstrap_inline}}
-			{{form.budget_max|bootstrap_inline}}
-  </ul>
-</div>
-{{form.outstation|bootstrap_inline}}
 <button class="btn btn-primary styleb">Search</button>
 
 </form>
@@ -155,7 +139,7 @@ $(function(){
 							{{artist_form.name|bootstrap_inline}}
 							<button class="btn btn-primary styleb" onclick="return false">Search</button>
 </form>
-								<a  id="toggle" href="#"><u>Search By Name?</u></a>
+								<a href="#"><button id="toggle">Search by name</button></a>
 </div>
 
 
@@ -200,20 +184,19 @@ $(function(){
 	</div>
 				
 	<div class="row">
-			<div class="col-md-9 col-md-offset-1">
+			<div class="col-md-12 col-md-offset-1">
 
 
-
-			<div class="col-md-4 talents col-sm-12 imgcol ">
+			<div class="col-md-3 talents col-sm-12 imgcol ">
 			<img src= "{% static 'Food-artist.jpg' %}" class=" left img_talent img-responsive">
 			<h3 class='overlay_talent'> Talent</h3>
 		</div>
-		<div class="col-md-4 talents col-sm-12 imgcol">
+		<div class="col-md-3 talents col-sm-12 imgcol">
 			<img src= "{% static 'Makeup-artist.jpg' %}" class="img_talent img-responsive">
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
-		<div class="col-md-4 talents col-sm-12 imgcol ">
+		<div class="col-md-3 talents col-sm-12 imgcol ">
 			<img src= "{% static 'Floarist.jpg' %}" class="img_talent right img-responsive">
 			<h3 class='overlay_talent'> Talent</h3>
 
