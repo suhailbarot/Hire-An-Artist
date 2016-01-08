@@ -21,6 +21,11 @@ body{
 	font-family: 'Open Sans', sans-serif;
 }
 
+a {
+	outline:none;
+
+}
+
 body.modal-open {
 overflow-y: scroll;
 padding-right: 0 !important;
@@ -36,7 +41,7 @@ font-size: 1em;
 margin-right: 50px;
 }
 .navbar .nav > li > a:hover, .navbar .nav > li > a:hover:first-letter {
-color:  #F64747;
+color:#FFFFFF;
 }
 .carousel {
 	position: absolute;
@@ -135,7 +140,7 @@ color:  #F64747;
 .searchbox{
 	min-height: 300px;
 	position: relative;
-	top: 60px;
+	top: 93px;
 	display: block;
 	margin: auto;
 
@@ -167,6 +172,9 @@ color:  #F64747;
 
     margin-left: 65%;
 }
+#categoryform .form-control{
+	min-width:260px;
+}
 #dash{
 	display: none;
 	position: absolute;
@@ -177,8 +185,8 @@ color:  #F64747;
 	height: 40px;
     border-radius: 0 1px 1px 0;
     font-size: 15px;
-    background-color: #FC6042;
-    border: none #FC6042;
+    background-color: #e0492c;
+    border: none #e0492c;
     border-right-width: 0px;
     min-width: 150px;
 	color: white;
@@ -186,7 +194,7 @@ color:  #F64747;
 }
 
 .styleb:hover{
-    background-color: #2ecc71;
+    background-color: #c53d23;
 }
 .caret{
 	color: #424242
@@ -225,19 +233,35 @@ color:  #F64747;
 	margin: auto;
 	display: table;
 	margin-bottom: 20px;
+	max-width: 671px;
 }
 #toggle{
 	position: relative;
 	margin: auto;
 	display: table;
-	margin-bottom: 20px;
+	border-color: #FFFFFF;
+	border-width: 1px;
+	border-style: solid;
+	padding: 6px 8px 6px 8px;
 	font-size: 15px;
-	color: white;
     transition: all 0.3s;
+	background-color: Transparent;
+	text-decoration: none;
+	color:#ffffff;
+	border-radius: 2px;
+	outline:none;
+
 }
 
 #toggle:hover {
-    color : #FC6042;
+    background: rgba(116, 116, 116, 0.61);
+	color: #FFFFFF;
+	outline:none;
+	text-decoration: none;
+}
+
+#toggle a{
+	text-decoration: none; !important;
 }
 
 .citylink:hover{
@@ -424,7 +448,7 @@ text-decoration: none;
 	text-align: center;
 }
 #iconrow{
-	margin-top: 100px;
+	margin-top: 150px;
 	position: relative;
 	display: block;
     max-height: 90px;
@@ -433,7 +457,7 @@ text-decoration: none;
 }
 #headtext{
 	font-family: 'Open Sans', sans-serif;
-
+	text-align: center;
     margin: auto;
     display: table;
     margin-bottom: 25px;
@@ -496,7 +520,7 @@ text-decoration: none;
 	float: none;
 	margin: auto;
 	display: block;
-	width:380px;
+	width:320px;
 	height:160px;
 }
 .img_festival {
@@ -531,7 +555,6 @@ text-decoration: none;
 
     #categoryform {
         border: none;
-
         border-radius: 1px;
         display: block;
         width: 70%;
