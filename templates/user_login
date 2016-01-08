@@ -17,6 +17,12 @@
     });
         
     </script>
+    <style type="text/css">
+        .logcol{
+
+        }
+
+    </style>
   
 
     {% endblock %}
@@ -24,30 +30,20 @@
 
    
 <div class= "row mainrow">
+    <div class="col-md-6 col-md-offset-3">
+        <h2 id="logtext">Welcome Back!</h2>
+
+
     
-    <div class = " col-md-6 " >
-        <div class="well well-reg">
-         <h2 id="regtext">Join Us!</h2>
-
-<form method="post" id="registerform">
-
-    {% csrf_token %}
 
 
-    {{ form_register|bootstrap}}
-
-    <input class = "btn btn-default buttonsubmit" type="submit" value="Sign Up" name="register">
- 
+    </div>
 
 
-</form>
-</div>
-</div>
-
-<div class="col-md-6 logcol">
+    <div class="row">
+        <div class="col-md-6 logcol">
     <div class="well well-log">
 
-        <h2 id="logtext">Welcome Back!</h2>
 
 
 
@@ -66,7 +62,23 @@
 
 </div>
 
+
 </div>
+<div class="col-md-6">
+    <img src="{% static 'google.png' %}">
+    <h4>Or</h4>
+
+    <img src="{% static 'facebook.png' %}">
+
+
+
+</div>
+
+
+
+    </div>
+
+
 
 </div>
 

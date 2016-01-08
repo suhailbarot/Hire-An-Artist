@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^account/password/','django.contrib.auth.views.password_change',
         {'template_name': 'change_password.html'},
         name='password_change_done'),
+    url(r'^user/login','app.views.user_login',name = 'user_login'),
 
     #artist stuff
 

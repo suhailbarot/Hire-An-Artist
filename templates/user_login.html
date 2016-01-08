@@ -1,0 +1,107 @@
+{% extends 'root/base.html' %}
+{% load static %}
+
+    {% load bootstrap %}
+
+
+    {% block header_block %}
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+
+
+
+
+
+    });
+        
+    </script>
+    <style type="text/css">
+        .logcol2{
+            margin-top: 0px;
+            border-right:1px solid #d1d1d1;
+            padding-top: 2%;
+
+        }
+
+        .logimg{
+            height:50px;
+            width:270px;
+        }
+        .maincol{
+            margin-top: 10%;
+            background-color: white;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        .socialcol{
+            margin-top: 8%;
+            text-align: center;
+        }
+        .facebook{
+                height: 62px;
+            margin-top: 20px;
+        }
+
+
+    </style>
+  
+
+    {% endblock %}
+    {% block body_block %}
+
+
+
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 maincol well">
+
+                  <div class="col-md-6 logcol2">
+
+
+
+
+    <form method="post" id="loginform">
+
+    {% csrf_token %}
+
+    {{ form_login |bootstrap}}
+<a><input class = "btn btn-default buttonsubmit" type="submit" value="Login" name="login"></a>
+        <a href="#" id="forgot">Forgot Password?</a>
+
+
+
+
+</form>
+
+
+
+</div>
+<div class="col-md-6 socialcol">
+    <img src="{% static 'google.png' %}" class='logimg'>
+
+    <img src="{% static 'facebook.png' %}" class='facebook'>
+
+
+
+</div>
+
+
+
+    </div>
+
+        
+
+
+
+
+        </div>
+
+  
+
+
+
+</div>
+
+{% endblock %}
