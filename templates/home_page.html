@@ -23,6 +23,8 @@
 
 <link href="{% static 'icons/flaticon.css' %}" rel="stylesheet" media="screen">
 <link href="{% static 'css/homepage.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <script type="text/javascript">
@@ -35,6 +37,13 @@ $(function(){
           });
 
     {% endif %}
+    $(document).ready(function(){
+
+    	$("#loginmodal #id_name").attr('id','name2');
+
+
+
+    });
 
 
 
@@ -42,6 +51,78 @@ $(function(){
 
 
     </script>
+    <style type="text/css">
+
+        .logcol2{
+            margin-top: 0px;
+            padding-top: 0%;
+
+        }
+
+        .logimg{
+            height:50px;
+            width:270px;
+        }
+        .maincol{
+            margin-top: 10%;
+            background-color: white;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        .socialcol{
+            margin-top: 8%;
+            text-align: center;
+        }
+        .facebook{
+                height: 62px;
+            margin-top: 20px;
+            position: relative;
+            left:-6px;
+        }
+        .modalhead{
+        	text-align: center;
+        }
+        .modaldialog{
+        	width:800px;
+        	padding: 30px;
+        }
+        .googlebutton{
+        	background-color: #DC4B39;
+        	width: 286px;
+        	height: 39px;
+        	border:none;
+        	margin-bottom: 20px;
+        	text-align: center;
+        	margin-top: 10px;
+        }
+        .socialtext{
+        	color: white;
+        	margin-top:3%;
+        	position: relative;
+        	right:10px;
+        }
+        .fbbutton{
+        	background-color: #3B5998;
+        	width: 286px;
+        	height: 39px;
+        	border:none;
+        }
+        .scicon{
+        	width:30px;
+        	float: left;
+        	position: relative;
+        	top:-5px;
+
+        }
+        .regcol{
+        	border-left: 1px solid #d1d1d1;
+        }
+        .modaldialog{
+        	width:900px;
+        }
+
+
+    </style>
 
 
 </head>
@@ -59,6 +140,103 @@ $(function(){
     </div>
 
   </div>
+</div>
+<div id="loginmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog modaldialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body bodymodal">
+      	<div class="row">
+         <div class="col-md-6 logcol2">
+
+
+
+
+    <form method="post" id="loginform">
+
+    {% csrf_token %}
+
+    {{ form_login |bootstrap}}
+<a><input class = "btn btn-default buttonsubmit" type="submit" value="Login" name="login"></a>
+
+        <a href="#" id="forgot">Forgot Password?</a>
+        <button class="googlebutton"><div>
+        	<img src="{% static 'google.png' %}" class="scicon">
+        	<p class="socialtext">Continue With Google</p>
+
+        </div></button>
+        <button class="fbbutton"><div>
+        	<img src="{% static 'facebook.png' %}" class="scicon">
+        	<p class="socialtext">Continue With Facebook</p>
+
+        </div></button>
+
+
+
+
+</form>
+
+
+
+</div>
+<div class="col-md-6 regcol">
+
+
+    		<form method="post" id="registerform">
+
+    {% csrf_token %}
+
+    {{ form_register | bootstrap }}
+
+    <input type="submit" class="btn btn-default buttonsubmit" value="Sign Up">
+
+</form>
+
+
+    		</div>
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="registermodal" class="modal fade" role="dialog">
+  <div class="modal-dialog modaldialog ">
+    <!-- Modal content-->
+    <div class="modal-content ">
+      <div class="modal-body ">
+      	<div class="row">
+      	<div class="col-md-6 regcol">
+
+
+    		<form method="post" id="registerform">
+
+    {% csrf_token %}
+
+    {{ form_register | bootstrap }}
+
+    <input type="submit" class="btn btn-default buttonsubmit" value="Sign Up">
+
+</form>
+
+
+    		</div>
+    		<div class="col-md-6 socialcol socialcol2 " style="margin-top:25%;">
+    <a href='{% url "socialauth_begin" "facebook" %}' /><img src="{% static 'google.png' %}" class='logimg'></a>
+<a href='{% url "socialauth_begin" "google-oauth2" %}' /><img src="{% static 'facebook.png' %}" class='facebook'></a>
+
+</div>
+</div>
+                
+    </div>
+
+  </div>
+</div>
 </div>
 <div id="myCarousel" class="carousel carousel-fade slide">
   
@@ -103,10 +281,17 @@ $(function(){
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
       <a class="navbar-brand" href="#">WebSiteName</a>
     </div>
     <div>
-      
+      		<div class="collapse navbar-collapse" id="navbar">
+
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li><a href="#">Logged in as {{user.get_username}}</a></li>
@@ -114,8 +299,8 @@ $(function(){
 
 
         {% else %}
-        <li><a href="/login"> Login</a></li>
-        <li><a href="/user/register"> Sign Up</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#loginmodal"> Login</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#registermodal"> Sign Up</a></li>
         {% endif %}
       <li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
             {{ set_city|title }}
@@ -125,6 +310,7 @@ $(function(){
         </a></li>
       </ul>
     </div>
+</div>
   </div>
 </nav>
 <div class='searchbox'>
