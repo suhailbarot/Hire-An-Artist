@@ -42,6 +42,10 @@ body{
 	font-family: 'Open Sans', sans-serif;
 }
 
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
 /* END GENERIC */
 
 
@@ -209,3 +213,24 @@ textarea:focus, input:focus, .uneditable-input:focus {
                 height: 62px;
             margin-top: 20px;
         }
+
+/* add listing */
+
+.top-header {
+    padding-top: 50px;
+    text-align: center;
+    background: #fafafa;
+    min-height: 150px;
+    border-bottom: 1px solid #f3f3f3;
+}
+
+.left-sidebar {
+    left:0;
+    width: 200px;
+    background: #FFFFFF;
+    min-height: 200px;
+}
+
+#leftCol {
+    background: #FFFFFF;
+}
