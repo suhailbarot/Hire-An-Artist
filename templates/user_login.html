@@ -18,6 +18,34 @@
         
     </script>
     <style type="text/css">
+    .googlebutton{
+            background-color: #DC4B39;
+            width: 286px;
+            height: 39px;
+            border:none;
+            margin-bottom: 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .socialtext{
+            color: white;
+            margin-top:3%;
+            position: relative;
+            right:10px;
+        }
+        .fbbutton{
+            background-color: #3B5998;
+            width: 286px;
+            height: 39px;
+            border:none;
+        }
+        .scicon{
+            width:30px;
+            float: left;
+            position: relative;
+            top:-5px;
+
+        }
         .logcol2{
             margin-top: 0px;
             border-right:1px solid #d1d1d1;
@@ -79,9 +107,16 @@
 
 </div>
 <div class="col-md-6 socialcol">
-    <img src="{% static 'google.png' %}" class='logimg'>
+   <button class="googlebutton"><div>
+            <img src="{% static 'google.png' %}" class="scicon">
+            <p class="socialtext">Continue With Google</p>
 
-    <img src="{% static 'facebook.png' %}" class='facebook'>
+        </div></button>
+        <button class="fbbutton"><div>
+            <img src="{% static 'facebook.png' %}" class="scicon">
+            <p class="socialtext">Continue With Facebook</p>
+
+        </div></button>
 
 
 

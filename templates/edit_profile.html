@@ -1,25 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'root/base.html' %}
+{% load static %}
+{% load bootstrap %}
 
-<h2>Edit Profile</h2>
+{% block header_block %}
+<style type="text/css">
+.header{
+	text-align: center
+}
+.main-col-edit{
+	background-color: white;
+	padding: 30px;
+	border:1px solid #d1d1d1;
+}
+.form-control{
+	border-radius: 0px;
+}
 
-<h3>Basic Edits</h3>
-<form method="post">
+
+</style>
+
+
+
+
+
+{% endblock %}
+
+{% block body_block %}
+
+<div class="row mainrow">
+	<div class="col-md-4 col-md-offset-4 main-col-edit">
+	<div class="row header">
+		<h3> Edit Profile</h3>
+		<hr>
+
+
+	</div>
+	<div class="form">
+		<form method="post">
 
     {% csrf_token %}
 
-    {{ form }}
+    {{ form|bootstrap }}
 
-    <input type="submit" value="basic_form">
+    <input type="submit" value="Submit" class="btn btn-default buttonsubmit">
 
 </form>
 
-<a href="/account/password">Change Password</a>
 
-</body>
-</html>
+
+	</div>
+</div>
+
+</div>
+
+
+
+
+{% endblock %}

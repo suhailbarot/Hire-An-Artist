@@ -1,24 +1,127 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'root/base.html' %}
+{% load static %}
 
-Hi {{ up.full_name }}
+{% block header_block %}
+
+	<style type="text/css">
+
+	.sidecol{
+		background-color: white;
+		text-align: center;
+		padding-top: 20px;
+		position: fixed;
+		width:200px;
+		border: 1px solid #d1d1d1;
+
+	}
+	.singlelist{
+		margin-left: 10px;
+		margin-bottom:10px;
+		background-color: white;
+		border:1px solid #d1d1d1;
+		height: 200px;
+		width:703px;
+
+	}
+	.pic-col{
+		padding-left: 0px;
+		padding-right: 0px;
+		width:200px;
+	}
+	.info-col{
+		width: 71.45%;
+	}
+	.namerow{
+		border-bottom: 1px solid #d1d1d1;
+		text-align: center;background-color: #d1d1d1;
+	}
+	.profilepic{
+		height: 200px;
+		width: 200px;
+		float:left;
+		clear: left;
+	}
+	.attributes{
+		margin-top: 20px;
+	}
+	.attr-name{
+		font-weight: bolder;
+		font-size: 16px;
+	}
+	.name{
+		color: #333;
+	}
+	.attr-col{
+		border-right:1px solid #eee;
+		min-height: 100px;
+		text-align: center;
+	}
+	.links{
+		color: #333;
+	}
+
+
+	</style>
+
+
+{% endblock %}
+
+{% block body_block %}
+
+
 
 <br/><br/>
+<div class="row">
 
-<a href="{% url 'password_change_done' %}">Change Password</a><br/>
-<a href="{% url 'edit_profile' %}">Edit Profile</a><br/>
-<a href="{% url 'add_listing' %}"> Add Listing</a> <br/><br/>
 
-<br/>
-Your listings: <br/>
+	<div class="col-md-2 col-md-offset-2 sidecol">
+	<h3>Hi {{ up.full_name }}!</h3>
+		<hr>
+
+<a class="links" href="{% url 'password_change_done' %}">Change Password</a><br/>
+<a class="links"  href="{% url 'edit_profile' %}">Edit Profile</a><br/>
+<a class="links"  href="{% url 'add_listing' %}"> Add Listing</a> <br/><br/>
+	</div>
+	<div class=" col-md-offset-4 col-md-6">
 {% for listing in listings %}
-Listing {{ forloop.counter }}:
-    <a href="/artist/{{ listing.id }}">{{ listing.name }}</a>
+<div class="row singlelist">
+			<div class="col-md-2 pic-col">
+				<img src="{{ listing.profile_pic.url }}" class="img-responsive profilepic">
+			</div>
+			<div class="col-md-8 info-col">
+				<div class="row namerow">
+    <h3><a class="name" href="/artist/{{ listing.id }}">{{ listing.name }}</a></h3>
+				</div>
+				<div class="row attributes">
+					<div class="col-md-3 attr-col">
+					<h5 class="attr-name"> Talents:</h5>
+
+{{ listing.talents.name }}
+
+					</div>
+					<div class="col-md-3 attr-col">
+					<h5 class="attr-name">Tags :</h5>
+
+{% for tag in listing.tags.all %}
+{{ tag.name }},
+{% endfor %}
+					</div>
+
+					<div class="col-md-3 attr-col">
+					<h5 class="attr-name">Functions :</h5>
+{% for function in listing.functions.all %}
+{{ function.name }},
+{% endfor %}
+					</div>
+					<div class="col-md-3 attr-col
+					">
+					<h5 class="attr-name">Fees :</h5> {{ listing.feeds }}
+
+					</div>
+				</div>
+			</div>
+
+					</div>
     <br/>
 
 {% endfor %}
@@ -26,5 +129,6 @@ Listing {{ forloop.counter }}:
 {% if not listings %}
     You have No listings!
 {% endif %}
-</body>
-</html>
+</div>
+</div>
+{% endblock %}
