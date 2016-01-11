@@ -1,19 +1,59 @@
-{% extends 'base.html' %}
+{% extends 'root/base.html' %}
 {% load static %}
+{% load bootstrap %}
+
+{% block header_block %}
+<style type="text/css">
+.header{
+	text-align: center
+}
+.main-col-edit{
+	background-color: white;
+	padding: 30px;
+	border:1px solid #d1d1d1;
+}
+.form-control{
+	border-radius: 0px;
+}
 
 
-	{% load bootstrap %}
-    {% block page_title %} Register As An Artist{% endblock %}
-    {% block body_block %}
-<div class= "row">
-    <div class = " col-md-offset-2 col-md-8" ><form method="post">
+</style>
+
+
+
+
+
+{% endblock %}
+
+{% block body_block %}
+
+<div class="row mainrow">
+	<div class="col-md-4 col-md-offset-4 main-col-edit">
+	<div class="row header">
+		<h3> Edit Profile</h3>
+		<hr>
+
+
+	</div>
+	<div class="form">
+		<form method="post">
 
     {% csrf_token %}
 
-    {{ form |bootstrap }}
+    {{ form|bootstrap }}
 
-    <input type="submit" value="submit">
+    <input type="submit" value="Submit" class="btn btn-default buttonsubmit">
 
 </form>
+
+
+
+	</div>
 </div>
+
+</div>
+
+
+
+
 {% endblock %}
