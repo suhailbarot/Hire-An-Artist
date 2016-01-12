@@ -51,31 +51,23 @@ $(document).ready(function(){
 function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
                 $('.crop').Jcrop({
-
                   onSelect: updateCoords,
-
                         bgOpacity:   .4,
                         setSelect:   [ 100, 100, 50, 50 ],
                         aspectRatio: 10/16
                 });
             }
-
             reader.readAsDataURL(input.files[0]);
         }
     }
 
     $("#id_profile_pic").change(function(){
-
-        console.log(this);
         readURL(this);
     });
     $('#btnCrop').click(function () {
-
-
         var x1 = $('#id_x').val();
         var y1 = $('#id_y').val();
         var width = $('#id_x2').val();
@@ -95,7 +87,6 @@ function readURL(input) {
   function updateCoords(c)
   {
     var img2 = new Image();
-
         img2.src = $('#blah').attr("src");
         var realwidth = img2.width;
         var realheight = img2.height;
@@ -103,242 +94,322 @@ function readURL(input) {
         var imgwidth = $("#blah").width();
         var fx = realwidth/imgwidth;
         var fy = realheight/imgheight;
-    console.log(c);
     $('#id_x').val(parseInt(c.x*fx));
     $('#id_y').val(parseInt(c.y*fy));
     $('#id_x2').val(parseInt(c.w*fx));
     $('#id_y2').val(parseInt(c.h*fy));
     $('#btnCrop').click();
   };
-
 });
 
-
 </script>
-<style type="text/css">
- #blah {
-    background-color: #FFF;
-
-    font-size: 24px;
-    display: block;
-    max-height: 500px;
-    max-width: 500px;
-  }
-  #canvas{
-    width: 200px;
-    height: 320px;
-  }
-
-#masthead {
- min-height:250px;
-}
-
-#masthead h1 {
- font-size: 30px;
- line-height: 1;
- padding-top:20px;
-}
-
-#masthead .well {
- margin-top:8%;
-}
-
-@media screen and (min-width: 768px) {
-  #masthead h1 {
-    font-size: 50px;
-  }
-}
-
-.navbar-bright {
- background-color:#111155;
- color:#fff;
-}
-
-.affix-top,.affix{
- position: static;
-}
-
-@media (min-width: 979px) {
-  #sidebar.affix-top {
-    position: static;
-  	margin-top:30px;
-  	width:228px;
-  }
-
-  #sidebar.affix {
-    position: fixed;
-    top:70px;
-    width:228px;
-  }
-}
-
-#sidebar li.active {
-  border:0 #eee solid;
-  border-right-width:5px;
-}
-</style>
 
     {% endblock %}
 
     {% block body_block %}
 
-        <div class="container">
-        <div class="col-md-3" id="leftCol">
-        <ul class="nav nav-pills nav-stacked" id="sidebar" data-spy="affix">
-          <li><a href="#sec0">Section 0</a></li>
-          <li><a href="#sec1">Section 1</a></li>
-          <li><a href="#sec2">Section 2</a></li>
-          <li><a href="#sec3">Section 3</a></li>
-          <li><a href="#sec4">Section 4</a></li>
-        </ul>
-      </div>
+        <div class="container form-wizard">
+      <div class="add-listing-message">
+              <h3>Add your listing</h3>
+                <p>Your first step towards redemption</p>
+            <hr class="message-separator">
+        </div>
+
+         <div class="col-md-3">
+            <div id="left-bar">
+                  <div class="tips-panel" data-spy="affix" data-offset-top="10px" id="sidemenu">
+                      <div class="timeline-centered">
+        <article class="timeline-entry">
+            <div class="timeline-entry-inner">
+                <div class="timeline-icon">
+                    <i class="entypo-feather glyphicon glyphicon-ok tick-box"></i>
+                </div>
+                <div class="timeline-label">
+                    <a href="#basi">Basic Information</a>
+                </div>
+            </div>
+        </article>
+        <article class="timeline-entry">
+            <div class="timeline-entry-inner">
+                <div class="timeline-icon">
+                    <i class="entypo-suitcase"></i>
+                </div>
+                <div class="timeline-label">
+                    <a href="#pricing_det"> Pricing Details </a>
+                </div>
+            </div>
+        </article>
+        <article class="timeline-entry">
+            <div class="timeline-entry-inner">
+                <div class="timeline-icon">
+                    <i class="entypo-location"></i>
+                </div>
+                <div class="timeline-label">
+                    <a href="#contact_det">Contact Details</a>
+                </div>
+            </div>
+        </article>
+        <article class="timeline-entry">
+            <div class="timeline-entry-inner">
+                <div class="timeline-icon">
+                    <i class="entypo-location"></i>
+                </div>
+                <div class="timeline-label">
+                    <a href="#past_project">Past Projects</a>
+                </div>
+            </div>
+        </article>
+{#        <article class="timeline-entry begin">#}
+{#            <div class="timeline-entry-inner">#}
+{#                <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">#}
+{#                    <i class="entypo-flight"></i> +#}
+{#                </div>#}
+{#            </div>#}
+{#        </article>#}
+    </div>
+
+{#        <ul class="nav nav-pills nav-stacked" id="sidebar" data-spy="affix">#}
+{#          <li><a href="#sec0">Section 0</a></li>#}
+{#          <li><a href="#sec1">Section 1</a></li>#}
+{#          <li><a href="#sec2">Section 2</a></li>#}
+{#          <li><a href="#sec3">Section 3</a></li>#}
+{#          <li><a href="#sec4">Section 4</a></li>#}
+{#        </ul>#}
+                  </div>
+                </div>
+            </div>
 
         <div class="col-md-9">
-        <h2 id="sec0">Content</h2>
-        <p>
-          At Bootply we like to build simple Bootstrap templates that utilize the code Bootstap CSS without a lot of customization. Sure you can
-          find a lot of Bootstrap themes and inspiration, but these templates tend to be heavy on customization.</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+            <div class="section-container" id="basi">
+                <div class="section-header">
+                    <h1>Basic Information</h1>
+                </div>
+                <hr class="section-separator">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form.name | bootstrap }}
+                        </div>
+                    <div class="col-md-12">
+                        {{ form.talents | bootstrap }}
+                        </div>
+                </div>
 
-        <hr>
-        <p>
-          Rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores
-          eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-          sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut.
-          Rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores
-          eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-          sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut!</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form.functions | bootstrap }}
+                        </div>
+                    <div class="col-md-12">
+                        <h4>{{ form.tags.name }} : </h4>
+            <ul>
+                {% for choice in form.tags.field.choices %}
+                    <li class="tagged talent-{{ choice.2.talent.pk }}" talent_for="{{ choice.2.talent.pk }}">
+                        <input type="checkbox"
+                               name="{{ form.tags.name }}"
+                               value="{{ choice.0 }}"
+                                {% if choice.0|safe in form.tags.value or choice.0 in form.tags.value %} checked="checked" {% endif %}>
+                        <strong>{{ choice.2 }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if form.tags.errors %}
+                <span class="help-block">{{ form.tags.errors }}</span>
+            {% endif %}
+                        </div>
+                </div>
 
-        <h2 id="sec1">Content</h2>
-        <p>
-          Rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut.
-        </p>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-heading"><h3>Hello.</h3></div>
-              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                Aliquam in felis sit amet augue.
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="panel panel-default">
-              <div class="panel-heading"><h3>Hello.</h3></div>
-              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                Aliquam in felis sit amet augue.
-              </div>
-            </div>
-          </div>
-        </div>
+                <div class="row">
 
-        <hr>
+                <div class="col-md-12">
 
-        <h2 id="sec2">Section 2</h2>
-        <p>
-          Rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores
-          eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-          sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut!
-        </p>
-        <div class="row">
-          <div class="col-md-4"><img src="//placehold.it/300x300" class="img-responsive"></div>
-          <div class="col-md-4"><img src="//placehold.it/300x300" class="img-responsive"></div>
-          <div class="col-md-4"><img src="//placehold.it/300x300" class="img-responsive"></div>
-        </div>
+                    {{ form.bio | bootstrap }}
 
-        <hr>
+                    </div>
 
-        <h2 id="sec3">Section 3</h2>
-        <p>
-          Images are responsive sed @mdo but sum are more fun peratis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-          totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores
-          eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-          sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut..</p>
-        <p>
-          Fos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-          sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut..</p>
+                    <div class="col-md-12">
 
+                        {{ form.outstation | bootstrap }}
 
-        <h2 id="sec4">Section 4</h2>
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-          totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores
-          eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,
-          sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-          Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut.</p>
+                        </div>
 
-        <hr>
-        <hr>
+                    <div class="col-md-12">
 
-        </div>
+                        {{ form.city | bootstrap }}
 
-        </div>
+                    </div>
 
+                    <div class="col-md-12">
 
+                        {{ form.group_key | bootstrap }}
 
+                        </div>
 
-{#        <div class="container-fluid">#}
-{##}
-{#        <div class="row">#}
-{##}
-{#            <div class="col-md-3">#}
-{##}
-{#                <div class="panel panel-default">#}
-{#  <div class="panel-heading">#}
-{#    <h3 class="panel-title">Panel title</h3>#}
-{#  </div>#}
-{#  <div class="panel-body">#}
-{#    Panel content#}
-{#  </div>#}
-{#</div>#}
-{##}
-{#            </div>#}
-{##}
-{#        </div>#}
-{##}
-{#        </div>#}
-    
-<div class= "row">
-    <div class = " col-md-offset-2 col-md-8" >
+                    <div class="col-md-12">
 
-<form method="post" enctype="multipart/form-data">
+                        {{ form.profile_pic | bootstrap }}
+                </div>
 
-    {% csrf_token %}
+                    <div class="col-md-12">
 
-    <h2>Basics</h2>
-<table>
+                        <h3>Crop it</h3>
+
+                        <table>
     <tr>
         <td>
 <img id="blah" class="crop" />
-
         </td>
         <td>
             <canvas id="canvas" height="5" width="5"></canvas>
-
         </td>
-
     </tr>
-
-
 </table>
 <br>
 
 <input type="button" id="btnCrop" type="hidden" style="display: none"/>
 <input type="hidden" name="imgCropped" id="imgCropped" />
+
+
+                        </div>
+
+
+
+            </div>
+
+{#            <div class="panel-body">#}
+{#            <div class="panel panel-default" id="sec0">#}
+{#              <div class="panel-heading"><h3>Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#            <div class="panel panel-default" id="sec1">#}
+{#              <div class="panel-heading"><h3 >Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#            <div class="panel panel-default" id="sec2">#}
+{#              <div class="panel-heading"><h3>Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#            <div class="panel panel-default" id="sec3">#}
+{#              <div class="panel-heading"><h3>Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#            <div class="panel panel-default" id="sec3">#}
+{#              <div class="panel-heading"><h3>Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{##}
+{#            <div class="panel panel-default" id="sec3">#}
+{#              <div class="panel-heading"><h3>Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{##}
+{#            <div class="panel panel-default" id="sec3">#}
+{#              <div class="panel-heading"><h3>Hello.</h3></div>#}
+{#              <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.#}
+{#                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis#}
+{#                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.#}
+{#                Aliquam in felis sit amet augue.#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#                </div>#}
+
+            </div>
+
+            <div class="section-container" id="contact_det">
+                <div class="section-header">
+                    <h1>Pricing Details</h1>
+                </div>
+                <hr class="section-separator">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        {{ form.contact_name | bootstrap }}
+                        </div>
+
+                    <div class="col-md-12">
+                        {{ form.contact_number | bootstrap }}
+                        </div>
+
+                    <div class="col-md-12">
+                        {{ form.contact_email | bootstrap }}
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form.contact_number2 | bootstrap }}
+                        </div>
+                </div>
+                </div>
+
+
+            <div class="section-container" id="contact_det">
+                <div class="section-header">
+                    <h1>Contact Details</h1>
+                </div>
+                <hr class="section-separator">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        {{ form.contact_name | bootstrap }}
+                        </div>
+
+                    <div class="col-md-12">
+                        {{ form.contact_number | bootstrap }}
+                        </div>
+
+                    <div class="col-md-12">
+                        {{ form.contact_email | bootstrap }}
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form.contact_number2 | bootstrap }}
+                        </div>
+                </div>
+                </div>
+
+            </form>
+        </div>
+
+
+
+    
+<div class= "row">
+    <div class = " col-md-offset-2 col-md-8" >
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Basics</h2>
+
 
 {% for field in form %}
 
@@ -369,32 +440,32 @@ function readURL(input) {
 
 {% endfor %}
 
-        
+
   <h2>Projects</h2>
 
 {% bootstrap_dynamic_formset formset can_order=True can_delete=True layout="horizontal" %}
 
-{#    {{ formset.management_form |bootstrap}}#}
-{##}
-{#    {% for formi in formset %}#}
-{#        <div class="project_formset project_form_{{ forloop.counter }}">#}
-{#        <h4>Project {{ forloop.counter }}</h4>#}
-{##}
-{#        {% for field in formi %}#}
-{#            {% if field.label != 'Listing' and field.label != 'Id' %}#}
-{#                {{ field|bootstrap }}#}
-{#                {{ field.errors }}#}
-{#            {% endif %}#}
-{#        <br/>#}
-{#        {% endfor %}#}
-{#        </div>#}
-{#    {% endfor %}#}
-{##}
-{#    <button id="add_more_project">+1 Project</button>#}
-{#    <button#}
-{##}
+    {{ formset.management_form |bootstrap}}
+
+    {% for formi in formset %}
+        <div class="project_formset project_form_{{ forloop.counter }}">
+        <h4>Project {{ forloop.counter }}</h4>
+
+        {% for field in formi %}
+            {% if field.label != 'Listing' and field.label != 'Id' %}
+                {{ field|bootstrap }}
+                {{ field.errors }}
+            {% endif %}
+        <br/>
+        {% endfor %}
+        </div>
+    {% endfor %}
+
+    <button id="add_more_project">+1 Project</button>
+
     <input type="submit" id="form-submit" class = "btn btn-default" value="submit">
 
 </form>
+</div>
 </div>
 {% endblock %}
