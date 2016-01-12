@@ -86,7 +86,12 @@
 {% for listing in listings %}
 <div class="row singlelist">
 			<div class="col-md-2 pic-col">
+				{% if listing.profile_pic %}
 				<img src="{{ listing.profile_pic.url }}" class="img-responsive profilepic">
+				{% else %}
+				<img src="{% static 'dp.png' %}" class="img-responsive profilepic">
+				{% endif %}
+
 			</div>
 			<div class="col-md-8 info-col">
 				<div class="row namerow">
@@ -130,5 +135,6 @@
     You have No listings!
 {% endif %}
 </div>
+
 </div>
 {% endblock %}
