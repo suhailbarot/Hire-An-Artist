@@ -126,6 +126,8 @@ def forgot_password(request):
     return render(request,'forgot_password.html',{'form':form})
 
 
+
+
 def edit_profile(request):
     if request.user.is_authenticated():
         up = UserProfile.objects.get(user=request.user)

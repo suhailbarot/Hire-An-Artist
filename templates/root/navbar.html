@@ -1,4 +1,22 @@
 {% load extra %}
+{% cookie_city as set_city %}
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+var x= {% get_user_type %};
+if(x!=2){
+
+	$(".listing-dropdown").hide();
+}
+
+
+});
+
+
+
+</script>
 <nav class="navbar">
 </nav>
 <nav class="navbar navbar-findcond navbar-fixed-top">
@@ -14,9 +32,15 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
+            {{ set_city|title }}
+        {% else %}
+            Select City
+        {% endif %}
+        </a></li>
 								{% if user.is_authenticated %}
 
-				<li class="dropdown">
+				<li class="dropdown listing-dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Your Listings </a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="{% url 'add_listing' %}">Add a new listing</a></li>
@@ -42,3 +66,4 @@
 		</div>
 	</div>
 </nav>
+
