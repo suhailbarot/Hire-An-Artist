@@ -60,6 +60,7 @@ class Talent(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    fee_text = models.CharField(max_length=300,blank=True)
     is_active = models.IntegerField(default=1)
 
     class Meta:
@@ -107,40 +108,36 @@ class Tag(models.Model):
 
 class Listing(models.Model):
     profile_pic = models.ImageField(upload_to=get_file_path,blank=True)
-    
-    name = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-
+    name = models.CharField(max_length=200,verbose_name="Name your listing *")
+    city = models.CharField(max_length=100,verbose_name="Which city are you based out of? *")
     choice = (
         (1,'YES'),
         (2,'NO')
     )
-
-    outstation = models.IntegerField(choices=choice, default=1)
-    contact_name = models.CharField(max_length=200)
-    contact_email = models.EmailField(default=None, blank=True, null=True)
-    contact_number = models.CharField(max_length=12)
-    contact_number2 = models.CharField(max_length=12, blank=True, null=True)
-    contact_number3 = models.CharField(max_length=12, blank=True, null=True)
-
+    outstation = models.IntegerField(choices=choice, default=1,verbose_name="Do you provides services outstation? *")
+    contact_name = models.CharField(max_length=200,verbose_name='Name of the contact person *')
+    contact_email = models.EmailField(default=None, blank=True, null=True, verbose_name='Contact email *')
+    contact_number = models.CharField(max_length=12,verbose_name='Contact number *')
+    contact_number2 = models.CharField(max_length=12, blank=True, null=True, verbose_name='Additional contact number 1')
+    contact_number3 = models.CharField(max_length=12, blank=True, null=True, verbose_name='Additional contact number 2')
     bio = models.CharField(max_length=2000, blank=True)
-    fees = models.IntegerField()
-    comments = models.CharField(max_length=1000, blank=True, null=True)
+    fees = models.IntegerField(verbose_name='What are your charges? *')
+    comments = models.CharField(max_length=1000, blank=True, null=True, verbose_name="Additional notes for your fees")
     tech_details = models.CharField(max_length=2000, blank=True, null=True)
     tech_details_file = models.FileField(blank=True, null=True, upload_to='tech_det')
     fb_link = models.URLField(blank=True, null=True)
     twitter_link = models.URLField(blank=True, null=True)
-
     user = models.ForeignKey(UserProfile)
     score = models.IntegerField(default=1)
     is_approved = models.IntegerField(default=0)
-
-    talents = models.ForeignKey(Talent,null=True,blank=True) #mandatory
+    talents = models.ForeignKey(Talent,null=True, blank=True) #mandatory
     functions = models.ManyToManyField(Function) #mandatory
     tags = models.ManyToManyField(Tag,blank=True)
-
+    address = models.CharField(max_length=2000,blank=True)
+    address_city = models.CharField(max_length=500, blank=True, verbose_name="Locality, City")
+    latitude = models.CharField(max_length=100,blank=True)
+    longitude = models.CharField(max_length=100,blank=True)
     group_key = models.CharField(max_length=15, blank=True)
-
     param_1 = models.IntegerField(default=-1)
     param_2 = models.IntegerField(default=-1)
     param_3 = models.IntegerField(default=-1)
@@ -151,7 +148,6 @@ class Listing(models.Model):
     param_8 = models.IntegerField(default=-1)
     param_9 = models.IntegerField(default=-1)
     param_10 = models.IntegerField(default=-1)
-    
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.IntegerField(default=1)

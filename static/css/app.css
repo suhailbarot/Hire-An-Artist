@@ -284,6 +284,20 @@ textarea:focus, input:focus, .uneditable-input:focus {
   }
 }
 
+@media (min-width: 979px) {
+  #help_text.affix-top {
+    position: static;
+  	margin-top:292px;
+  	width:228px;
+  }
+
+  #help_text.affix {
+    position: fixed;
+    top:292px;
+    width:228px;
+  }
+}
+
 #sidebar li.active {
   border:0 #eee solid;
   border-right-width:5px;
@@ -583,4 +597,72 @@ textarea:focus, input:focus, .uneditable-input:focus {
     font-size: 20px;
     text-align: center;
     color: #333;
+}
+
+.section-container .col-md-12 {
+    margin-top: 10px;
+}
+
+
+.tagged {
+    margin:4px;
+    background-color:#FFFFFF;
+    border-radius:3px;
+    border:1px solid #d1d1d1;
+    overflow:auto;
+    float:left;
+}
+
+.tagged:hover {
+    background: rgba(255, 97, 67, 0.8);
+}
+
+.tagged label {
+    float:left;
+    margin:0px;
+    outline: none;
+}
+
+.tagged label span {
+    text-align:center;
+    padding:2px 8px 0px 8px;
+    display:block;
+    outline: none;
+}
+
+.tagged input:checked + span {
+    background-color: #ff6143;
+    color:#fff;
+}
+
+div label input {
+   margin-right:100px;
+}
+
+.tagged input[type="checkbox"] {
+    display:none;
+}
+
+.events-checks .checki {
+    margin: 5px;
+}
+
+.additional-separator {
+    margin-top:10px;
+}
+
+.addmore-num {
+    position: absolute;
+    top: 30px;
+    font-size: 21px;
+    left: 0px;
+}
+
+.addmore-num {
+    color:#000000;
+}
+
+.map_canvas {
+    width: 400px;
+    height: 300px;
 }

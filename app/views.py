@@ -238,30 +238,31 @@ def add_phone(request):
 
 def add_listing(request):
     if request.POST:
-
         form = ListingForm(data=request.POST, files=request.FILES)
-        formset = ListingProjectFormSet(request.POST)
+        # formset = ListingProjectFormSet(request.POST)
         if form.is_valid():
             usr = UserProfile.objects.get(user=request.user)
-            im = Image.open(form.cleaned_data['profile_pic'])
-            box=(int(form.cleaned_data['x']),int(form.cleaned_data['y']),int(form.cleaned_data['x'])+int(form.cleaned_data['x2']),int(form.cleaned_data['y2'])+int(form.cleaned_data['y']))
-            im2 = im.crop(box)
-            img_io = StringIO()
-            im2.save(img_io, format='JPEG')
-            img_content = InMemoryUploadedFile(img_io, None, 'foo.jpg', 'image/jpeg',
-                                  img_io.len, None)
-            k = form.save(commit=False)
-            k.profile_pic = img_content
-            formset = ListingProjectFormSet(request.POST, instance=k)
-            if formset.is_valid():
-                l = form.save(commit=True,user=usr)
-                formset.save(commit=True)
-                return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
+            l = form.save(commit=True,user=usr)
+            # im = Image.open(form.cleaned_data['profile_pic'])
+            # box=(int(form.cleaned_data['x']),int(form.cleaned_data['y']),int(form.cleaned_data['x'])+int(form.cleaned_data['x2']),int(form.cleaned_data['y2'])+int(form.cleaned_data['y']))
+            # im2 = im.crop(box)
+            # img_io = StringIO()
+            # im2.save(img_io, format='JPEG')
+            # img_content = InMemoryUploadedFile(img_io, None, 'foo.jpg', 'image/jpeg',
+            #                       img_io.len, None)
+            # k = form.save(commit=False)
+            # k.profile_pic = img_content
+            # formset = ListingProjectFormSet(request.POST, instance=k)
+            # if formset.is_valid():
+            #     l = form.save(commit=True,user=usr)
+                # formset.save(commit=True)
+            return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
     else:
-        form = ListingForm()
-        formset = ListingProjectFormSet(instance=Listing())
+        usr = UserProfile.objects.get(user=request.user)
+        form = ListingForm(initial={'contact_name':usr.full_name,'contact_number':usr.phone,'contact_email':usr.email})
+        # formset = ListingProjectFormSet(instance=Listing())
 
-    return render(request,'add_listing.html',{'form':form,'formset':formset})
+    return render(request,'add_listing.html',{'form':form})
 
 
 def edit_listing(request,lid):

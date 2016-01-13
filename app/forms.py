@@ -163,22 +163,36 @@ class ListingForm(forms.ModelForm):
     For Artist adding listings
     """
 
-    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=True)
+    contact_number = forms.CharField(validators=[number_validator], widget=forms.TextInput(attrs=dict(maxlength=12)))
+    contact_number2 = forms.CharField(validators=[number_validator], widget=forms.TextInput(attrs=dict(maxlength=12)),required=False, label="Additional Contact Number 1")
+    contact_number3 = forms.CharField(validators=[number_validator], widget=forms.TextInput(attrs=dict(maxlength=12)), required=False, label="Additional Contact Number 2")
 
-    tags = AdvancedModelChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Tag.objects.filter(is_active=1), required=False)
+    talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=True, label="What is your art/service? *")
+
+    tags = AdvancedModelChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Tag.objects.filter(is_active=1), required=False, label="Choose all that describes what you offer")
 
     functions = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
-                                               queryset=Function.objects.filter(is_active=1), required=True)
+                                               queryset=Function.objects.filter(is_active=1), required=True, label="What events do you do? *")
 
-    x = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
-    x2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
-    y = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
-    y2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    bio = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5}),label='Tell us about your business in few words', required=False)
+
+    comments = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5}),label='Additional notes for fees',required=False)
+
+    address = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows':5}),label='Address',required=False)
+
+    latitude = forms.CharField(widget=forms.HiddenInput(),label=u'',required=False)
+    longitude = forms.CharField(widget=forms.HiddenInput(),label=u'',required=False)
+
+    # x = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    # x2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    # y = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    # y2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
 
 
     class Meta:
         model = Listing
-        exclude = ('user', 'is_approved', 'is_active', 'score')
+        fields = ('name','city','talents','functions','tags','outstation','bio','fees','comments','contact_name','contact_email',
+                  'contact_number','contact_number2','contact_number3','address','address_city')
 
     def clean_functions(self):
         return self.cleaned_data['functions']
