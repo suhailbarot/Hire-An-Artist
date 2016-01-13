@@ -1,9 +1,15 @@
+from PIL import Image
+from StringIO import StringIO
+import time
+
 from django.contrib.auth.models import User
 from django import forms
 from django.core.validators import RegexValidator, URLValidator
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate
 from django.forms.models import inlineformset_factory,BaseInlineFormSet
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from app.models import *
 from app.utils import generate_hash
@@ -257,3 +263,32 @@ class EditPasswordForm(forms.ModelForm):
 
 ListingProjectFormSet = inlineformset_factory(Listing,Projects, form=ProjectForm, extra=1, can_delete=True, can_order=True,
                                               validate_max=7)
+
+
+class ProfilePicForm(forms.ModelForm):
+    x = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    x2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    y = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+    y2 = forms.IntegerField(widget=forms.HiddenInput(),label=u'')
+
+    class Meta:
+        model = Listing
+        fields = ('profile_pic',)
+
+    def save(self):
+            im = Image.open(self.cleaned_data['profile_pic'])
+            box=(int(self.cleaned_data['x']),int(self.cleaned_data['y']),int(self.cleaned_data['x'])+int(self.cleaned_data['x2']),int(self.cleaned_data['y2'])+int(self.cleaned_data['y']))
+            im2 = im.crop(box)
+            img_io = StringIO()
+            im2.save(img_io, format='JPEG')
+            timestamp = str(int(time.time()))
+            img_content = InMemoryUploadedFile(img_io, None, generate_hash(timestamp)+'.jpg', 'image/jpeg', img_io.len, None)
+            k = super(ProfilePicForm, self).save()
+            k.profile_pic = img_content
+            k.save()
+
+
+class AdditionalForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ('tech_details_file',)

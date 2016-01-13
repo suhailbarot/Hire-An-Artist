@@ -26,7 +26,7 @@ from django.core import serializers
 from django.conf import settings
 from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, \
     ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,\
-    FilterSearchForm,HomeArtistNameSearch
+    FilterSearchForm,HomeArtistNameSearch, ProfilePicForm, AdditionalForm
 
 from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media, City
 from app.utils import generate_hash
@@ -258,7 +258,7 @@ def add_listing(request):
             # if formset.is_valid():
             #     l = form.save(commit=True,user=usr)
                 # formset.save(commit=True)
-            return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
+            return HttpResponseRedirect(reverse('edit_uploads',kwargs={'lid':l.id}))
     else:
         usr = UserProfile.objects.get(user=request.user)
         form = ListingForm(initial={'contact_name':usr.full_name,'contact_number':usr.phone,'contact_email':usr.email})
@@ -303,10 +303,33 @@ def view_listing_projects(request,lid):
         listing = Listing.objects.get(id=lid, is_active=1)
     except Listing.DoesNotExist:
         return HttpResponse("No such Listing")
-
     projects = Projects.objects.filter(listing=listing, is_active=1)
-
     return render(request,"view_listing_projects.html",{'listing':listing,'projects':projects})
+
+
+def edit_uploads(request, lid):
+    try:
+        listing = Listing.objects.get(id=lid, is_active=1, user__user=request.user)
+    except Listing.DoesNotExist:
+        return HttpResponse("No such listing")
+    pf = ProfilePicForm(instance=listing)
+    af = AdditionalForm(instance=listing)
+    af_vis = False
+    pf_vis = False
+    if request.POST:
+        if 'profile_pic_form' in request.POST:
+            pf = ProfilePicForm(data = request.POST, files=request.FILES, instance=listing)
+            if pf.is_valid():
+                pf.save()
+            else:
+                pf_vis = True
+        if 'additional_form' in request.POST:
+            af = AdditionalForm(data=request.POST, files=request.FILES, instance=listing)
+            if af.is_valid():
+                af.save()
+            else:
+                af_vis = True
+    return render(request,'edit_uploads.html',{'listing':listing,'pf':pf,'af':af,'af_vis':af_vis,'pf_vis':pf_vis})
 
 
 ##### MEDIA STUFF #########

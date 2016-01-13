@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'artist/(?P<lid>\w+)/projects/$', 'app.views.view_listing_projects', name='view_projects'),
     url(r'artist/(?P<lid>\w+)/media/manage/$', 'app.views.manage_media', name='manage_media'),
     url(r'artist/(?P<lid>\w+)/media/$', 'app.views.view_media', name='view_media'),
+    url(r'artist/(?P<lid>\w+)/uploads/$', 'app.views.edit_uploads', name='edit_uploads'),
     url(r'artist/(?P<lid>\w+)/edit/$', 'app.views.edit_listing', name='listing_edit'),
     url(r'^search/','app.views.search_home',name='search'),
     url(r'^results/','app.views.search_results',name='search_results'),

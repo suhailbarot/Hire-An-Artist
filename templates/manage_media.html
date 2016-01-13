@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap %}
 {% load jfutags %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
 
 {% block body_block %}
 
@@ -478,6 +471,9 @@
 </div>
 
 
+{% endblock %}
+
+{% block modals %}
 
 <!-- Modal -->
     {# add photos modal #}
@@ -747,7 +743,5 @@
   </div>
 </div>
 
+    {% endblock %}
 
-{% endblock %}
-</body>
-</html>

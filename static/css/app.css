@@ -254,7 +254,7 @@ textarea:focus, input:focus, .uneditable-input:focus {
   }
   #canvas{
     width: 200px;
-    height: 320px;
+    height: 200px;
   }
 
 .navbar-bright {
@@ -310,7 +310,7 @@ textarea:focus, input:focus, .uneditable-input:focus {
 .message-separator {
     display: block;
 	border-top: 1px solid #d9d9d9;
-    margin: 25px auto 35px auto;
+    margin: 0px auto 0px auto;
 	width: 37%;
 }
 
@@ -665,4 +665,13 @@ div label input {
 .map_canvas {
     width: 400px;
     height: 300px;
+}
+
+.profile_thumb {
+    width: 200px;
+    height: 200px;
+}
+
+.up_form {
+    margin-top: 15px;
 }

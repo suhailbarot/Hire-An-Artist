@@ -107,7 +107,7 @@ class Tag(models.Model):
 
 
 class Listing(models.Model):
-    profile_pic = models.ImageField(upload_to=get_file_path,blank=True)
+    profile_pic = models.ImageField(upload_to=get_file_path,blank=True,verbose_name='Upload your listing picture')
     name = models.CharField(max_length=200,verbose_name="Name your listing *")
     city = models.CharField(max_length=100,verbose_name="Which city are you based out of? *")
     choice = (
@@ -124,7 +124,7 @@ class Listing(models.Model):
     fees = models.IntegerField(verbose_name='What are your charges? *')
     comments = models.CharField(max_length=1000, blank=True, null=True, verbose_name="Additional notes for your fees")
     tech_details = models.CharField(max_length=2000, blank=True, null=True)
-    tech_details_file = models.FileField(blank=True, null=True, upload_to='tech_det')
+    tech_details_file = models.FileField(blank=True, null=True, upload_to='tech_det', verbose_name='Additional Detail File')
     fb_link = models.URLField(blank=True, null=True)
     twitter_link = models.URLField(blank=True, null=True)
     user = models.ForeignKey(UserProfile)
