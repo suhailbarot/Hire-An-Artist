@@ -119,6 +119,25 @@ $(function(){
         .modaldialog{
         	width:900px;
         }
+        .img_festival{
+            width: 300px; 
+            height:300px;
+            -webkit-box-shadow: 0 0 20px #333;
+        box-shadow: 0 0 20px #333;
+        }
+        .festrow{
+            display:flex;
+            text-align: center;
+            margin: auto;
+            margin-bottom: 5px;
+        }
+        .img-left{
+            margin-right: 5px;
+
+        }
+        .img-right{
+            margin-left: 5px;
+        }
 
 
     </style>
@@ -299,7 +318,6 @@ $(function(){
 
         {% else %}
         <li><a href="#" data-toggle="modal" data-target="#loginmodal"> Login</a></li>
-        <li><a href="#" data-toggle="modal" data-target="#registermodal"> Sign Up</a></li>
         {% endif %}
       <li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
             {{ set_city|title }}
@@ -450,7 +468,6 @@ $(function(){
 
     <div class="row">
 
-        <div class="col-md-8 col-md-offset-2">
 
             <div class="large-box">
             <div class="content-box text-center" id="headertext">
@@ -460,25 +477,26 @@ $(function(){
                 <br>
 
                 <h3>Some Description Text</h3>
+                <hr id="talenthr">
 
             </div>
+            <br>
 
             <div class="row">
 
-                <div class="col-md-12 col-centered">
-            <div class="content-box text-center" id="imagebox">
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle pull-left">
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle pull-left">
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle pull-left">
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle pull-left">
+                <div class="row festrow">
+                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle ">
+                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle  ">
+         
+                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle  ">
+                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle  ">
             </div>
-                    </div>
-                </div>
                 </div>
 
         </div>
 
         </div>
+        <br>
 
 
 <div class="row" >

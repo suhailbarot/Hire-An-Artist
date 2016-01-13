@@ -24,3 +24,14 @@ def get_user_name(context):
     except:
         pass
     return ""
+
+@register.simple_tag(takes_context=True)
+def get_user_type(context):
+    request = context['request']
+    try:
+        up = UserProfile.objects.get(is_active=1,user=request.user)
+        return up.type
+
+    except:
+        pass
+    return ""

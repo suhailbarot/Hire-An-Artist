@@ -1,25 +1,132 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'root/base.html' %}
+{% load static %}
+{% load bootstrap %}
 
-<h2>Edit Profile</h2>
+{% block header_block %}
 
-<h3>Basic Edits</h3>
-<form method="post">
+	<style type="text/css">
+	.form-control{
+		border-radius: 0px;
+	}
+
+	.sidecol{
+		background-color: white;
+		text-align: center;
+		padding-top: 20px;
+		position: fixed;
+		width:200px;
+		border: 1px solid #d1d1d1;
+
+	}
+	.singlelist{
+		margin-left: 10px;
+		margin-bottom:10px;
+		background-color: white;
+		border:1px solid #d1d1d1;
+		height: 200px;
+		width:703px;
+
+	}
+	.pic-col{
+		padding-left: 0px;
+		padding-right: 0px;
+		width:200px;
+	}
+	.info-col{
+		width: 71.45%;
+	}
+	.namerow{
+		border-bottom: 1px solid #d1d1d1;
+		text-align: center;background-color: #d1d1d1;
+	}
+	.profilepic{
+		height: 200px;
+		width: 200px;
+		float:left;
+		clear: left;
+	}
+	.attributes{
+		margin-top: 20px;
+	}
+	.attr-name{
+		font-weight: bolder;
+		font-size: 16px;
+	}
+	.name{
+		color: #333;
+	}
+	.attr-col{
+		border-right:1px solid #eee;
+		min-height: 100px;
+		text-align: center;
+	}
+	.links{
+		color: #333;
+	}
+	.header{
+		text-align: center;
+	}
+	.change-p-row{
+
+	}
+	.main-col-edit{
+		background:white;
+		padding: 20px;
+		border: 1px solid #d1d1d1;
+		position: relative;
+		left: 20px;
+	}
+
+
+	</style>
+
+
+{% endblock %}
+
+{% block body_block %}
+
+
+
+<br/><br/>
+<div class="row">
+
+
+	<div class="col-md-2 col-md-offset-2 sidecol">
+	<h3>Hi {{ up.full_name }}!</h3>
+		<hr>
+
+<a class="links" href="{% url 'password_change_done' %}">Change Password</a><br/>
+<a class="links"  href="{% url 'edit_profile' %}">Edit Profile</a><br/>
+<a class="links"  href="{% url 'add_listing' %}"> Add Listing</a> <br/><br/>
+	</div>
+		<div class="row change-p-row">
+	<div class="col-md-4 col-md-offset-4 main-col-edit">
+	<div class="row header">
+		<h3> Edit Profile</h3>
+		<hr>
+
+
+	</div>
+	<div class="form">
+		<form method="post">
 
     {% csrf_token %}
 
-    {{ form }}
+    {{ form|bootstrap }}
 
-    <input type="submit" value="basic_form">
+    <input type="submit" value="Submit" class="btn btn-default buttonsubmit">
 
 </form>
 
-<a href="/account/password">Change Password</a>
 
-</body>
-</html>
+
+	</div>
+
+</div>
+
+    <br/>
+
+
+</div>
+</div>
+{% endblock %}
