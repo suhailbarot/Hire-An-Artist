@@ -316,6 +316,19 @@ def edit_uploads(request, lid):
     af = AdditionalForm(instance=listing)
     af_vis = False
     pf_vis = False
+    md = Media.objects.filter(is_active=1, listing=listing)
+    yt = []
+    sc = []
+    ph = []
+    for media in md:
+        if media.type == PHOTO:
+            ph.append(media)
+        if media.type == VIDEO:
+            vd = video_id(media.url)
+            media.vid = vd
+            yt.append(media)
+        if media.type == SOUND:
+            sc.append(media)
     if request.POST:
         if 'profile_pic_form' in request.POST:
             pf = ProfilePicForm(data = request.POST, files=request.FILES, instance=listing)
@@ -329,7 +342,9 @@ def edit_uploads(request, lid):
                 af.save()
             else:
                 af_vis = True
-    return render(request,'edit_uploads.html',{'listing':listing,'pf':pf,'af':af,'af_vis':af_vis,'pf_vis':pf_vis})
+    return render(request,'edit_uploads.html',{'listing':listing,'pf':pf,'af':af,'af_vis':af_vis,'pf_vis':pf_vis,
+                                               'sounds':sc,'videos':yt,'images':ph,
+                                               'VIDEO':VIDEO,'SOUND':SOUND,'PHOTO':PHOTO})
 
 
 ##### MEDIA STUFF #########
