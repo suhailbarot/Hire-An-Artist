@@ -120,7 +120,7 @@ class Listing(models.Model):
     contact_number = models.CharField(max_length=12,verbose_name='Contact number *')
     contact_number2 = models.CharField(max_length=12, blank=True, null=True, verbose_name='Additional contact number 1')
     contact_number3 = models.CharField(max_length=12, blank=True, null=True, verbose_name='Additional contact number 2')
-    bio = models.CharField(max_length=2000, blank=True)
+    bio = models.CharField(max_length=1000, blank=True)
     fees = models.IntegerField(verbose_name='What are your charges? *')
     comments = models.CharField(max_length=1000, blank=True, null=True, verbose_name="Additional notes for your fees")
     tech_details = models.CharField(max_length=2000, blank=True, null=True)

@@ -1,108 +1,233 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'root/base.html' %}
+{% load humanize %}
+{% load static %}
+    {% load bootstrap %}
+
+{% block header_block %}
+
+    <script type="text/javascript" src="{% static 'js/show_more.js' %}">
+
+    </script>
+
+    <script type="text/javascript">
+
+    $(function(){
+        $('#price-popover').popover({ trigger: "hover" });
+
+        $(".description-holder p").shorten({
+            "showChars" : 500,
+    "moreText"  : "See More",
+    "lessText"  : "Less"});
+
+        $(".pricing-text-holder").shorten({
+            "showChars" : 200,
+    "moreText"  : "See More",
+    "lessText"  : "Less"});
 
 
-<h1>{{ listing.name }}</h1>
+    });
 
 
+    </script>
+
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="listing-container">
+
+    <div class="row">
+
+    <div class="col-md-3">
 
 
-<br/>
+    <div class="name-sidebar">
+        <div class="talent-holder">
+       <h2> {{ listing.talents }} </h2>
+            <hr class="caption-separator">
+            </div>
+        <div class="tags-holder">
+            {% for tag in listing.tags.all %} <p class="tag">{{ tag }}</p> {% endfor %}
+        </div>
+        <br/>
+        <div class="pricing-holder">
+            <h4>Pricing
+                <div id="price-popover" data-content="{{ listing.comments }}" class="pull-right" rel="popover" data-placement="bottom">Rs {{ listing.fees|intcomma }} <span class="glyphicon glyphicon-question-sign price-info-icon"></span></div>  </h4>
+            <p class="pricing-text-holder"> {{ listing.talents.fee_text }}</p>
+        </div>
 
-<a href="projects">View Projects</a> |
-<a href="edit">Edit Listing</a>
-<a href="media">View Media</a>
+        <div class="alert alert-warning super-alert">
 
-<br/>
-{% if listing.profile_pic %}
-<img src="{{ listing.profile_pic.url }}" width="200" height="320">
-{% endif %}
-</br>
-<br/>
+        {% if listing.tech_details_file %}
+        <div class="extra-holder">
+          <i class="glyphicon glyphicon-cloud-download"></i> <a href="{{ listing.tech_details_file.url }}">Brochure/Additional Information</a>
+        </div>
+        {% endif %}
+        <div class="outstation-holder">
+           <p> {% if listing.outstation == 1 %}
+            <i class="glyphicon glyphicon-ok"></i> Service provided in other cities
+            {% else %}
+            <i class="glyphicon glyphicon-remove"></i> No service in other cities
+            {% endif %}
+        </p>
+        </div>
+        </div>
+        <div class="contact-details-holder">
+            <button class="btn btn-primary stylebx">Contact Details</button>
+        </div>
 
-Outstation : {{ listing.outstation }}
+        {% if similar %}
+        <div class="similar-listings-holder">
+            <h4 class="text-center">Related Listings</h4>
+            <hr class="listing-separator">
+                {% for sim in similar %}
+                    <a class='similar-link' href="{% url 'view_listing' sim.id %}">
+                <div class="similar-listing">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ sim.profile_pic.url }}" class="similar-listings-image">
+                            </div>
+                        <div class="col-md-7">
+                            <h5 class="pull-top">{{ sim.name }}</h5>
+                            <p>{{ sim.talents }}</p>
+                            <h5> &#8377 {{ sim.fees|intcomma }}</h5>
+                            </div>
+                    </div>
+                    </a>
+                </div>
+                {% endfor %}
+        </div>
+        {% endif %}
 
-<br/>
-<br/>
-Contact Name : {{ listing.contact_name }}
-<br/>
-Contact Email : {{ listing.contact_email }}
-<br/>
-Contact Number 1: {{ listing.contact_number }}
-<br/>
-Contact Number 2: {{ listing.contact_number2 }}
-<br/>
-Contact Number 3: {{ listing.contact_number3 }}
+    </div>
 
-<br/>
-<br/>
+    </div>
 
-Bio : {{ listing.bio }}
+    <div class="col-md-9">
 
-<br/>
+        <div class="data-siderbar">
 
-Fees : {{ listing.feeds }}
-<br/>
+            <div class="row">
+                <div class="col-md-12">
 
-Comments: {{ listing.comments }}
-<br/>
-<br/>
+                    <div class="name-holder">
+               <h2>{{ listing.name }}, {{ listing.city }} <span class="rating pull-right rating-box">
+  <span class="rating-star full-star"></span>
+  <span class="rating-star full-star"></span>
+  <span class="rating-star empty-star"></span>
+  <span class="rating-star empty-star"></span>
+  <span class="rating-star empty-star"></span></span> </h2>
+            </div>
 
-Tech Details : {{ listing.tech_details }}
+                    <hr class="caption-separator">
+                    <div class="description-holder">
+                <p>{{ listing.bio }}</p>
+            </div>
 
-<br/>
-{% if listing.tech_details_file %}
-Tech Details Link Download FIle : <a href="{{ listing.tech_details_file.url }}">Read it</a>
-{% endif %}
+                </div>
+            </div>
 
-<br/>
+            <div class="media-holder">
+                <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+    <li role="presentation"><a href="#videos" aria-controls="videos" role="tab" data-toggle="tab">Videos</a></li>
+    <li role="presentation"><a href="{% url 'view_media' listing.id %}#sounds">Sounds</a></li>
+  </ul>
 
-Twitter : <a href="{{ listing.twitter_link }}">Link</a>
+                <div class="tab-content media-tabs">
+    <div role="tabpanel" class="tab-pane active" id="photos">
+    <div class="row">
+    {% if images %}
+        {% for image in images %}
+            <div class="photo-grid-listing pull-left">
+      <a href="{% url 'view_media' listing.id %}" class="img-content-listing {% if forloop.last %}{% if image_count > 0 %} trans {% endif %}{% endif %}">
+          <img src="{{ image.url }}" alt="{{ image.title }}" />
+          {% if forloop.last %}
+              {% if image_count > 0 %}
+              <h4 class="overlay_img_listing">{{ image_count }}+ more pictures</h4>
+                  {% endif %}
+          {% endif %}
+      </a>
+        </div>
+        {% endfor %}
+    {% else %}
+    <h4 class="text-center">The listing doesn't have any uploaded photos</h4>
+    {% endif %}
+    </div>
+    </div>
 
-<br/>
-
-Facebook : <a href="{{ listing.fb_link }}">link</a>
-
-<br/>
-
-User : {{ listing.user }}
-
-<br/>
-
-Score : {{ listing.score }}
-
-<br/>
-
-is Approved : {{ listing.is_approved }}
-
-<br/>
-
-<br/>
-
-<br/>
-
-<h2> Talents</h2>
-
-{{ listing.talents.name }}
-
-
-<h2>Tags</h2>
-
-{% for tag in listing.tags.all %}
-{{ tag.name }},
+    <div role="tabpanel" class="tab-pane" id="videos">
+            <div class="row">
+            {% if videos %}
+{% for video in videos %}
+    <div class="col-md-3 photo-grid-listing pull-left">
+      <a href="{% url 'view_media' listing.id %}#videos" class="img-content-listing {% if forloop.last %}{% if video_count > 0 %} trans {% endif %}{% endif %}">
+          <img src="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg" />
+          {% if forloop.last %}
+              {% if video_count > 0 %}
+              <h4 class="overlay_img_listing">{{ video_count }}+ more videos</h4>
+                  {% endif %}
+          {% endif %}
+      </a>
+    </div>
 {% endfor %}
+            {% else %}
+                <h4 class="text-center">The user hasn't uploaded any videos</h4>
+            {% endif %}
+            </div>
+    </div>
 
-<h2>Functions</h2>
-{% for function in listing.functions.all %}
-{{ function.name }},
-{% endfor %}
+    <div role="tabpanel" class="tab-pane" id="sounds">
+        {% if sounds %}
+            {% else %}
+            <h4 class="text-center">The user hasn't uploaded any sounds</h4>
+        {% endif %}
+    </div>
+  </div>
+
+            </div>
+
+        <div class="project-holder">
+
+            <h3>Some of the works</h3>
+            <hr class="caption-separator">
+            {% for project in projects %}
+                <div class="project-panel">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div><h4>{{ project.title }}</h4></div>
+                        <p>{{ project.description }}</p>
+                        </div>
+                </div>
 
 
+                    <div class="row">
+                        <div class="col-md-3">
+                        <p>Referee : {{ project.referral_name }} </p>
+                        </div>
+                        <div class="col-md-4">
+                        <p>Referrer Contact : {{ project.referral_contact }} {{ project.referral_contact2 }}</p>
+                            </div>
+                        <div class="col-md-4">
+                            <p>
+                                Referrer Email : {{ project.referral_email }}
+                            </p>
+                        </div>
+                        </div>
+                    </div>
 
-</body>
-</html>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        </div>
+
+    </div>
+
+
+    </div>
+
+    </div>
+
+{% endblock %}

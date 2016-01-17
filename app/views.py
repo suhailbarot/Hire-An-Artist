@@ -274,28 +274,43 @@ def edit_listing(request,lid):
         return HttpResponse("WTF")
     if request.POST:
         form = ListingForm(data=request.POST or None, files=request.FILES , instance=listing)
-        formset = ListingProjectFormSet(request.POST,instance=listing)
         if form.is_valid():
             usr = UserProfile.objects.get(user=request.user)
-            k = form.save(commit=False)
-            formset = ListingProjectFormSet(request.POST, instance=k)
-            if formset.is_valid():
-                l = form.save(commit=True,user=usr)
-                formset.save(commit=True)
-                return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
+            l = form.save(commit=True,user=usr)
+            return HttpResponseRedirect(reverse('view_listing',kwargs={'lid':l.id}))
     else:
         form = ListingForm(instance=listing)
-        formset = ListingProjectFormSet(instance=listing,queryset=Projects.objects.filter(is_active=1))
 
-    return render(request,'edit_listing.html',{'form':form,'formset':formset,'listing':listing})
+    return render(request,'add_listing.html',{'form':form,'listing':listing})
 
 
 def view_listing(request,lid):
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
+        media = Media.objects.filter(is_active=1, listing=listing)
+        projects = Projects.objects.filter(listing=listing, is_active=1)
+        if listing.group_key:
+            similar = Listing.objects.filter(group_key=listing.group_key).exclude(id=listing.id)
+        else:
+            similar = []
+        print similar
+        yt = []
+        sc = []
+        ph = []
+        for media in media:
+            if media.type == PHOTO:
+                ph.append(media)
+            if media.type == VIDEO:
+                vd = video_id(media.url)
+                media.vid = vd
+                yt.append(media)
+            if media.type == SOUND:
+                sc.append(media)
     except Listing.DoesNotExist:
         return HttpResponse("No such listing")
-    return render(request,'view_listing.html',{'listing':listing})
+    return render(request,'view_listing.html',{'listing':listing,'videos':yt[:4],'sounds':sc,
+                                               'images':ph[:4],'image_count':max(0,len(ph)-4),
+                                               'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar})
 
 
 def view_listing_projects(request,lid):
