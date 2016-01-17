@@ -40,10 +40,7 @@ $(function(){
     $(document).ready(function(){
 
     	$("#loginmodal #id_name").attr('id','name2');
-                  var pathname = window.location.pathname;
-
-        if($("#page-url")){
-          $("#page-url").val(pathname);
+  
 
         };
 
@@ -160,7 +157,7 @@ $(function(){
 
 
 </head>
-<body>
+<body style="padding-right:0px;">
 	<div id="cityModal" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <!-- Modal content-->
@@ -188,12 +185,11 @@ $(function(){
 
 
 
-    <form method="post" id="loginform" action ="/user/login">
+    <form method="post" id="loginform" action ="/user/login?next={{request.path}}">
 
     {% csrf_token %}
 
     {{ form_login |bootstrap}}
-    <input type="hidden" value="" id="page-url">
 <a><input class = "btn btn-default buttonsubmit" type="submit" value="Login" name="login"></a>
 
         <a href="#" id="forgot">Forgot Password?</a>
@@ -219,7 +215,7 @@ $(function(){
 <div class="col-md-6 regcol">
 
 
-    		<form method="post" id="registerform" action="/user/register/" >
+    		<form method="post" id="registerform" action="/user/register?next={{request.path}}" >
 
     {% csrf_token %}
 

@@ -29,6 +29,15 @@
 #cityinput:focus {
     outline: none;
 }
+#cityModal {
+-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.bodymodal{
+        padding: 30px;
+
+    }
 
 
 .video-grid img{
