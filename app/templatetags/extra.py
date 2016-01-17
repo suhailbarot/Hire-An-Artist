@@ -25,13 +25,15 @@ def get_user_name(context):
         pass
     return ""
 
-@register.simple_tag(takes_context=True)
-def get_user_type(context):
-    request = context['request']
+@register.assignment_tag()
+def get_user_type(a):
+#    request = context['request']
     try:
-        up = UserProfile.objects.get(is_active=1,user=request.user)
+        up = UserProfile.objects.get(is_active=1,user=a)
+        print up.type
         return up.type
 
     except:
         pass
+    print "wirow"
     return ""

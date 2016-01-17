@@ -5,11 +5,7 @@
 $(document).ready(function(){
 
 
-var x= {% get_user_type %};
-if(x!=2){
 
-	$(".listing-dropdown").hide();
-}
 
 
 });
@@ -40,6 +36,10 @@ if(x!=2){
         </a></li>
 								{% if user.is_authenticated %}
 
+				{% get_user_type request.user as type %}
+				{% if type == 2 %}
+
+
 				<li class="dropdown listing-dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Your Listings </a>
 					<ul class="dropdown-menu" role="menu">
@@ -47,6 +47,7 @@ if(x!=2){
 						<li><a href="{% url 'artist_home' %}">Manage listings </a></li>
 					</ul>
 				</li>
+				{% endif %}
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% get_user_name %} <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
