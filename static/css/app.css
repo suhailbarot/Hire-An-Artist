@@ -40,6 +40,13 @@
     }
 
 
+a {
+    color:#fc6042;
+}
+a:hover {
+    color:#fc6042;
+}
+
 .video-grid img{
     height: 160px;
     width: 200px;
@@ -275,7 +282,6 @@ textarea:focus, input:focus, .uneditable-input:focus {
 
  #blah {
     background-color: #FFF;
-
     font-size: 24px;
     display: block;
     max-height: 500px;
@@ -703,4 +709,251 @@ div label input {
 
 .up_form {
     margin-top: 15px;
+}
+
+.listing-container {
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    padding: 5px;
+    margin: 5px auto 5px auto;
+}
+
+.name-sidebar {
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.tag {
+    background: #fc6042;
+    display: inline-block;
+    color: #fff;
+    position: relative;
+    padding: 5px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.tags-holder {
+    margin-top:20px;
+}
+
+.description-holder {
+    margin-top: 20px;
+}
+
+.profile-pic-listing {
+    width:200px;
+    height:200px;
+    margin-top: 20px;
+}
+
+.rating-box {
+  color: #e1e1e1;
+  text-shadow: 0px 1px 1px rgb(241, 241, 241);
+  height: 3rem;
+}
+
+.rating-star{
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  padding: 0 2rem;
+  position: relative;
+  display: block;
+  float:left;
+}
+
+.full-star:before {
+  color: #ffd106;
+  content: "\2605";
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+
+.empty-star:before {
+  content: "\2605";
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+
+.half-star:before {
+  color: #ffd106;
+  content: "\2605";
+  width: 50%;
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+
+.half-star:after {
+  content: '\2605';
+  position: absolute;
+  left: 1.5rem;
+  width: 50%;
+  text-indent: -1.5rem;
+  overflow: hidden;
+}
+
+.caption-separator {
+	border-top: 1px solid #f1f1f1;
+}
+
+.price-info-icon {
+    top:2px;
+    color: #8c8c8c;
+}
+
+.pricing-text-holder {
+    padding-top: 10px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.popover {
+    width: 100%;
+    font-size: 15px;
+}
+
+.super-alert {
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+
+.alert p {
+    margin-bottom: 0px;
+}
+
+.stylebx{
+	height: 40px;
+    width: 100%;
+    font-size: 15px;
+    background-color: #e0492c;
+    border: none #e0492c;
+    border-right-width: 0px;
+	color: white;
+    transition: all 0.3s;
+}
+
+.stylebx:hover{
+    background-color: #c53d23;
+}
+
+.media-tabs {
+    padding:12px;
+}
+
+.photo-grid-listing {
+    position: relative;
+    height: 225px;
+    width: 225px;
+    overflow: hidden;
+    margin: 3px 3px 3px 3px;
+}
+
+.photo-grid-listing img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+
+.video-grid-listing img{
+    height: 225px;
+    width: 225px;
+}
+
+.playbutton-listing {
+    font-size: 71px;
+    color: #FFFFFF;
+    position: absolute;
+    left: 30%;
+    top: 31%;
+}
+
+.playbtn-listing {
+    text-shadow: 4px 4px #000000;
+}
+
+.trans img {
+    opacity: 0.8;
+    -webkit-filter: brightness(50%);
+}
+
+.overlay_img_listing {
+    color: white;
+	left: 0;
+    position:absolute;
+    text-align:center;
+    line-height: 200px;
+    vertical-align: middle;
+    width: 100%;
+    display: block;
+    margin:auto;
+    text-decoration: underline;
+}
+
+.similar-listings-holder {
+    margin-top: 25px;
+    border: #f1f1f1 1px solid;
+    border-radius: 4px;
+    padding:5px;
+}
+
+.similar-listings-image {
+    width:85px;
+    height:85px;
+}
+.similar-listing{
+    margin-top:20px;
+    padding-left: 5px;
+    margin-bottom: 5px;
+}
+
+.similar-link {
+    color: #000000;
+}
+
+.similar-link:hover {
+    color:#000000;
+}
+
+.icon-similar {
+    line-height: 10px;
+}
+
+.pull-top {
+    margin-top: 0px;
+}
+
+.listing-separator {
+    color: #f1f1f1;
+    width: 75%;
+    margin:5px auto 5px auto;
+
+}
+
+.project-panel {
+    border-radius: 2px;
+    border-bottom: 1px solid #d1d1d1;
+    padding: 10px;
+    margin-top:10px;
+    width: 90%;
+}
+
+.project-description {
+    font-size: 13px;
+}
+
+.project-box {
+    min-width: 250px;
+    background: #f8f8f8;
+    padding: 5px 10px 5px 15px;
+    border-radius: 4px;
 }

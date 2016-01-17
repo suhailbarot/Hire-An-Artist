@@ -65,7 +65,9 @@ INSTALLED_APPS = (
     'django_bootstrap_dynamic_formsets',
     'bootstrap3',
     'jfu',
-    'location_field'
+    'location_field',
+    'django.contrib.humanize'
+
 
 )
 
