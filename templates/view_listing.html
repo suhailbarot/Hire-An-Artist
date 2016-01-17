@@ -187,39 +187,33 @@
 
             </div>
 
+        {% if projects %}
+
         <div class="project-holder">
 
-            <h3>Some of the works</h3>
+            <h3>Past Work</h3>
             <hr class="caption-separator">
+        <div class="row">
             {% for project in projects %}
-                <div class="project-panel">
-                <div class="row">
-                    <div class="col-md-12">
-                    <div><h4>{{ project.title }}</h4></div>
-                        <p>{{ project.description }}</p>
-                        </div>
+                <div class="col-md-4">
+                <div class="project-box">
+                <h4>{{ project.title }}</h4>
+                <p>{{ project.description }}</p>
+                <p><i class="glyphicon glyphicon-user"></i> {{ project.referral_name }}</p>
+                <p><i class="glyphicon glyphicon-phone"></i> {{ project.referral_contact }}, {{ project.referral_contact_2 }} </p>
+                <p><i class="glyphicon glyphicon-envelope"></i> {{ project.referral_email }}</p>
+                </div>
                 </div>
 
-
-                    <div class="row">
-                        <div class="col-md-3">
-                        <p>Referee : {{ project.referral_name }} </p>
-                        </div>
-                        <div class="col-md-4">
-                        <p>Referrer Contact : {{ project.referral_contact }} {{ project.referral_contact2 }}</p>
-                            </div>
-                        <div class="col-md-4">
-                            <p>
-                                Referrer Email : {{ project.referral_email }}
-                            </p>
-                        </div>
-                        </div>
-                    </div>
-
+                {% endfor %}
+        </div>
                 </div>
-            {% endfor %}
+
+        {% endif %}
+
 
         </div>
+
 
         </div>
 

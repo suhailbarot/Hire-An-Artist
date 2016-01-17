@@ -912,8 +912,7 @@ div label input {
 
 .project-panel {
     border-radius: 2px;
-    background: grey;
-    border: 1px;
+    border-bottom: 1px solid #d1d1d1;
     padding: 10px;
     margin-top:10px;
     width: 90%;
@@ -921,4 +920,11 @@ div label input {
 
 .project-description {
     font-size: 13px;
+}
+
+.project-box {
+    min-width: 250px;
+    background: #f8f8f8;
+    padding: 5px 10px 5px 15px;
+    border-radius: 4px;
 }
