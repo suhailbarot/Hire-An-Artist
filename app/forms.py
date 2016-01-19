@@ -56,9 +56,10 @@ class ForgotPasswordForm(forms.Form):
 
 
 class FilterSearchForm(forms.Form):
-    city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False)
+    # city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('--- Talent---'))
+    tags = AdvancedModelChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Tag.objects.filter(is_active=1), required=False, label="Choose all that describes what you offer")
     budget_min = forms.IntegerField(widget=forms.HiddenInput(),required=False)
     budget_max = forms.IntegerField(widget=forms.HiddenInput(),required=False)
     outstation = forms.BooleanField(label=u'Outstation Artists?',required=False)
@@ -74,6 +75,7 @@ class HomeSearchForm(forms.Form):
     #             (0,'No'),
     #           )
     # outstation = forms.ChoiceField(choices=choices,required=False,)
+
 
 
 class HomeArtistNameSearch(forms.Form):

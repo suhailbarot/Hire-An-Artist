@@ -1,40 +1,324 @@
-
-{% extends 'base.html' %}
+{% extends 'root/base.html' %}
 {% load bootstrap %}
-{% block page_title %}Search For An Artist{% endblock %}
+{% block page_title %}Search Results{% endblock %}
+
+{% block header_block %}
+<script type="text/javascript">
+$(function(){
+    $(".tagged").hide();
+
+    $('.talent-'+$('select[name=talents]').val()).show();
+
+    $('select[name=talents]').change(function(){
+        $(".tagged").hide();
+        $('.talent-'+$(this).val()).show();
+    });
+});
+</script>
+{% endblock %}
 
 {% block body_block %}
-<div class= "row">
-    <div class = " col-md-offset-2 col-md-8" >
-<form id="filter_form" name="filter_form" method="post" action="/results/">
 
-{% csrf_token %}
+    <div class="container-fluid container-back">
 
-    {% for field in form %}
-        {{ field |bootstrap}}
-        {{ field.errors }}
-        <br/>
-    {% endfor %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="filter-sidebar">
+            <div class="filter-header">
+                <p class="filter-header-text">Filters</p>
+                <div class="caption-separator"></div>
+            </div>
+                <div class="form">
+                    <form class="filter-form">
+                        <div class="row">
+                        <div class="col-md-12">
+                        <div class="form-talent-holder">
+                            {{ form.talents | bootstrap }}
+                        </div>
+                        </div>
 
-    <input type="submit" value="search" class = "btn btn-default"  name="filter_form">
-</form>
+                        <div class="col-md-12">
+                        <div class="form-function-holder">
+                            {{ form.function_type | bootstrap }}
+                        </div>
+                        </div>
+
+                        <div class="col-md-12">
+                        <div class="form-tag-holder">
+                            <div class="form-group additional-separator">
+                        <label class="control-label tags-control">{{ form.tags.label }}</label>
+                        <div>
+                {% for choice in form.tags.field.choices %}
+                    <div class="tagged talent-{{ choice.2.talent.pk }}" talent_for="{{ choice.2.talent.pk }}">
+                        <label><input type="checkbox"
+                               name="{{ form.tags.name }}"
+                               value="{{ choice.0 }}"
+                                {% if choice.0|safe in form.tags.value or choice.0 in form.tags.value %} checked="checked" {% endif %}><span>
+                        {{ choice.2 }}</span></label>
+                    </div>
+                {% endfor %}
+                            </div>
+                    </div>
+            {% if form.tags.errors %}
+                <span class="help-block">{{ form.tags.errors }}</span>
+            {% endif %}
+                        </div>
+                        </div>
 
 
-<hr>
-Artist Search
+                    <div class="col-md-12">
+                    <div class="form-outstation-holder">
+                       {{ form.outstation | bootstrap }}
+                    </div>
+                    </div>
 
-<form id="name_form" name="name_form" method="post" action="/results/">
+                        </div>
 
-{% csrf_token %}
+                    </form>
+                </div>
 
-    {% for field in name %}
-        {{ field |bootstrap}}
-        {{ field.errors }}
-        <br/>
-    {% endfor %}
+            </div>
+        </div>
 
-    <input type="submit" class = "btn btn-default" value="search" name="name_form">
-</form>
+        <div class="col-md-9">
+
+            <div class="result-box">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="content-box">
+                            <div class="result-card">
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="https://imgmed.s3.amazonaws.com/media/profile/f0eda731-8cde-4c5a-963c-34108cc96b94.jpg" class="card-image">
+                                        </div>
+
+                                        <div class="col-md-8 listing-card-data">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                            <div class="rating rating-box">
+  <span class="rating-star full-star"></span>
+  <span class="rating-star full-star"></span>
+  <span class="rating-star empty-star"></span>
+  <span class="rating-star empty-star"></span>
+  <span class="rating-star empty-star"></span></div>
+                                        </div>
+
+
+                                            <div class="col-md-12">
+
+                                    <div class="listing-name">
+                                        <h5>Shree Lakshmi Caterors and Dining Limited</h5>
+                                    </div>
+                                                <div class="listing-talent">
+                                                    <h6>Decor Artist</h6>
+                                                </div>
+
+                                                <div class="listing-tags">
+                                                    {# only show 4 tags at max and .. if more tags are there #}
+                                                    <p class="tag">
+                                                        Tag 1
+                                                    </p>
+                                                    <p class="tag">
+                                                        Tag 2
+                                                    </p>
+                                                    <p class="tag">
+                                                        Tag 3
+                                                    </p>
+                                                    <p class="tag">
+                                                        Tag 4
+                                                    </p>
+                                                </div>
+
+                                                <div class="listing-price">
+                                                   Rs. 80,000
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                    </div>
+                            </div>
+
 </div>
+                    </div>
+                        </div>
+
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
 </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div><div class="col-md-6">
+                        <div class="panel panel-default">
+  <div class="panel-heading">Panel heading without title</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
 {% endblock %}
