@@ -95,6 +95,8 @@
     {% csrf_token %}
 
     {{ form_login |bootstrap}}
+        <input type="hidden" value="" id="page-url">
+
 <a><input class = "btn btn-default buttonsubmit" type="submit" value="Login" name="login"></a>
         <a href="#" id="forgot">Forgot Password?</a>
 

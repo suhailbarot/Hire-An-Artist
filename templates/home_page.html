@@ -40,6 +40,10 @@ $(function(){
     $(document).ready(function(){
 
     	$("#loginmodal #id_name").attr('id','name2');
+  
+
+        };
+
 
 
 
@@ -51,11 +55,20 @@ $(function(){
 
     </script>
     <style type="text/css">
+        .fest-head-col{
+            position: relative;
+            margin-top: 15%;
+        }
 
         .logcol2{
             margin-top: 0px;
             padding-top: 0%;
 
+        }
+        .festive-jumbotron{
+            background-color: white;
+            display:block;
+            margin: auto;
         }
 
         .logimg{
@@ -120,8 +133,8 @@ $(function(){
         	width:900px;
         }
         .img_festival{
-            width: 300px; 
-            height:300px;
+            width: 250px; 
+            height:250px;
             -webkit-box-shadow: 0 0 20px #333;
         box-shadow: 0 0 20px #333;
         }
@@ -129,7 +142,7 @@ $(function(){
             display:flex;
             text-align: center;
             margin: auto;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
         .img-left{
             margin-right: 5px;
@@ -144,7 +157,7 @@ $(function(){
 
 
 </head>
-<body>
+<body style="padding-right:0px;">
 	<div id="cityModal" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <!-- Modal content-->
@@ -172,7 +185,7 @@ $(function(){
 
 
 
-    <form method="post" id="loginform">
+    <form method="post" id="loginform" action ="/user/login?next={{request.path}}">
 
     {% csrf_token %}
 
@@ -202,7 +215,7 @@ $(function(){
 <div class="col-md-6 regcol">
 
 
-    		<form method="post" id="registerform">
+    		<form method="post" id="registerform" action="/user/register?next={{request.path}}" >
 
     {% csrf_token %}
 
@@ -223,39 +236,7 @@ $(function(){
   </div>
 </div>
 
-<div id="registermodal" class="modal fade" role="dialog">
-  <div class="modal-dialog modaldialog ">
-    <!-- Modal content-->
-    <div class="modal-content ">
-      <div class="modal-body ">
-      	<div class="row">
-      	<div class="col-md-6 regcol">
 
-
-    		<form method="post" id="registerform">
-
-    {% csrf_token %}
-
-    {{ form_register | bootstrap }}
-
-    <input type="submit" class="btn btn-default buttonsubmit" value="Sign Up">
-
-</form>
-
-
-    		</div>
-    		<div class="col-md-6 socialcol socialcol2 " style="margin-top:25%;">
-    <a href='{% url "socialauth_begin" "facebook" %}' /><img src="{% static 'google.png' %}" class='logimg'></a>
-<a href='{% url "socialauth_begin" "google-oauth2" %}' /><img src="{% static 'facebook.png' %}" class='facebook'></a>
-
-</div>
-</div>
-                
-    </div>
-
-  </div>
-</div>
-</div>
 <div id="myCarousel" class="carousel carousel-fade slide">
   
   <div class="carousel-inner">
@@ -317,7 +298,9 @@ $(function(){
 
 
         {% else %}
-        <li><a href="#" data-toggle="modal" data-target="#loginmodal"> Login</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#loginmodal"> Login\Sign Up </a></li>
+        <li><a href="/artist/register">Artist</a></li>
+
         {% endif %}
       <li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
             {{ set_city|title }}
@@ -466,36 +449,50 @@ $(function(){
 </div>
 
 
-    <div class="row">
 
 
             <div class="large-box">
-            <div class="content-box text-center" id="headertext">
+             <div class="jumbotron festive-jumbotron">
+                     <div class="row">
+                             <div class="col-md-6 fest-head-col">
+                 <div class="content-box text-center" id="headertext">
 
                 <h1>Some Title Text</h1>
 
                 <br>
 
                 <h3>Some Description Text</h3>
-                <hr id="talenthr">
 
             </div>
             <br>
 
+
+
+                        </div>
+                        <div class="col-md-6">
+
+            
+
             <div class="row">
 
+
                 <div class="row festrow">
+
                 <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle ">
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle  ">
-         
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle  ">
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle  ">
+                <img src="{% static 'Sound-artist.jpg' %}" class="img_festival img-circle  ">
+                </div>
+                <div class="row festrow">
+                <img src="{% static 'Makeup-artist.jpg' %}" class="img_festival img-circle  ">
+                <img src="{% static 'Food-artist.jpg' %}" class="img_festival img-circle  ">
+
             </div>
+        </div>
                 </div>
 
-        </div>
 
         </div>
+    </div>
+    </div>
         <br>
 
 

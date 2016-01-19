@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
+{% extends 'root/base.html' %}
 {% load static %}
 
 {% block header_block %}
@@ -19,6 +19,28 @@
 
 <link rel="stylesheet" href="{% static 'fancybox/source/helpers/jquery.fancybox-thumbs.css' %}" type="text/css" media="screen" />
 <script type="text/javascript" src="{% static 'fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7' %}"></script>
+
+<style type="text/css">
+    .media-container{
+        min-height: 400px;
+    }
+    .photo-grid,.video-grid,.sounds{
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+    .my-gallery{
+        margin:0px;
+    }
+    .nav-tabs>li>a{
+        color: #FC6042;
+    }
+    .img-col{
+        padding-left: 0px;
+        text-align: center;
+    }
+
+
+</style>
 
 
 {% endblock %}
@@ -83,7 +105,7 @@ No Media added yet. <a href="manage">Add some ? </a>
 {% endif %}
 
 
-    <div>
+    <div class="container form-wizard media-container">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
@@ -98,13 +120,19 @@ No Media added yet. <a href="manage">Add some ? </a>
     <div class="my-gallery row" itemscope itemtype="http://schema.org/ImageGallery">
 
     {% for image in images %}
+        <div class="col-md-2 img-col">
 
-        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-2 photo-grid">
+        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="photo-grid">
+
+
       <a href="{{ image.url }}" itemprop="contentUrl" class="img-content">
           <img src="{{ image.url }}" itemprop="thumbnail" alt="{{ image.title }}" />
       </a>
       <figcaption itemprop="caption description txt" style="display:none">{% if image.title %}{{ image.title }} - {% endif %} {{ image.caption }}</figcaption>
+
         </figure>
+        <h4>Listing : {{image.listing.name}}</h4>
+    </div>
 
     {% endfor %}
 
@@ -117,20 +145,26 @@ No Media added yet. <a href="manage">Add some ? </a>
 
             <div class="row">
 {% for video in videos %}
-    <div class="col-md-2 video-grid">
+    <div class="col-md-2 img-col">
+    <div class="video-grid">
     <a class="vdmedia video-pc" rel="video-gallery" href="{{ video.url }}" title="{% if video.title  %}{{ video.title }} - {% endif %} {{ video.caption }}"><div class="playbutton"><i class="glyphicon glyphicon-play-circle playbtn"></i></div><img src="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg"></a>
     </div>
 {#<iframe id="ytplayer" type="text/html" width="300" height="200" src="http://www.youtube.com/embed/{{video.vid}}" frameborder="0" /></iframe>#}
+        <h4>Listing : {{image.listing.name}}</h4>
+
 {% endfor %}
             </div>
+        </div>
 
 
 
-    </div>
     <div role="tabpanel" class="tab-pane" id="sounds">
                 {% for sound in sounds %}
-                {{ sound.title }}
+                <h3>{{ sound.title }}</h3>
+                <br>
                 <div class="soundcloud_embed" url="{{ sound.url }}"></div>
+                        <h4>Listing : {{image.listing.name}}</h4>
+
                 <br/>
             {% endfor %}
 

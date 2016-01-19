@@ -71,7 +71,14 @@ def home(request):
 
 
 def user_login(request):
+    redirect_to = request.POST.get('next', '')
+    if redirect_to:
+        print redirect_to
+    else:
+        print "Nope"
     if request.POST:
+       
+
         form = LoginForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             logged_in_user = form.save()
@@ -79,9 +86,9 @@ def user_login(request):
                 login(request, logged_in_user)
                 up = UserProfile.objects.get(user=logged_in_user)
                 if up.type == VISITOR_ID:
-                    return HttpResponseRedirect(reverse('user_home'))
+                    return HttpResponseRedirect(reverse(redirect_to))
                 else:
-                    return HttpResponseRedirect(reverse('artist_home'))
+                    return HttpResponseRedirect(reverse(redirect_to))
             else:
                 return HttpResponse("Not active")
     else:
@@ -184,16 +191,19 @@ def artist_home(request):
 
 
 def user_register(request):
+    redirect_to = request.REQUEST.get('next', '')
+
     if request.POST:
         form = RegisterForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             new_user = form.save(actype=VISITOR_ID)
-            return HttpResponse("done")
+            return HttpResponseRedirect(redirect_to)
     else:
         form = RegisterForm()
     return render(request,'user_register.html',{'form':form})
 
 def user_login(request):
+    redirect_to = request.REQUEST.get('next', '')
     if request.POST:
         form = LoginForm(data=request.POST)
         if form.is_valid():
@@ -202,9 +212,9 @@ def user_login(request):
                 login(request, logged_in_user)
                 up = UserProfile.objects.get(user=logged_in_user)
                 if up.type == VISITOR_ID:
-                    return HttpResponseRedirect(reverse('user_home'))
+                    return HttpResponseRedirect(redirect_to)
                 else:
-                    return HttpResponseRedirect(reverse('artist_home'))
+                    return HttpResponseRedirect(redirect_to)
             else:
                 return HttpResponse("Not active")
     else:

@@ -16,6 +16,29 @@
       -ms-transform: translate(-50%,-50%);
           transform: translate(-50%,-50%);
 }
+#cityinput{
+    width: 72.5%;
+    height: 40px;
+    position: relative;
+    top:1px;
+    margin: auto;
+    display: block;
+    padding-left: 10px;
+}
+
+#cityinput:focus {
+    outline: none;
+}
+#cityModal {
+-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+.bodymodal{
+        padding: 30px;
+
+    }
+
 
 a {
     color:#fc6042;
@@ -76,6 +99,12 @@ nav.navbar-findcond ul.dropdown-menu > li > a:hover { background: #FC6042; color
 nav.navbar-findcond span.badge { background: #FC6042; font-weight: normal; font-size: 11px; margin: 0 4px; }
 nav.navbar-findcond span.badge.new { background: rgba(255, 0, 0, 0.8); color: #fff; }
 .nav .open>a, .nav .open>a:hover, .nav .open>a:focus {  border-color: #FC6042;  }
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus{
+    color: white;
+    background-color: transparent;
+    outline: none;
+}
+
 
 /* END NAVBAR */
  #registerform,#loginform{

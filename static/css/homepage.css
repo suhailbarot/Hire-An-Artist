@@ -41,6 +41,7 @@ margin-right: 50px;
 color:#FFFFFF;
 }
 .carousel {
+	z-index: -99;
 	position: absolute;
 	width:100%;
 	background-color: black;
@@ -52,6 +53,7 @@ color:#FFFFFF;
 	min-height: 100%;
 	min-width: 100%;
   opacity: 1;
+  z-index: -99;
   -webkit-transition-property: opacity;
   -moz-transition-property: opacity ;
   -o-transition-property: opacity ;
@@ -61,25 +63,27 @@ color:#FFFFFF;
 
 .carousel-fade .carousel-inner .active {
   opacity: 1 !important;
+  z-index: -99000;
 }
 .carousel-fade .carousel-inner .active.left,
 .carousel-fade .carousel-inner .active.right {
   left: 0;
   opacity: 0;
-  z-index: 1;
+  z-index: -99000;
 }
 .carousel-fade .carousel-inner .next.left,
 .carousel-fade .carousel-inner .prev.right {
   opacity: 1;
 }
 .carousel-fade .carousel-control {
-  z-index: 2;
+  z-index: -99000;
 }
 .carouselimg{
 	min-width: 100%;
   -webkit-filter:brightness(60%);
 	height:700px !important;
 	overflow-y: hidden;
+	z-index: -99000;
 }
 #cityinput{
 	width: 72.5%;
