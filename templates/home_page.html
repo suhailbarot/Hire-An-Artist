@@ -81,6 +81,11 @@ $(function(){
             padding-left: 0px;
             padding-right: 0px;
         }
+        .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus{
+
+            background-color: transparent;
+            color: white;
+        }
         .socialcol{
             margin-top: 8%;
             text-align: center;
@@ -292,22 +297,28 @@ $(function(){
       		<div class="collapse navbar-collapse" id="navbar">
 
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
+            {{ set_city|title }}
+        {% else %}
+            Select City
+        {% endif %}
+        </a></li>
         {% if user.is_authenticated %}
-        <li><a href="#">Logged in as {{user.get_username}}</a></li>
-        <li><a href="/logout">Log Out</a></li>
-
+        <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% get_user_name %} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                        <li><a href="{% url 'password_change_done' %}">Change Password</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
 
         {% else %}
         <li><a href="#" data-toggle="modal" data-target="#loginmodal"> Login\Sign Up </a></li>
         <li><a href="/artist/register">Artist</a></li>
 
         {% endif %}
-      <li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
-            {{ set_city|title }}
-        {% else %}
-            Select City
-        {% endif %}
-        </a></li>
+      
       </ul>
     </div>
 </div>

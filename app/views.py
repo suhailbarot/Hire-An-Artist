@@ -6,6 +6,8 @@ from jfu.http import upload_receive, UploadResponse, JFUResponse
 import time
 import boto
 import json
+from django.http import JsonResponse
+
 
 from django.views.decorators.http import require_POST
 from django.core.files.base import ContentFile
@@ -295,6 +297,32 @@ def edit_listing(request,lid):
 
 
 def view_listing(request,lid):
+    phoneform = PhoneForm()
+    if request.POST:
+        if "register" in request.POST:
+            form1 = RegisterForm(data=request.POST, files=request.FILES)
+            form2=LoginForm()
+            if form1.is_valid():
+                new_user = form1.save(actype=ARTIST_ID)
+                return HttpResponse("done")
+        elif "login" in request.POST:
+            form2 = LoginForm(data=request.POST)
+            form1=RegisterForm()
+            if form2.is_valid():
+                logged_in_user = form2.save()
+                if logged_in_user.is_active == 1:
+                    login(request, logged_in_user)
+                    up = UserProfile.objects.get(user=logged_in_user)
+                    if up.type == VISITOR_ID:
+                        return HttpResponseRedirect(reverse('user_home'))
+                    else:
+                        return HttpResponseRedirect(reverse('artist_home'))
+                else:
+                    return HttpResponse("Not active")
+    else:
+        form1 = RegisterForm()
+        form2 = LoginForm()
+
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
         media = Media.objects.filter(is_active=1, listing=listing)
@@ -320,7 +348,7 @@ def view_listing(request,lid):
         return HttpResponse("No such listing")
     return render(request,'view_listing.html',{'listing':listing,'videos':yt[:4],'sounds':sc,
                                                'images':ph[:4],'image_count':max(0,len(ph)-4),
-                                               'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar})
+                                               'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar,'phoneform':phoneform,'form_login':form2,'form_register':form1})
 
 
 def view_listing_projects(request,lid):
@@ -589,7 +617,9 @@ def search_home(request):
 @page_template('search_results_page.html')  
 def search_results(request, template='search_results.html', extra_context=None):
     filter_form = FilterSearchForm(request.GET)
+
     if request.POST:
+
         results = None
         if 'filter_form' in request.POST:
             print request.POST
@@ -658,9 +688,54 @@ def search_results(request, template='search_results.html', extra_context=None):
             print "IN CITY"
         if request.GET.get('outstation'):
             results = results.filter(outstation=True)
+
+
     context = {'results':results,'filter_form':filter_form}
     if extra_context is not None:
         context.update(extra_context)
+    
+
 
     return render_to_response(
         template, context, context_instance=RequestContext(request))
+
+
+
+def ajax(request):
+    usp = UserProfile.objects.get(user=request.user)
+
+    if request.is_ajax():
+        if request.GET:
+            if usp.phone:
+                l = request.GET.get('listing')
+                listing = Listing.objects.get(name=l)
+                message = {}
+                message['phone'] = 1
+                message['latit'] = listing.latitude
+                message['longit'] = listing.longitude
+                message['contact_name'] = listing.contact_name
+                message['contact_number'] = listing.contact_number
+                message['address_city'] = listing.address_city
+                return JsonResponse({'message':message})
+
+
+            else:
+                message = {}
+                message['phone'] = 0
+                return JsonResponse({'message':message})
+        
+
+        if request.POST:
+            message = {}
+            form = PhoneForm(data=request.POST)
+            if form.is_valid():
+                form.save(usp)
+                print "saved!"
+
+                message['status'] = 1 
+                return JsonResponse({'message': message})
+            message['failiure'] = "form not valid"
+            return HttpResponse(json.dumps({'message': message}))
+        
+
+

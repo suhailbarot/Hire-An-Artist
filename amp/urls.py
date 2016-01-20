@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^$', 'app.views.home', name='home'),
 
     #user stuff
+    url(r'^ajax/','app.views.ajax', name='ajax'),
+
 
     url(r'^user/register/','app.views.user_register', name='user_register'),
     url(r'^user/home/','app.views.user_home', name='user_home'),

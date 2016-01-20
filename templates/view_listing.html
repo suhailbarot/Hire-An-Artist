@@ -5,11 +5,133 @@
 
 {% block header_block %}
 
+<style type="text/css">
+#map_canvas{
+  min-height: 200px;
+  min-width: 200px;
+}
+
+
+</style>
+<script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?sensor=false&v=3.5">
+</script>
     <script type="text/javascript" src="{% static 'js/show_more.js' %}">
 
     </script>
 
     <script type="text/javascript">
+    $(document).ready(function(){
+
+
+
+
+              $('#contactbtn').click(function(e){
+                e.preventDefault();
+                var listing = {{listing.name}};
+
+                $.ajax({
+                  data:{listing},
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajax/' , // the file to call
+            success: function(response) { 
+              var message = response.message;
+              if (message.phone == 1){
+                  $('#c_name').text("Contact Name : " + message.contact_name);
+                  $('#c_num').text("Contact Number: " + message.contact_number);
+                  $('#lat').text(message.latitude);
+                  $('#long').text(message.longitude);
+                  $('#address').text("City Address : " + message.address_city);
+                  $('#contactModal').modal('show');
+                }
+              else{
+                  $('#phoneModal').modal('show');
+                }
+
+                
+            },
+            
+        });
+      
+        return false;
+    });
+
+
+
+
+               
+              $('#phoneform').submit(function(e) {
+          e.preventDefault()
+            var input = $('#id_phone').val()
+
+            if (input.length<10 || input.length>12 ){
+              $('#error').text("Your phone number must be 10-12 digits");
+              
+            }
+            else if (input.length==0){
+              $('#error').text("Please enter something");
+              
+            }
+            else if (isNaN(input)){
+              $('#error').text("Please enter a number ");
+              
+            }
+            else{
+
+
+           // catch the form's submit event
+        $.ajax({ 
+            data: $(this).serialize(), // get the form data
+            type: $(this).attr('method'), // GET or POST
+            url: $(this).attr('action'), // the file to call
+            success: function(response) { // on success..
+                if (response.message.status == 1){
+                  $('#phoneModal').modal('hide');
+                  $('#contactModal').modal('show');
+
+                };
+            },
+            error: function(e, x, r) { // on error..
+                $('#error_div').html(e); // update the DIV
+            }
+        });
+      }
+        return false;
+    });
+
+
+function initialize() {
+    var position = new google.maps.LatLng({{listing.latitude}}, {{listing.longitude}});
+    var myOptions = {
+      zoom: 10,
+      center: position,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(
+        document.getElementById("map_canvas"),
+        myOptions);
+ 
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map
+        
+    });  
+
+  };
+google.maps.event.trigger(map, 'resize');
+$(window).load(initialize())
+    
+
+
+
+
+
+
+
+
+
+    });
 
     $(function(){
         $('#price-popover').popover({ trigger: "hover" });
@@ -33,6 +155,115 @@
 {% endblock %}
 
 {% block body_block %}
+<div id="loginmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog modaldialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+      <div class="modal-body bodymodal">
+        <div class="row">
+            <div class="alert alert-danger">
+  You must login to see contact details!
+</div>
+         <div class="col-md-6 logcol2">
+
+
+
+
+    <form method="post" id="loginform" action ="/user/login?next={{request.path}}">
+
+    {% csrf_token %}
+
+    {{ form_login |bootstrap}}
+<a><input class = "btn btn-default buttonsubmit" type="submit" value="Login" name="login"></a>
+
+        <a href="#" id="forgot">Forgot Password?</a>
+        <button class="googlebutton"><div>
+            <img src="{% static 'google.png' %}" class="scicon">
+            <p class="socialtext">Continue With Google</p>
+
+        </div></button>
+        <button class="fbbutton"><div>
+            <img src="{% static 'facebook.png' %}" class="scicon">
+            <p class="socialtext">Continue With Facebook</p>
+
+        </div></button>
+
+
+
+
+</form>
+
+
+
+</div>
+<div class="col-md-6 regcol">
+
+
+            <form method="post" id="registerform" action="/user/register?next={{request.path}}" >
+
+    {% csrf_token %}
+
+    {{ form_register | bootstrap }}
+
+    <input type="submit" class="btn btn-default buttonsubmit" value="Sign Up">
+
+</form>
+
+
+            </div>
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+        <div id="contactModal" class="modal fade" role="dialog">
+  <div class="modal-dialog ">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body bodymodal">
+        <h3 id="c_name"></h3>
+        <h3 id="c_num"></h3>
+
+        <h3 id="address"></h3>
+        {% if listing.latitude %}
+
+        <div id="map_canvas">
+
+        </div>
+        {% endif %}
+
+                
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="phoneModal" class="modal fade" role="dialog">
+  <div class="modal-dialog ">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body bodymodal">
+        <form id="phoneform" method="post" action="/ajax/"> 
+          {% csrf_token %}
+        {{ phoneform | bootstrap}}
+
+        <h3 id="error"></h3>
+<a><input class = "btn btn-default buttonsubmit" type="submit" value="Submit" name="phone" id="phonesubmit"></a>
+
+        </form>
+        
+
+                
+      </div>
+    </div>
+
+  </div>
+</div>
 
     <div class="listing-container">
 
@@ -73,8 +304,13 @@
         </div>
         </div>
         <div class="contact-details-holder">
-            <button class="btn btn-primary stylebx">Contact Details</button>
+            {% if user.is_authenticated %}
+            <button class="btn btn-primary stylebx" id="contactbtn">Contact Details</button>
+            {% else %}
+            <button class="btn btn-primary stylebx" data-toggle="modal" data-target="#loginmodal">Contact Details</button>
         </div>
+    </div>
+        {% endif %}
 
         {% if similar %}
         <div class="similar-listings-holder">
@@ -102,6 +338,7 @@
     </div>
 
     </div>
+  </div>
 
     <div class="col-md-9">
 
