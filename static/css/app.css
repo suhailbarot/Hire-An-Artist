@@ -6,6 +6,10 @@
     margin: 3px 3px 3px 3px;
 }
 
+label {
+    font-family: 'Open Sans', sans-serif;
+}
+
 .photo-grid img {
   position: absolute;
   left: 50%;
@@ -38,7 +42,6 @@
         padding: 30px;
 
     }
-
 
 a {
     color:#fc6042;
@@ -158,9 +161,6 @@ textarea:focus, input:focus, .uneditable-input:focus {
         border-color: #FC6042;
         color: white;
         font-size: 15px;
-
-
-
 }
 .buttonsubmit:hover{
             border-color: #FC6042;
@@ -183,7 +183,6 @@ textarea:focus, input:focus, .uneditable-input:focus {
     box-shadow: none;
     background-color: white;
     border-radius: 0px;
-
 }
 
 
@@ -297,9 +296,9 @@ textarea:focus, input:focus, .uneditable-input:focus {
  color:#fff;
 }
 
-.affix-top,.affix{
- position: static;
-}
+/*.affix-top,.affix{*/
+ /*position: static;*/
+/*}*/
 
 #sidebar {
     text-align: center;
@@ -308,13 +307,13 @@ textarea:focus, input:focus, .uneditable-input:focus {
 @media (min-width: 979px) {
   #sidemenu.affix-top {
     position: static;
-  	margin-top:225px;
+  	margin-top:125px;
   	width:228px;
   }
 
   #sidemenu.affix {
     position: fixed;
-    top:169px;
+    top:125px;
     width:228px;
   }
 }
@@ -322,13 +321,13 @@ textarea:focus, input:focus, .uneditable-input:focus {
 @media (min-width: 979px) {
   #help_text.affix-top {
     position: static;
-  	margin-top:292px;
+  	margin-top:250px;
   	width:228px;
   }
 
   #help_text.affix {
     position: fixed;
-    top:292px;
+    top:250px;
     width:228px;
   }
 }
@@ -626,6 +625,7 @@ textarea:focus, input:focus, .uneditable-input:focus {
 .section-container {
     padding: 17px;
     width: 100%;
+    margin-bottom: 50px;
 }
 
 .section-header h1 {
@@ -688,7 +688,7 @@ div label input {
 
 .addmore-num {
     position: absolute;
-    top: 30px;
+    top: 50px;
     font-size: 21px;
     left: 0px;
 }
@@ -956,4 +956,157 @@ div label input {
     background: #f8f8f8;
     padding: 5px 10px 5px 15px;
     border-radius: 4px;
+}
+
+.form-wizard {
+    font-size: 15px;
+}
+
+.form-wizard .form-group {
+    margin-top:20px;
+}
+
+.add-btn {
+    margin-top:20px;
+}
+
+.photo-grid-edit {
+    position: relative;
+    height: 155px;
+    width: 155px;
+    overflow: hidden;
+    margin: 3px 3px 3px 3px;
+    padding: 5px;
+}
+
+.photo-grid-edit img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+
+.edit-listing-tab {
+    padding: 10px;
+}
+
+.video-grid-edit img{
+    height: 160px;
+    width: 200px;
+}
+
+.video-grid-edit {
+    padding-top: 5px;
+}
+
+.container-back {
+    padding-top: 10px;
+}
+
+.filter-sidebar {
+    background: #FFFFFF;
+    height: 100%;
+    padding: 20px 15px 20px 15px;
+    border: 1px solid #e1e1e1;
+}
+
+.filter-header {
+    margin-bottom: 10px;
+}
+
+.filter-header-text {
+    font-size: 18px;
+    text-align: center;
+}
+
+.result-card {
+    background: #FFFFFF;
+    border: 1px solid #d1d1d1;
+}
+
+.result-card .card-image {
+    height: auto;
+    max-height:200px;
+    max-width: 200px;
+    width: 100%;
+}
+
+.result-card .rating-box {
+  color: #e1e1e1;
+  text-shadow: 0px 1px 1px rgb(241, 241, 241);
+  height: 2rem;
+        margin-left: -4px;
+}
+
+.result-card .rating-star{
+  font-size: 2.3rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 1.2rem;
+  position: relative;
+  display: block;
+  float:left;
+}
+
+.result-card .full-star:before {
+  color: #ffd106;
+  content: "\2605";
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+
+.result-card .empty-star:before {
+  content: "\2605";
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+
+.result-card .half-star:before {
+  color: #ffd106;
+  content: "\2605";
+  width: 50%;
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+}
+
+.result-card .half-star:after {
+  content: '\2605';
+  position: absolute;
+  left: 1.5rem;
+  width: 50%;
+  text-indent: -1.5rem;
+  overflow: hidden;
+}
+
+.result-card .listing-name {
+
+}
+
+.listing-card-data {
+    margin-left: -21px;
+}
+
+.result-card .tag {
+    font-size: 13px;
+    background: #fc6042;
+    display: inline-block;
+    color: #fff;
+    position: relative;
+    padding: 2px;
+    border-radius: 2px;
+    text-decoration: none;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.listing-talent h6 {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

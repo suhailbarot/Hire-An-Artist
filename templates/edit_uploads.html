@@ -455,10 +455,6 @@ function readURL(input) {
         });
 
     });
-
-
-
-
     </script>
 
         <div class="container form-wizard">
@@ -467,66 +463,17 @@ function readURL(input) {
             <hr class="message-separator">
       </div>
 
-
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
 
         <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div class="section-container">
                 <div class="section-header">
-                    <h1>Profile Picture</h1>
+                    <h4 style="margin-left:12px;">Media</h4>
                 </div>
-                <hr class="section-separator">
                 <div class="row">
                     <div class="col-md-12">
-                        {% if listing.profile_pic %} <img src ="{{ listing.profile_pic.url }}" class="profile_thumb"> {% else %}
-                        None
-                        {% endif %}
-                    </div>
-                    <div class="col-md-12">
-                        <label>Current Profile Picture</label>
-                        <div><a href="#" data-toggle="modal" data-target="#profile_modal">Edit</a></div>
-                    </div>
-            </div>
-        </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="section-container">
-                <div class="section-header">
-                    <h1>Additional Details File</h1>
-                </div>
-                <hr class="section-separator">
-                <div class="row">
-                    <div class="col-md-12">
-                        {% if listing.tech_details_file %} <a href="{{ listing.tech_details_file.url }}">Link</a> {% else %}
-                        None
-                        {% endif %}
-                    </div>
-                    <div class="col-md-12">
-                        <label>Current File</label>
-                        <div><a href="#" data-toggle="modal" data-target="#additional_modal">Edit</a></div>
-                    </div>
-            </div>
-        </div>
-            </div>
-        </div>
-        </div>
-
-        <div class="col-md-10 col-md-offset-1">
-            <div class="section-container">
-                <div class="section-header">
-                    <h1>Media</h1>
-                </div>
-                <hr class="section-separator">
-                <div class="row">
-
-                    <div class="col-md-12">
-
-
-
-
                         <div>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -537,14 +484,12 @@ function readURL(input) {
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="photos">
-
-
+    <div role="tabpanel" class="tab-pane active edit-listing-tab" id="photos">
         <div class="row" itemscope itemtype="http://schema.org/ImageGallery">
 
     {% for image in images %}
 
-        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-2 photo-grid">
+        <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-md-2 photo-grid-edit">
       <a href="{{ image.url }}" itemprop="contentUrl" class="img-content"
          data-title="{{ image.title }}" data-caption="{{ image.caption }}" data-mid="{{ image.pk }}">
           <img src="{{ image.url }}" itemprop="thumbnail" alt="{{ image.title }}" />
@@ -557,16 +502,16 @@ function readURL(input) {
     </div>
 
 
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#photo_modal">
+    <button type="button" class="btn stylebx add-btn" data-toggle="modal" data-target="#photo_modal">
   Add Photos
 </button>
 
     </div>
-    <div role="tabpanel" class="tab-pane" id="videos">
+    <div role="tabpanel" class="tab-pane edit-listing-tab" id="videos">
 
          <div class="row">
 {% for video in videos %}
-    <div class="col-md-2 video-grid">
+    <div class="col-md-3 video-grid-edit">
     <a class="vdmedia video-pc" rel="video-gallery" href="{{ video.url }}" title="{% if video.title  %}{{ video.title }} - {% endif %} {{ video.caption }}"
        data-title="{{ video.title }}" data-caption="{{ video.caption }}" data-mid="{{ video.pk }}" data-thumb="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg">
         <div class="playbutton"><i class="glyphicon glyphicon-play-circle playbtn"></i></div><img src="http://img.youtube.com/vi/{{ video.vid }}/hqdefault.jpg"></a>
@@ -574,15 +519,15 @@ function readURL(input) {
 {% endfor %}
             </div>
 
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#video_modal">
+    <button type="button" class="btn stylebx add-btn" data-toggle="modal" data-target="#video_modal">
   Add Videos
 </button>
     </div>
-    <div role="tabpanel" class="tab-pane" id="sounds">
+    <div role="tabpanel" class="tab-pane edit-listing-tab" id="sounds">
     <div class="container-fluid">
         {% for sound in sounds %}
             <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-8">
                 {{ sound.title }}
                 <div class="soundcloud_embed" url="{{ sound.url }}"></div>
             </div>
@@ -594,7 +539,7 @@ function readURL(input) {
             </div>
             {% endfor %}
 
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#sound_modal">
+    <button type="button" class="btn stylebx add-btn" data-toggle="modal" data-target="#sound_modal">
   Add Sounds
 </button>
     </div>
@@ -610,7 +555,51 @@ function readURL(input) {
         </div>
         </div>
 
+        <div class="col-md-3">
+
+        <div class="row">
+
+            <div class="section-container">
+                <div class="section-header">
+                    <h4>Cover Picture</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if listing.profile_pic %} <img src ="{{ listing.profile_pic.url }}" class="profile_thumb"> {% else %}
+                        None
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12">
+                        <label>Current Profile Picture</label>
+                        <div><a href="#" data-toggle="modal" data-target="#profile_modal">Edit</a></div>
+                    </div>
+            </div>
+            <hr class="caption-separator">
+            <div class="section-header">
+                    <h4>Brochure/Additonal Details</h4>
+                </div>
+            <div class="row">
+                    <div class="col-md-12">
+                        Current File : {% if listing.tech_details_file %} <a href="{{ listing.tech_details_file.url }}">Link</a> {% else %}
+                        None
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12">
+                        <div><a href="#" data-toggle="modal" data-target="#additional_modal">Edit</a></div>
+                    </div>
+            </div>
         </div>
+        </div>
+
+        </div>
+
+
+
+
+        </div>
+        </div>
+
+
 
 
 {% endblock %}

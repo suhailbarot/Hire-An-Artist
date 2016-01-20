@@ -79,8 +79,6 @@ def user_login(request):
     else:
         print "Nope"
     if request.POST:
-       
-
         form = LoginForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             logged_in_user = form.save()
@@ -609,7 +607,7 @@ def image_view_api(request,lid):
 ######### HOME #########
 
 def search_home(request):
-    form = HomeSearchForm()
+    form = FilterSearchForm()
     artist_search = ArtistNameSearch()
     return render(request, 'home_search.html',{'form':form,'name':artist_search})
 
@@ -693,6 +691,7 @@ def search_results(request, template='search_results.html', extra_context=None):
     context = {'results':results,'filter_form':filter_form}
     if extra_context is not None:
         context.update(extra_context)
+
     
 
 
@@ -738,4 +737,8 @@ def ajax(request):
             return HttpResponse(json.dumps({'message': message}))
         
 
+
+
+    return render_to_response(
+        template, context, context_instance=RequestContext(request))
 
