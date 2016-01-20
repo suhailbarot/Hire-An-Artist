@@ -1,37 +1,70 @@
 {% load endless %}
 
-{% paginate 2 results %}
+{% paginate 3 results %}
 
 {% if not results %}
     No Results to Display
  {% endif %}
 {% for listing in results %}
-<div class= "row">
-    <div class = " col-md-offset-2 col-md-8" >
-<h3>{{ listing.name }}</h3>
-<br/>
-{{ listing.city }} <br/>
+<div class="col-md-6">
 
-<img src="{{ listing.profile_pic.url }}" width="100" height="100"><br/>
+                        <div class="content-box">
+                            <div class="result-card">
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="listing.profile_pic" class="card-image">
+                                        </div>
 
-{{ listing.bio }}
+                                        <div class="col-md-8 listing-card-data">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                            <div class="rating rating-box">
+  <span class="rating-star full-star"></span>
+  <span class="rating-star full-star"></span>
+  <span class="rating-star empty-star"></span>
+  <span class="rating-star empty-star"></span>
+  <span class="rating-star empty-star"></span></div>
+                                        </div>
 
-<br/>
 
-{{ listing.fees }}
-<br/>
+                                            <div class="col-md-12">
 
-{% for talent in listing.talents.all %}
-    {{ talent.name }},
-{% endfor %}
+                                    <div class="listing-name">
+                                        <h5>{{listing.name}}</h5>
+                                    </div>
+                                                <div class="listing-talent">
+                                                    <h6>{{listing.talents}}</h6>
+                                                </div>
 
-{% for function in listing.functions.all %}
-{{ function.name }},
-{% endfor %}
+                                                <div class="listing-tags">
+                                                    {# only show 4 tags at max and .. if more tags are there #}
+                                                    <p class="tag">
+                                                        Tag 1
+                                                    </p>
+                                                    <p class="tag">
+                                                        Tag 2
+                                                    </p>
+                                                    <p class="tag">
+                                                        Tag 3
+                                                    </p>
+                                                    <p class="tag">
+                                                        Tag 4
+                                                    </p>
+                                                </div>
 
-    <hr>
+                                                <div class="listing-price">
+                                                   {{listing.price}}
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                    </div>
+                            </div>
+
 </div>
-</div>
+                    </div>
+                        </div>
+
 {% endfor %}
 {% show_more %}
 

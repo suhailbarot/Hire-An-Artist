@@ -1,8 +1,12 @@
 {% extends 'root/base.html' %}
 {% load bootstrap %}
+{% load endless %}
+
 {% block page_title %}Search Results{% endblock %}
 
 {% block header_block %}
+
+
 <script type="text/javascript">
 $(function(){
     $(".tagged").hide();
@@ -14,10 +18,86 @@ $(function(){
         $('.talent-'+$(this).val()).show();
     });
 });
+$(document).ready(function(){
+
+
+   $.endlessPaginate({
+              paginateOnScroll: true
+
+                                               
+         });
+
+
+
+          var slider = document.getElementById('slider');
+
+noUiSlider.create(slider, {
+  start: [10000, 30000],
+  connect: true,
+  step: 1000,
+  range: {
+    'min': 0,
+    'max': 50000
+  }
+});
+$("#id_budget_min").val(parseInt(slider.noUiSlider.get()[0]))
+$("#id_budget_max").val(parseInt(slider.noUiSlider.get()[1]))
+slider.noUiSlider.on('update', function(){
+  $("#id_budget_min").val(parseInt(slider.noUiSlider.get()[0]))
+$("#id_budget_max").val(parseInt(slider.noUiSlider.get()[1]))
+$("#budget").text("Budget : Rs. "+parseInt(slider.noUiSlider.get()[0])+ " - "+"Rs. "+parseInt(slider.noUiSlider.get()[1]))
+
+
+});
+
+slider.noUiSlider.on('end',function(){
+  setTimeout(function() {
+   $('#f-form').submit();
+   console.log("IN");
+}, 5000);
+});
+
+
+   $('#id_function_type').on('change', function() {
+                this.form.submit();
+            });
+   $('#id_talents').on('change', function() {
+                this.form.submit();
+            });
+   $('#id_outstation').on('change', function() {
+                this.form.submit();
+            });
+
+})
 </script>
+<style type="text/css">
+.content-box{
+  margin-bottom: 20px;
+}
+.noUi-horizontal .noUi-handle {
+
+    top: -13px;
+    border-radius:17px;
+    height: 34px;
+  }
+  .noUi-target {
+    height: 12px;
+}
+.noUi-handle:after, .noUi-handle:before {
+
+    display: none;
+}
+#budget{
+  margin-bottom: 20px;
+}
+.noUi-connect {
+    background: #fc6042;
+}
+</style>
 {% endblock %}
 
 {% block body_block %}
+ 
 
     <div class="container-fluid container-back">
 
@@ -29,7 +109,7 @@ $(function(){
                 <div class="caption-separator"></div>
             </div>
                 <div class="form">
-                    <form class="filter-form">
+                    <form class="filter-form" id="f-form">
                         <div class="row">
                         <div class="col-md-12">
                         <div class="form-talent-holder">
@@ -71,6 +151,13 @@ $(function(){
                        {{ form.outstation | bootstrap }}
                     </div>
                     </div>
+                    {{form.budget_min | bootstrap_inline}}
+                    {{form.budget_max | bootstrap_inline}}
+                    <div class="col-md-12">
+                      <h4 id="budget">Budget : </h4>
+                    <div class="form-budget-holder" id="slider">
+                    </div>
+                    </div>
 
                         </div>
 
@@ -86,230 +173,10 @@ $(function(){
 
                 <div class="row">
 
-                    <div class="col-md-6">
+                     {% include page_template %}
 
-                        <div class="content-box">
-                            <div class="result-card">
-                                <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="https://imgmed.s3.amazonaws.com/media/profile/f0eda731-8cde-4c5a-963c-34108cc96b94.jpg" class="card-image">
-                                        </div>
+                    
 
-                                        <div class="col-md-8 listing-card-data">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                            <div class="rating rating-box">
-  <span class="rating-star full-star"></span>
-  <span class="rating-star full-star"></span>
-  <span class="rating-star empty-star"></span>
-  <span class="rating-star empty-star"></span>
-  <span class="rating-star empty-star"></span></div>
-                                        </div>
-
-
-                                            <div class="col-md-12">
-
-                                    <div class="listing-name">
-                                        <h5>Shree Lakshmi Caterors and Dining Limited</h5>
-                                    </div>
-                                                <div class="listing-talent">
-                                                    <h6>Decor Artist</h6>
-                                                </div>
-
-                                                <div class="listing-tags">
-                                                    {# only show 4 tags at max and .. if more tags are there #}
-                                                    <p class="tag">
-                                                        Tag 1
-                                                    </p>
-                                                    <p class="tag">
-                                                        Tag 2
-                                                    </p>
-                                                    <p class="tag">
-                                                        Tag 3
-                                                    </p>
-                                                    <p class="tag">
-                                                        Tag 4
-                                                    </p>
-                                                </div>
-
-                                                <div class="listing-price">
-                                                   Rs. 80,000
-                                                </div>
-                                                </div>
-                                            </div>
-
-                                    </div>
-                            </div>
-
-</div>
-                    </div>
-                        </div>
-
-                    <div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div><div class="col-md-6">
-                        <div class="panel panel-default">
-  <div class="panel-heading">Panel heading without title</div>
-  <div class="panel-body">
-    Panel content
-  </div>
-</div>
-                    </div>
 
                 </div>
 

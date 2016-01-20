@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'artist/(?P<lid>\w+)/uploads/$', 'app.views.edit_uploads', name='edit_uploads'),
     url(r'artist/(?P<lid>\w+)/edit/$', 'app.views.edit_listing', name='listing_edit'),
     url(r'^search/','app.views.search_home',name='search'),
-    url(r'^results/','app.views.search_results',name='search_results'),
+    url(r'^results/','app.views.search_home',name='search_results'),
     url(r'base/',TemplateView.as_view(template_name='root/base.html')),
 
 

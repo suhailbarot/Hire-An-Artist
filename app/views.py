@@ -606,15 +606,12 @@ def image_view_api(request,lid):
 
 ######### HOME #########
 
-def search_home(request):
-    form = FilterSearchForm()
-    artist_search = ArtistNameSearch()
-    return render(request, 'home_search.html',{'form':form,'name':artist_search})
 
 
 @page_template('search_results_page.html')  
-def search_results(request, template='search_results.html', extra_context=None):
+def search_home(request, template='home_search.html', extra_context=None):
     filter_form = FilterSearchForm(request.GET)
+    results = Listing.objects.all()
 
     if request.POST:
 
@@ -688,7 +685,7 @@ def search_results(request, template='search_results.html', extra_context=None):
             results = results.filter(outstation=True)
 
 
-    context = {'results':results,'filter_form':filter_form}
+    context = {'results':results,'form':filter_form}
     if extra_context is not None:
         context.update(extra_context)
 
