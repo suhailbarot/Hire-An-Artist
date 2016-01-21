@@ -612,9 +612,7 @@ def image_view_api(request,lid):
 def search_home(request, template='home_search.html', extra_context=None):
     filter_form = FilterSearchForm(request.GET)
     results = Listing.objects.all()
-
     if request.POST:
-
         results = None
         if 'filter_form' in request.POST:
             print request.POST
