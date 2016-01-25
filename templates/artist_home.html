@@ -9,7 +9,6 @@
 		background-color: white;
 		text-align: center;
 		padding-top: 20px;
-		position: fixed;
 		width:200px;
 		border: 1px solid #d1d1d1;
 
@@ -71,10 +70,11 @@
 
 
 <br/><br/>
+
 <div class="row">
 
 
-	<div class="col-md-2 col-md-offset-2 sidecol">
+	<div class="col-md-3 sidecol">
 	<h3>Hi {{ up.full_name }}!</h3>
 		<hr>
 
@@ -82,7 +82,9 @@
 <a class="links"  href="{% url 'edit_profile' %}">Edit Profile</a><br/>
 <a class="links"  href="{% url 'add_listing' %}"> Add Listing</a> <br/><br/>
 	</div>
-	<div class=" col-md-offset-4 col-md-6">
+</div>
+<div class="row">
+	<div class="col-md-9">
 {% for listing in listings %}
 <div class="row singlelist">
 			<div class="col-md-2 pic-col">

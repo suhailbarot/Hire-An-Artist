@@ -1,6 +1,8 @@
 {% extends 'root/base.html' %}
 {% load humanize %}
 {% load static %}
+{% load extra %}
+
     {% load bootstrap %}
 
 {% block header_block %}
@@ -28,7 +30,7 @@
 
               $('#contactbtn').click(function(e){
                 e.preventDefault();
-                var listing = {{listing.name}};
+                var listing = '{{listing.name}}';
 
                 $.ajax({
                   data:{listing},
@@ -63,21 +65,7 @@
                
               $('#phoneform').submit(function(e) {
           e.preventDefault()
-            var input = $('#id_phone').val()
-
-            if (input.length<10 || input.length>12 ){
-              $('#error').text("Your phone number must be 10-12 digits");
-              
-            }
-            else if (input.length==0){
-              $('#error').text("Please enter something");
-              
-            }
-            else if (isNaN(input)){
-              $('#error').text("Please enter a number ");
-              
-            }
-            else{
+            
 
 
            // catch the form's submit event
@@ -91,12 +79,22 @@
                   $('#contactModal').modal('show');
 
                 };
+                if (response.message.status==2){
+                  $("#error").text("Your number must be between 10 and 12 digits.");
+
+
+                };
+                if (response.message.status==3){
+                  $("#error").text("Please enter a valid number.");
+
+
+                };
             },
             error: function(e, x, r) { // on error..
                 $('#error_div').html(e); // update the DIV
             }
         });
-      }
+    
         return false;
     });
 
@@ -119,7 +117,6 @@ function initialize() {
     });  
 
   };
-google.maps.event.trigger(map, 'resize');
 $(window).load(initialize())
     
 
@@ -243,6 +240,23 @@ $(window).load(initialize())
 
   </div>
 </div>
+<div id="ratingModal" class="modal fade" role="dialog">
+  <div class="modal-dialog ">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body bodymodal">
+<form id="rateform" method="post" name="rate"> 
+          {% csrf_token %}
+        {{ rating_form | bootstrap}}
+
+   
+<a><input class = "btn btn-default buttonsubmit" type="submit" value="Submit" name="rate" id="ratesubmit"></a>
+
+        </form>      </div>
+    </div>
+
+  </div>
+</div>
 <div id="phoneModal" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <!-- Modal content-->
@@ -308,9 +322,20 @@ $(window).load(initialize())
             <button class="btn btn-primary stylebx" id="contactbtn">Contact Details</button>
             {% else %}
             <button class="btn btn-primary stylebx" data-toggle="modal" data-target="#loginmodal">Contact Details</button>
+            {% endif %}
         </div>
-    </div>
+        <br>
+        {% if user.is_authenticated %}
+
+        {% get_user_type request.user as type %}
+        {% if type == 1 %}
+        <button class="btn btn-primary stylebx" data-toggle="modal" data-target="#ratingModal">Rate This Artist</button>
         {% endif %}
+        {% endif %}
+      
+
+
+
 
         {% if similar %}
         <div class="similar-listings-holder">
@@ -337,7 +362,7 @@ $(window).load(initialize())
 
     </div>
 
-    </div>
+
   </div>
 
     <div class="col-md-9">

@@ -32,7 +32,7 @@ $(document).ready(function(){
           var slider = document.getElementById('slider');
 
 noUiSlider.create(slider, {
-  start: [10000, 30000],
+  start: [0, 30000],
   connect: true,
   step: 1000,
   range: {
@@ -59,6 +59,9 @@ slider.noUiSlider.on('end',function(){
 
 
    $('#id_function_type').on('change', function() {
+                this.form.submit();
+            });
+   $('#id_filter_by').on('change', function() {
                 this.form.submit();
             });
    $('#id_talents').on('change', function() {
@@ -112,6 +115,11 @@ slider.noUiSlider.on('end',function(){
                     <form class="filter-form" id="f-form">
                         <div class="row">
                         <div class="col-md-12">
+                        <div class="form-sort-holder">
+                            {{ form.filter_by | bootstrap }}
+                        </div>
+                        </div>
+                        <div class="col-md-12">
                         <div class="form-talent-holder">
                             {{ form.talents | bootstrap }}
                         </div>
@@ -157,6 +165,7 @@ slider.noUiSlider.on('end',function(){
                       <h4 id="budget">Budget : </h4>
                     <div class="form-budget-holder" id="slider">
                     </div>
+                    <h4>{{ tn.fee_text }}</h4>
                     </div>
 
                         </div>

@@ -38,22 +38,18 @@
 
                                                 <div class="listing-tags">
                                                     {# only show 4 tags at max and .. if more tags are there #}
+                                                    {% for name in listing.tag_names|slice:":4" %}
                                                     <p class="tag">
-                                                        Tag 1
+
+                                                        {{name}}
                                                     </p>
-                                                    <p class="tag">
-                                                        Tag 2
-                                                    </p>
-                                                    <p class="tag">
-                                                        Tag 3
-                                                    </p>
-                                                    <p class="tag">
-                                                        Tag 4
-                                                    </p>
+                                                    {% endfor %}
+                                                    
                                                 </div>
 
+
                                                 <div class="listing-price">
-                                                   {{listing.price}}
+                                                   {{listing.fees}}
                                                 </div>
                                                 </div>
                                             </div>

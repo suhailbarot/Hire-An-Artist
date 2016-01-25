@@ -69,6 +69,7 @@ $(function(){
             background-color: white;
             display:block;
             margin: auto;
+            width:70%;
         }
 
         .logimg{
@@ -138,16 +139,16 @@ $(function(){
         	width:900px;
         }
         .img_festival{
-            width: 250px; 
-            height:250px;
+            width: 300px; 
+            height:300px;
             -webkit-box-shadow: 0 0 20px #333;
         box-shadow: 0 0 20px #333;
+        margin: 20px;
         }
         .festrow{
-            display:flex;
+            display:table;
             text-align: center;
             margin: auto;
-            margin-bottom: 20px;
         }
         .img-left{
             margin-right: 5px;
@@ -465,7 +466,6 @@ $(function(){
             <div class="large-box">
              <div class="jumbotron festive-jumbotron">
                      <div class="row">
-                             <div class="col-md-6 fest-head-col">
                  <div class="content-box text-center" id="headertext">
 
                 <h1>Some Title Text</h1>
@@ -479,26 +479,24 @@ $(function(){
 
 
 
-                        </div>
-                        <div class="col-md-6">
+                    </div>
 
             
 
             <div class="row">
 
 
-                <div class="row festrow">
+                <div class="festrow">
 
                 <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle ">
                 <img src="{% static 'Sound-artist.jpg' %}" class="img_festival img-circle  ">
                 </div>
-                <div class="row festrow">
+                <div class="festrow">
                 <img src="{% static 'Makeup-artist.jpg' %}" class="img_festival img-circle  ">
                 <img src="{% static 'Food-artist.jpg' %}" class="img_festival img-circle  ">
 
             </div>
         </div>
-                </div>
 
 
         </div>
