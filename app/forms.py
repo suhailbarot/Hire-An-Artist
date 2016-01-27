@@ -179,10 +179,11 @@ class RatingForm(forms.ModelForm):
     param_8 = forms.ChoiceField(initial=-1,choices=choices)
     param_9 = forms.ChoiceField(initial=-1,choices=choices)
     param_10 = forms.ChoiceField(initial=-1,choices=choices)
+    is_active = forms.BooleanField(initial=1)
 
     class Meta:
         model=Listing
-        fields= ('param_1','param_2','param_3','param_4','param_5','param_6','param_7','param_8','param_9','param_10',)
+        fields= ('param_1','param_2','param_3','param_4','param_5','param_6','param_7','param_8','param_9','param_10','is_active')
 
 
 class ListingForm(forms.ModelForm):

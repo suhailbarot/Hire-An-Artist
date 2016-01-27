@@ -14,6 +14,8 @@
 }
 
 
+
+
 </style>
 <script type="text/javascript"
     src="http://maps.google.com/maps/api/js?sensor=false&v=3.5">
@@ -23,7 +25,9 @@
     </script>
 
     <script type="text/javascript">
+
     $(document).ready(function(){
+      var map;
 
 
 
@@ -76,7 +80,7 @@
             success: function(response) { // on success..
                 if (response.message.status == 1){
                   $('#phoneModal').modal('hide');
-                  $('#contactModal').modal('show');
+                  $('#contactbtn').trigger('click');
 
                 };
                 if (response.message.status==2){
@@ -98,7 +102,7 @@
         return false;
     });
 
-
+{% if listing.latitude %}
 function initialize() {
     var position = new google.maps.LatLng({{listing.latitude}}, {{listing.longitude}});
     var myOptions = {
@@ -106,7 +110,7 @@ function initialize() {
       center: position,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(
+     map = new google.maps.Map(
         document.getElementById("map_canvas"),
         myOptions);
  
@@ -118,6 +122,14 @@ function initialize() {
 
   };
 $(window).load(initialize())
+$('#contactModal').on('shown.bs.modal', function (e) {
+  google.maps.event.trigger(map, 'resize');
+})
+
+
+  {% endif %}
+
+
     
 
 
@@ -247,7 +259,27 @@ $(window).load(initialize())
       <div class="modal-body bodymodal">
 <form id="rateform" method="post" name="rate"> 
           {% csrf_token %}
-        {{ rating_form | bootstrap}}
+          <div class="row">
+            <div class="col-md-6">
+        {{ rating_form.param_1|bootstrap}}
+        {{ rating_form.param_2 | bootstrap}}
+        {{ rating_form.param_3 | bootstrap}}
+        {{ rating_form.param_4 | bootstrap}}
+        {{ rating_form.param_5 | bootstrap}}
+
+
+            </div>
+            <div class="col-md-6">
+        {{ rating_form.param_6 | bootstrap}}
+        {{ rating_form.param_7 | bootstrap}}
+        {{ rating_form.param_8 | bootstrap}}
+        {{ rating_form.param_9 | bootstrap}}
+        {{ rating_form.param_10 | bootstrap}}
+
+            </div>
+          </div>
+                      {{ rating_form.is_active|bootstrap}}
+
 
    
 <a><input class = "btn btn-default buttonsubmit" type="submit" value="Submit" name="rate" id="ratesubmit"></a>
