@@ -28,6 +28,7 @@
 
     $(document).ready(function(){
       var map;
+      var latLn;
 
 
 
@@ -118,12 +119,16 @@ function initialize() {
         position: position,
         map: map
         
-    });  
-
+    });
+        latLn = marker.getPosition();
+   
   };
 $(window).load(initialize())
 $('#contactModal').on('shown.bs.modal', function (e) {
   google.maps.event.trigger(map, 'resize');
+      map.setCenter(latLn);  
+
+
 })
 
 

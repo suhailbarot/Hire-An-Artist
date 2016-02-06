@@ -158,6 +158,9 @@ $(function(){
         .img-right{
             margin-left: 5px;
         }
+        #userdropdown{
+            top:-1px;
+        }
 
 
     </style>
@@ -306,7 +309,19 @@ $(function(){
         {% endif %}
         </a></li>
         {% if user.is_authenticated %}
-        <li class="dropdown">
+        {% get_user_type request.user as type %}
+                {% if type != 3 %}
+
+
+                <li class="dropdown listing-dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Your Listings </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url 'add_listing' %}">Add a new listing</a></li>
+                        <li><a href="{% url 'artist_home' %}">Manage listings </a></li>
+                    </ul>
+                </li>
+                {% endif %}
+        <li class="dropdown" id ="userdropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% get_user_name %} <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
@@ -436,9 +451,9 @@ $(function(){
 
 
 	</div>
+    <div class="row">
 	<div class="col-md-9 col-md-offset-1">
 
-		<div class="row">
 		<div class="col-md-4 talents col-sm-12  imgcol ">
 			<img src= "{% static 'Entertainers.jpg' %}" class="left img_talent img-responsive">
 			<h3 class='overlay_talent'> Talent</h3>
@@ -453,9 +468,9 @@ $(function(){
 			<h3 class='overlay_talent'> Talent</h3>
 
 		</div>
-	</div>
 
 	</div>
+</div>
 
 </div>
 

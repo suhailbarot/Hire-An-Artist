@@ -1,5 +1,4 @@
 {% load extra %}
-<script type="text/javascript">
 
 
 
@@ -20,12 +19,14 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav navbar-right">
+				{% if request.path == '/search/' %}
 				<li><a href="#" id="changeCity" data-toggle="modal" data-target="#cityModal"> {% if set_city %}
             {{ set_city|title }}
         {% else %}
             Select City
         {% endif %}
         </a></li>
+        {% endif %}
 								{% if user.is_authenticated %}
 
 				{% get_user_type request.user as type %}

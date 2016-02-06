@@ -18,7 +18,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout, login,authenticate
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import serializers
@@ -50,6 +50,9 @@ def home(request):
             form2=LoginForm()
             if form1.is_valid():
                 new_user = form1.save(actype=ARTIST_ID)
+                new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+                login(request, new_use) 
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -157,6 +160,9 @@ def artist_register(request):
             form2=LoginForm()
             if form1.is_valid():
                 new_user = form1.save(actype=ARTIST_ID)
+                new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+                login(request, new_use)                
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -197,6 +203,10 @@ def user_register(request):
         form = RegisterForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             new_user = form.save(actype=VISITOR_ID)
+            new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+            login(request, new_use) 
+
             return HttpResponseRedirect(redirect_to)
     else:
         form = RegisterForm()
@@ -339,6 +349,9 @@ def view_listing(request,lid):
             form2=LoginForm()
             if form1.is_valid():
                 new_user = form1.save(actype=ARTIST_ID)
+                new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+                login(request, new_use) 
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
