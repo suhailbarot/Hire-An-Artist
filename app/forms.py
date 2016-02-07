@@ -56,7 +56,9 @@ class ForgotPasswordForm(forms.Form):
 
 
 class FilterSearchForm(forms.Form):
+    choices = [(0,'Budget(min to max)'),(1,'rating')]
     # city = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'City'}), label=u'City',required=False)
+    filter_by = forms.ChoiceField(choices=choices,required=False)
     function_type = forms.ModelChoiceField(queryset=Function.objects.filter(is_active=1).order_by('name'),required=False, empty_label=('--- Function---'))
     talents = forms.ModelChoiceField(queryset=Talent.objects.filter(is_active=1), required=False, empty_label=('--- Talent---'))
     tags = AdvancedModelChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Tag.objects.filter(is_active=1), required=False, label="Choose all that describes what you offer")
@@ -164,6 +166,24 @@ class PhoneForm(forms.Form):
     def save(self, user):
         user.phone = self.cleaned_data['phone']
         user.save()
+
+class RatingForm(forms.ModelForm):
+    choices = [(i,i) for i in range(-1,11)]
+    param_1 = forms.ChoiceField(initial=-1,choices=choices)
+    param_2 = forms.ChoiceField(initial=-1,choices=choices)
+    param_3 = forms.ChoiceField(initial=-1,choices=choices)
+    param_4 = forms.ChoiceField(initial=-1,choices=choices)
+    param_5 = forms.ChoiceField(initial=-1,choices=choices)
+    param_6 = forms.ChoiceField(initial=-1,choices=choices)
+    param_7 = forms.ChoiceField(initial=-1,choices=choices)
+    param_8 = forms.ChoiceField(initial=-1,choices=choices)
+    param_9 = forms.ChoiceField(initial=-1,choices=choices)
+    param_10 = forms.ChoiceField(initial=-1,choices=choices)
+    is_active = forms.BooleanField(initial=1,required=False)
+
+    class Meta:
+        model=Listing
+        fields= ('param_1','param_2','param_3','param_4','param_5','param_6','param_7','param_8','param_9','param_10','is_active')
 
 
 class ListingForm(forms.ModelForm):

@@ -1,6 +1,8 @@
 {% extends 'root/base.html' %}
 {% load humanize %}
 {% load static %}
+{% load extra %}
+
     {% load bootstrap %}
 
 {% block header_block %}
@@ -12,6 +14,8 @@
 }
 
 
+
+
 </style>
 <script type="text/javascript"
     src="http://maps.google.com/maps/api/js?sensor=false&v=3.5">
@@ -21,14 +25,17 @@
     </script>
 
     <script type="text/javascript">
+
     $(document).ready(function(){
+      var map;
+      var latLn;
 
 
 
 
               $('#contactbtn').click(function(e){
                 e.preventDefault();
-                var listing = {{listing.name}};
+                var listing = '{{listing.name}}';
 
                 $.ajax({
                   data:{listing},
@@ -63,21 +70,7 @@
                
               $('#phoneform').submit(function(e) {
           e.preventDefault()
-            var input = $('#id_phone').val()
-
-            if (input.length<10 || input.length>12 ){
-              $('#error').text("Your phone number must be 10-12 digits");
-              
-            }
-            else if (input.length==0){
-              $('#error').text("Please enter something");
-              
-            }
-            else if (isNaN(input)){
-              $('#error').text("Please enter a number ");
-              
-            }
-            else{
+            
 
 
            // catch the form's submit event
@@ -88,7 +81,17 @@
             success: function(response) { // on success..
                 if (response.message.status == 1){
                   $('#phoneModal').modal('hide');
-                  $('#contactModal').modal('show');
+                  $('#contactbtn').trigger('click');
+
+                };
+                if (response.message.status==2){
+                  $("#error").text("Your number must be between 10 and 12 digits.");
+
+
+                };
+                if (response.message.status==3){
+                  $("#error").text("Please enter a valid number.");
+
 
                 };
             },
@@ -96,11 +99,11 @@
                 $('#error_div').html(e); // update the DIV
             }
         });
-      }
+    
         return false;
     });
 
-
+{% if listing.latitude %}
 function initialize() {
     var position = new google.maps.LatLng({{listing.latitude}}, {{listing.longitude}});
     var myOptions = {
@@ -108,7 +111,7 @@ function initialize() {
       center: position,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(
+     map = new google.maps.Map(
         document.getElementById("map_canvas"),
         myOptions);
  
@@ -116,11 +119,22 @@ function initialize() {
         position: position,
         map: map
         
-    });  
-
+    });
+        latLn = marker.getPosition();
+   
   };
-google.maps.event.trigger(map, 'resize');
 $(window).load(initialize())
+$('#contactModal').on('shown.bs.modal', function (e) {
+  google.maps.event.trigger(map, 'resize');
+      map.setCenter(latLn);  
+
+
+})
+
+
+  {% endif %}
+
+
     
 
 
@@ -243,6 +257,43 @@ $(window).load(initialize())
 
   </div>
 </div>
+<div id="ratingModal" class="modal fade" role="dialog">
+  <div class="modal-dialog ">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body bodymodal">
+<form id="rateform" method="post" name="rate"> 
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6">
+        {{ rating_form.param_1|bootstrap}}
+        {{ rating_form.param_2 | bootstrap}}
+        {{ rating_form.param_3 | bootstrap}}
+        {{ rating_form.param_4 | bootstrap}}
+        {{ rating_form.param_5 | bootstrap}}
+
+
+            </div>
+            <div class="col-md-6">
+        {{ rating_form.param_6 | bootstrap}}
+        {{ rating_form.param_7 | bootstrap}}
+        {{ rating_form.param_8 | bootstrap}}
+        {{ rating_form.param_9 | bootstrap}}
+        {{ rating_form.param_10 | bootstrap}}
+
+            </div>
+          </div>
+                      {{ rating_form.is_active|bootstrap}}
+
+
+   
+<a><input class = "btn btn-default buttonsubmit" type="submit" value="Submit" name="rate" id="ratesubmit"></a>
+
+        </form>      </div>
+    </div>
+
+  </div>
+</div>
 <div id="phoneModal" class="modal fade" role="dialog">
   <div class="modal-dialog ">
     <!-- Modal content-->
@@ -308,9 +359,20 @@ $(window).load(initialize())
             <button class="btn btn-primary stylebx" id="contactbtn">Contact Details</button>
             {% else %}
             <button class="btn btn-primary stylebx" data-toggle="modal" data-target="#loginmodal">Contact Details</button>
+            {% endif %}
         </div>
-    </div>
+        <br>
+        {% if user.is_authenticated %}
+
+        {% get_user_type request.user as type %}
+        {% if type == 1 %}
+        <button class="btn btn-primary stylebx" data-toggle="modal" data-target="#ratingModal">Rate This Artist</button>
         {% endif %}
+        {% endif %}
+      
+
+
+
 
         {% if similar %}
         <div class="similar-listings-holder">
@@ -337,7 +399,7 @@ $(window).load(initialize())
 
     </div>
 
-    </div>
+
   </div>
 
     <div class="col-md-9">

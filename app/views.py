@@ -18,7 +18,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout, login,authenticate
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import serializers
@@ -28,7 +28,7 @@ from django.core import serializers
 from django.conf import settings
 from app.forms import RegisterForm,LoginForm,ForgotPasswordForm,PhoneForm, ListingForm, \
     ListingProjectFormSet,HomeSearchForm, ArtistNameSearch, UserProfileEditForm,\
-    FilterSearchForm,HomeArtistNameSearch, ProfilePicForm, AdditionalForm
+    FilterSearchForm,HomeArtistNameSearch, ProfilePicForm, AdditionalForm,RatingForm
 
 from app.models import PasswordReset, UserProfile, Listing, Projects, Function, Talent, Tag, Media, City
 from app.utils import generate_hash
@@ -50,6 +50,9 @@ def home(request):
             form2=LoginForm()
             if form1.is_valid():
                 new_user = form1.save(actype=ARTIST_ID)
+                new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+                login(request, new_use)
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -157,6 +160,9 @@ def artist_register(request):
             form2=LoginForm()
             if form1.is_valid():
                 new_user = form1.save(actype=ARTIST_ID)
+                new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+                login(request, new_use)
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -197,6 +203,10 @@ def user_register(request):
         form = RegisterForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             new_user = form.save(actype=VISITOR_ID)
+            new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+            login(request, new_use)
+
             return HttpResponseRedirect(redirect_to)
     else:
         form = RegisterForm()
@@ -296,30 +306,7 @@ def edit_listing(request,lid):
 
 def view_listing(request,lid):
     phoneform = PhoneForm()
-    if request.POST:
-        if "register" in request.POST:
-            form1 = RegisterForm(data=request.POST, files=request.FILES)
-            form2=LoginForm()
-            if form1.is_valid():
-                new_user = form1.save(actype=ARTIST_ID)
-                return HttpResponse("done")
-        elif "login" in request.POST:
-            form2 = LoginForm(data=request.POST)
-            form1=RegisterForm()
-            if form2.is_valid():
-                logged_in_user = form2.save()
-                if logged_in_user.is_active == 1:
-                    login(request, logged_in_user)
-                    up = UserProfile.objects.get(user=logged_in_user)
-                    if up.type == VISITOR_ID:
-                        return HttpResponseRedirect(reverse('user_home'))
-                    else:
-                        return HttpResponseRedirect(reverse('artist_home'))
-                else:
-                    return HttpResponse("Not active")
-    else:
-        form1 = RegisterForm()
-        form2 = LoginForm()
+    rating_form = RatingForm()
 
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
@@ -344,9 +331,49 @@ def view_listing(request,lid):
                 sc.append(media)
     except Listing.DoesNotExist:
         return HttpResponse("No such listing")
+    if request.POST:
+        if "rate" in request.POST:
+            form1 = RegisterForm()
+            form2=LoginForm()
+            listing = Listing.objects.get(id=lid, is_active=1)
+            rating_form = RatingForm(data=request.POST,instance=listing)
+            if rating_form.is_valid():
+                rated = rating_form.save()
+                print "Saved"
+            return render(request,'view_listing.html',{'listing':listing,'videos':yt[:4],'sounds':sc,
+                                               'images':ph[:4],'image_count':max(0,len(ph)-4),
+                                               'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar,'phoneform':phoneform,'form_login':form2,'form_register':form1,'rating_form':rating_form})
+
+        if "register" in request.POST:
+            form1 = RegisterForm(data=request.POST, files=request.FILES)
+            form2=LoginForm()
+            if form1.is_valid():
+                new_user = form1.save(actype=ARTIST_ID)
+                new_use = authenticate(username=request.POST['email'],
+                                    password=request.POST['password1'])
+                login(request, new_use)
+                return HttpResponse("done")
+        elif "login" in request.POST:
+            form2 = LoginForm(data=request.POST)
+            form1=RegisterForm()
+            if form2.is_valid():
+                logged_in_user = form2.save()
+                if logged_in_user.is_active == 1:
+                    login(request, logged_in_user)
+                    up = UserProfile.objects.get(user=logged_in_user)
+                    if up.type == VISITOR_ID:
+                        return HttpResponseRedirect(reverse('user_home'))
+                    else:
+                        return HttpResponseRedirect(reverse('artist_home'))
+                else:
+                    return HttpResponse("Not active")
+    else:
+        form1 = RegisterForm()
+        form2 = LoginForm()
+
     return render(request,'view_listing.html',{'listing':listing,'videos':yt[:4],'sounds':sc,
                                                'images':ph[:4],'image_count':max(0,len(ph)-4),
-                                               'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar,'phoneform':phoneform,'form_login':form2,'form_register':form1})
+                                               'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar,'phoneform':phoneform,'form_login':form2,'form_register':form1,'rating_form':rating_form})
 
 
 def view_listing_projects(request,lid):
@@ -612,11 +639,17 @@ def image_view_api(request,lid):
 def search_home(request, template='home_search.html', extra_context=None):
     filter_form = FilterSearchForm(request.GET)
     results = Listing.objects.all()
+    tn=None
+
     if request.POST:
         results = None
         if 'filter_form' in request.POST:
-            print request.POST
             results = Listing.objects.filter(is_active=1)
+            if 'filter_by' in request.POST:
+                print "filtering"
+                if request.POST['filter_by']==0:
+                    results=results.order_by('-fees')
+
 
             if 'function_type' in request.POST:
                 function = None
@@ -631,6 +664,7 @@ def search_home(request, template='home_search.html', extra_context=None):
                     talents = int(request.POST['talents']) #list of talents
                     tn = Talent.objects.get(id=talents)
                     results = results.filter(talents=tn)
+
 
             if 'budget_min' in request.POST:
                 if request.POST['budget_min']:
@@ -655,7 +689,16 @@ def search_home(request, template='home_search.html', extra_context=None):
             results = Listing.objects.filter(is_active=1, name__icontains=str(request.POST['name'].strip()))
     if request.GET: 
         results = Listing.objects.filter(is_active=1)
-   
+        if 'filter_form' in request.GET:
+
+            results = Listing.objects.filter(is_active=1)
+
+        if request.GET.get('filter_by'):
+            print "filtering"
+            if int(request.GET['filter_by']) == 0:
+                print "inside "
+                results=results.order_by('fees')
+
         if request.GET.get('function_type'):
             function = int(request.GET['function_type'])
             fn = Function.objects.get(id=function)
@@ -682,12 +725,18 @@ def search_home(request, template='home_search.html', extra_context=None):
         if request.GET.get('outstation'):
             results = results.filter(outstation=True)
 
+    if tn:
+        context = {'results':results,'form':filter_form,'tn':tn}
+    else:
+        context = {'results':results,'form':filter_form}
 
-    context = {'results':results,'form':filter_form}
     if extra_context is not None:
         context.update(extra_context)
 
-    
+    for listing in results:
+        listing.tag_names = listing.tags.all()
+
+
 
 
     return render_to_response(
@@ -722,6 +771,17 @@ def ajax(request):
         if request.POST:
             message = {}
             form = PhoneForm(data=request.POST)
+            if not isinstance(int(form.data['phone']),(int,long)):
+                message['status'] = 3
+                print "in"
+                return JsonResponse({'message': message})
+            if len(str(form.data['phone']))<10 or len(str(form.data['phone']))>12:
+                message['status'] = 2
+                print "in"
+                return JsonResponse({'message': message})
+
+
+
             if form.is_valid():
                 form.save(usp)
                 print "saved!"

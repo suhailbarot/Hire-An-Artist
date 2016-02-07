@@ -303,7 +303,6 @@ color:#FFFFFF;
 .img_festival{
 	width:100%;
 	height: 160px;
-	display: block;
 	margin: auto;
 }
 .overlay_talent{
@@ -322,7 +321,7 @@ color:#FFFFFF;
 
 .talentrow1 .row{
 	position: relative;
-	left: 60px;
+	margin-left: 7.75%;
 }
 .imgcol{
 	text-align: center;
