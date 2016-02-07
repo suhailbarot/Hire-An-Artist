@@ -2,6 +2,8 @@
 
 {% paginate 3 results %}
 
+{% load extra %}
+
 {% if not results %}
     No Results to Display
  {% endif %}
@@ -19,11 +21,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                             <div class="rating rating-box">
-  <span class="rating-star full-star"></span>
-  <span class="rating-star full-star"></span>
-  <span class="rating-star empty-star"></span>
-  <span class="rating-star empty-star"></span>
-  <span class="rating-star empty-star"></span></div>
+                                        {% get_rating listing %}</div>
                                         </div>
 
 

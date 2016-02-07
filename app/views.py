@@ -306,10 +306,10 @@ def edit_listing(request,lid):
 
 def view_listing(request,lid):
     phoneform = PhoneForm()
-    rating_form = RatingForm()
 
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
+        rating_form = RatingForm(instance=listing)
         media = Media.objects.filter(is_active=1, listing=listing)
         projects = Projects.objects.filter(listing=listing, is_active=1)
         if listing.group_key:
