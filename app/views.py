@@ -101,7 +101,7 @@ def user_login(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponse("Logged Out")
+    return HttpResponseRedirect(reverse('home'))
 
 
 def reset_password(request, key):
