@@ -52,7 +52,7 @@ def home(request):
                 new_user = form1.save(actype=ARTIST_ID)
                 new_use = authenticate(username=request.POST['email'],
                                     password=request.POST['password1'])
-                login(request, new_use) 
+                login(request, new_use)
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -101,7 +101,7 @@ def user_login(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponse("Logged Out")
+    return HttpResponseRedirect(reverse('home'))
 
 
 def reset_password(request, key):
@@ -162,7 +162,7 @@ def artist_register(request):
                 new_user = form1.save(actype=ARTIST_ID)
                 new_use = authenticate(username=request.POST['email'],
                                     password=request.POST['password1'])
-                login(request, new_use)                
+                login(request, new_use)
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -205,7 +205,7 @@ def user_register(request):
             new_user = form.save(actype=VISITOR_ID)
             new_use = authenticate(username=request.POST['email'],
                                     password=request.POST['password1'])
-            login(request, new_use) 
+            login(request, new_use)
 
             return HttpResponseRedirect(redirect_to)
     else:
@@ -306,10 +306,10 @@ def edit_listing(request,lid):
 
 def view_listing(request,lid):
     phoneform = PhoneForm()
-    rating_form = RatingForm()
-    
+
     try:
         listing = Listing.objects.get(id=lid, is_active=1)
+        rating_form = RatingForm(instance=listing)
         media = Media.objects.filter(is_active=1, listing=listing)
         projects = Projects.objects.filter(listing=listing, is_active=1)
         if listing.group_key:
@@ -351,7 +351,7 @@ def view_listing(request,lid):
                 new_user = form1.save(actype=ARTIST_ID)
                 new_use = authenticate(username=request.POST['email'],
                                     password=request.POST['password1'])
-                login(request, new_use) 
+                login(request, new_use)
                 return HttpResponse("done")
         elif "login" in request.POST:
             form2 = LoginForm(data=request.POST)
@@ -643,7 +643,6 @@ def search_home(request, template='home_search.html', extra_context=None):
     tn=None
 
     if request.POST:
-
         results = None
         if 'filter_form' in request.POST:
             results = Listing.objects.filter(is_active=1)
@@ -698,63 +697,13 @@ def search_home(request, template='home_search.html', extra_context=None):
         if request.GET.get('filter_by'):
             if int(request.GET['filter_by']) == 0:
                 results=results.order_by('fees')
-            if int(request.GET['filter_by'])==1:
 
-                tagslist=[tag.value for tag in filter_form['tags']]
-                
-                for res in results:
-                    m=0   
-                    sum1=0
-                    if res.param_1!=-1:
-                        sum1+=res.param_1
-                        m+=1
-                    if res.param_2!=-1:
-                        sum1+=res.param_2
-                        m+=1
-
-                    if res.param_3!=-1:
-                        sum1+=res.param_3
-                        m+=1
-                    if res.param_4!=-1:
-                        sum1+=res.param_4
-                        m+=1
-                    if res.param_5!=-1:
-                        sum1+=res.param_5
-                        m+=1
-                    if res.param_6!=-1:
-                        sum1+=res.param_6
-                        m+=1
-                    if res.param_7!=-1:
-                        sum1+=res.param_7
-                        m+=1
-                    if res.param_8!=-1:
-                        sum1+=res.param_8
-                        m+=1
-                    if res.param_9!=-1:
-                        sum1+=res.param_9
-                        m+=1
-                    if res.param_10!=-1:
-                        sum1+=res.param_10
-                        m+=1
-                    tagss = res.tags.all()
-                    n=0
-                    for tag in tagss:
-                        if 'tags' in request.GET:
-                            if str(tag.pk) in request.GET['tags']:
-                                sum1+=10
-                                n+=1
-                    if (m+n)==0:
-                        res.rscore = 0
-                    else:
-                        res.rscore=sum1/float(m+n)
-                    print res.rscore
-                    res.save()
-                results = results.order_by('-rscore')
-
+          
 
 
 
    
+
         if request.GET.get('function_type'):
             function = int(request.GET['function_type'])
             fn = Function.objects.get(id=function)
@@ -787,7 +736,7 @@ def search_home(request, template='home_search.html', extra_context=None):
     for listing in results:
         listing.tag_names = listing.tags.all()
 
-    
+
 
 
     return render_to_response(

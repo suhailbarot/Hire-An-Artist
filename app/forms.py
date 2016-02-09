@@ -220,7 +220,7 @@ class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
         fields = ('name','city','talents','functions','tags','outstation','bio','fees','comments','contact_name','contact_email',
-                  'contact_number','contact_number2','contact_number3','address','address_city')
+                  'contact_number','contact_number2','contact_number3','address','address_city','longitude','latitude')
 
     def clean_functions(self):
         return self.cleaned_data['functions']

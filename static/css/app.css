@@ -835,10 +835,17 @@ div label input {
     border-right-width: 0px;
 	color: white;
     transition: all 0.3s;
+    outline:none;
 }
 
 .stylebx:hover{
     background-color: #c53d23;
+    color:white;
+}
+
+.stylebx:focus{
+    color:white;
+    outline:none;
 }
 
 .media-tabs {

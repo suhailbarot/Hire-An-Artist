@@ -196,6 +196,13 @@ color:#FFFFFF;
 
 .styleb:hover{
     background-color: #c53d23;
+	color:white;
+	outline:none;
+}
+
+.styleb:focus{
+	color:white;
+	outline: none;
 }
 .caret{
 	color: white;
