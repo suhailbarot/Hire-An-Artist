@@ -148,6 +148,7 @@ class Listing(models.Model):
     param_8 = models.IntegerField(default=-1)
     param_9 = models.IntegerField(default=-1)
     param_10 = models.IntegerField(default=-1)
+    rscore = models.DecimalField(max_digits=5,decimal_places=3,default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     is_active = models.IntegerField(default=1)
