@@ -698,7 +698,59 @@ def search_home(request, template='home_search.html', extra_context=None):
             if int(request.GET['filter_by']) == 0:
                 results=results.order_by('fees')
 
-          
+            if int(request.GET['filter_by'])==1:
+
+                tagslist=[tag.value for tag in filter_form['tags']]
+                
+                for res in results:
+                    m=0   
+                    sum1=0
+                    if res.param_1!=-1:
+                        sum1+=res.param_1
+                        m+=1
+                    if res.param_2!=-1:
+                        sum1+=res.param_2
+                        m+=1
+
+                    if res.param_3!=-1:
+                        sum1+=res.param_3
+                        m+=1
+                    if res.param_4!=-1:
+                        sum1+=res.param_4
+                        m+=1
+                    if res.param_5!=-1:
+                        sum1+=res.param_5
+                        m+=1
+                    if res.param_6!=-1:
+                        sum1+=res.param_6
+                        m+=1
+                    if res.param_7!=-1:
+                        sum1+=res.param_7
+                        m+=1
+                    if res.param_8!=-1:
+                        sum1+=res.param_8
+                        m+=1
+                    if res.param_9!=-1:
+                        sum1+=res.param_9
+                        m+=1
+                    if res.param_10!=-1:
+                        sum1+=res.param_10
+                        m+=1
+                    tagss = res.tags.all()
+                    n=0
+                    for tag in tagss:
+                        if 'tags' in request.GET:
+                            if str(tag.pk) in request.GET['tags']:
+                                sum1+=10
+                                n+=1
+                    if (m+n)==0:
+                        res.rscore = 0
+                    else:
+                        res.rscore=sum1/float(m+n)
+                    print res.rscore
+                    res.save()
+                results = results.order_by('-rscore')
+
 
 
 
