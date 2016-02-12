@@ -41,129 +41,9 @@ $(function(){
     $(document).ready(function(){
 
     	$("#loginmodal #id_name").attr('id','name2');
-  
-
- 
-
-
-
-
-
-
 
 });
-
-
     </script>
-    <style type="text/css">
-        .fest-head-col{
-            position: relative;
-            margin-top: 15%;
-        }
-
-        .logcol2{
-            margin-top: 0px;
-            padding-top: 0%;
-
-        }
-        .festive-jumbotron{
-            background-color: white;
-            display:block;
-            margin: auto;
-            width:70%;
-        }
-
-        .logimg{
-            height:50px;
-            width:270px;
-        }
-        .maincol{
-            margin-top: 10%;
-            background-color: white;
-            padding-left: 0px;
-            padding-right: 0px;
-        }
-        .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus{
-
-            background-color: transparent;
-            color: white;
-        }
-        .socialcol{
-            margin-top: 8%;
-            text-align: center;
-        }
-        .facebook{
-                height: 62px;
-            margin-top: 20px;
-            position: relative;
-            left:-6px;
-        }
-        .modalhead{
-        	text-align: center;
-        }
-        .modaldialog{
-        	width:800px;
-        	padding: 30px;
-        }
-        .googlebutton{
-        	background-color: #DC4B39;
-        	width: 286px;
-        	height: 39px;
-        	border:none;
-        	margin-bottom: 20px;
-        	text-align: center;
-        	margin-top: 10px;
-        }
-        .socialtext{
-        	color: white;
-        	margin-top:3%;
-        	position: relative;
-        	right:10px;
-        }
-        .fbbutton{
-        	background-color: #3B5998;
-        	width: 286px;
-        	height: 39px;
-        	border:none;
-        }
-        .scicon{
-        	width:30px;
-        	float: left;
-        	position: relative;
-        	top:-5px;
-
-        }
-        .regcol{
-        	border-left: 1px solid #d1d1d1;
-        }
-        .modaldialog{
-        	width:900px;
-        }
-        .img_festival{
-            width: 300px; 
-            height:300px;
-            -webkit-box-shadow: 0 0 20px #333;
-        box-shadow: 0 0 20px #333;
-        margin: 20px;
-        }
-        .festrow{
-            display:table;
-            text-align: center;
-            margin: auto;
-        }
-        .img-left{
-            margin-right: 5px;
-
-        }
-        .img-right{
-            margin-left: 5px;
-        }
-        #userdropdown{
-            top:-1px;
-        }
-
-
-    </style>
 
 
 </head>
@@ -393,7 +273,6 @@ $(function(){
 						<hr id="talenthr">
 					</div>
 
-
 	</div>
 				
 	<div class="row">
@@ -480,38 +359,21 @@ $(function(){
 
 
             <div class="large-box">
-             <div class="jumbotron festive-jumbotron">
-                     <div class="row">
-                 <div class="content-box text-center" id="headertext">
+             <div class="jumbotron ">
 
+            <div class="row festive-jumbotron">
+
+                <div class="content-box text-center" id="headertext">
                 <h1>Some Title Text</h1>
-
-                <br>
-
-                <h3>Some Description Text</h3>
-
+                <p>Some Description Text</p>
+                    <hr width="50%">
             </div>
-            <br>
-
-
-
-                    </div>
-
-            
-
-            <div class="row">
-
-
                 <div class="festrow">
-
-                <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle ">
+                    <img src="{% static 'Entertainers.jpg' %}" class="img_festival img-circle ">
                 <img src="{% static 'Sound-artist.jpg' %}" class="img_festival img-circle  ">
-                </div>
-                <div class="festrow">
                 <img src="{% static 'Makeup-artist.jpg' %}" class="img_festival img-circle  ">
                 <img src="{% static 'Food-artist.jpg' %}" class="img_festival img-circle  ">
-
-            </div>
+                </div>
         </div>
 
 

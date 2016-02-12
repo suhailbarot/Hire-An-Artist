@@ -602,3 +602,113 @@ text-decoration: none;
     width:40%;
 }
 
+.fest-head-col{
+            position: relative;
+            margin-top: 15%;
+        }
+
+        .logcol2{
+            margin-top: 0px;
+            padding-top: 0%;
+
+        }
+        .festive-jumbotron{
+            background-color: white;
+            border: 1px #e7e7e7 solid;
+            display:block;
+            margin: auto;
+            width:100%;
+            padding-bottom: 20px;
+            padding-top:20px;
+        }
+
+        .logimg{
+            height:50px;
+            width:270px;
+        }
+        .maincol{
+            margin-top: 10%;
+            background-color: white;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus{
+
+            background-color: transparent;
+            color: white;
+        }
+        .socialcol{
+            margin-top: 8%;
+            text-align: center;
+        }
+        .facebook{
+                height: 62px;
+            margin-top: 20px;
+            position: relative;
+            left:-6px;
+        }
+        .modalhead{
+        	text-align: center;
+        }
+        .modaldialog{
+        	width:800px;
+        	padding: 30px;
+        }
+        .googlebutton{
+        	background-color: #DC4B39;
+        	width: 286px;
+        	height: 39px;
+        	border:none;
+        	margin-bottom: 20px;
+        	text-align: center;
+        	margin-top: 10px;
+        }
+        .socialtext{
+        	color: white;
+        	margin-top:3%;
+        	position: relative;
+        	right:10px;
+        }
+        .fbbutton{
+        	background-color: #3B5998;
+        	width: 286px;
+        	height: 39px;
+        	border:none;
+        }
+        .scicon{
+        	width:30px;
+        	float: left;
+        	position: relative;
+        	top:-5px;
+
+        }
+        .regcol{
+        	border-left: 1px solid #d1d1d1;
+        }
+        .modaldialog{
+        	width:900px;
+        }
+        .img_festival{
+            width: 220px;
+            height:220px;
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-bottom: 20px;
+
+        }
+        .festrow{
+            display:table;
+            text-align: center;
+            margin: 0 auto 0 auto;
+        }
+        .img-left{
+            margin-right: 5px;
+
+        }
+        .img-right{
+            margin-left: 5px;
+        }
+        #userdropdown{
+            top:-1px;
+        }
+
