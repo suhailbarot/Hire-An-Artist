@@ -72,20 +72,16 @@ function readURL(input) {
 </script>
 
     {% endblock %}
-
     {% block body_block %}
 
         <script type="text/javascript">
 
     changed= false;
-
     sc_set = true;
 
     $(document).ready(function(){
         $('.nav-tabs a[href=#sounds]').on('show.bs.tab', function () {
-
     //this must go before hash
-
             if(sc_set) {
                 $(".soundcloud_embed").each(function () {
                     var url = $(this).attr('url');
@@ -105,7 +101,6 @@ function readURL(input) {
                     };
 
                     var current = $(this);
-
                     $.ajax(settings).done(function (response) {
                         current.html(response.html);
                     });
@@ -518,13 +513,11 @@ function readURL(input) {
     </div>
 {% endfor %}
             </div>
-
     <button type="button" class="btn stylebx add-btn" data-toggle="modal" data-target="#video_modal">
   Add Videos
 </button>
     </div>
     <div role="tabpanel" class="tab-pane edit-listing-tab" id="sounds">
-    <div class="container-fluid">
         {% for sound in sounds %}
             <div class="row">
             <div class="col-md-8">
@@ -542,7 +535,8 @@ function readURL(input) {
     <button type="button" class="btn stylebx add-btn" data-toggle="modal" data-target="#sound_modal">
   Add Sounds
 </button>
-    </div>
+
+
     </div>
   </div>
 
