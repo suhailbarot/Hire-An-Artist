@@ -306,9 +306,19 @@ def edit_listing(request,lid):
 
 def view_listing(request,lid):
     phoneform = PhoneForm()
-
     try:
-        listing = Listing.objects.get(id=lid, is_active=1)
+        sub_adm = 0
+        if request.user.is_authenticated():
+            try:
+                up = UserProfile.objects.get(user=request.user)
+                if up.type == 1:
+                    sub_adm = 1
+            except:
+                pass
+        if sub_adm:
+            listing = Listing.objects.get(id=lid)
+        else:
+            listing = Listing.objects.get(id=lid,is_active=1)
         rating_form = RatingForm(instance=listing)
         media = Media.objects.filter(is_active=1, listing=listing)
         projects = Projects.objects.filter(listing=listing, is_active=1)
@@ -331,11 +341,12 @@ def view_listing(request,lid):
                 sc.append(media)
     except Listing.DoesNotExist:
         return HttpResponse("No such listing")
+
     if request.POST:
         if "rate" in request.POST:
             form1 = RegisterForm()
             form2=LoginForm()
-            listing = Listing.objects.get(id=lid, is_active=1)
+            listing = Listing.objects.get(id=lid)
             rating_form = RatingForm(data=request.POST,instance=listing)
             if rating_form.is_valid():
                 rated = rating_form.save()
