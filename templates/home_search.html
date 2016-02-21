@@ -37,6 +37,28 @@ $(document).ready(function(){
 
                                                
          });
+   $("#cityinput").autocomplete({
+          source : function(request,response) {
+              var results = $.ui.autocomplete.filter(cityList, request.term);
+              if (!results.length) {
+                results = ['Sorry, we are not present in your city'];
+            }
+            response(results);
+          },
+          minLength: 2,
+          select: function(e,ui){
+              if(ui.item.label == 'Sorry, we are not present in your city') {
+                  e.preventDefault();
+              }
+              else {
+                  window.location = "/set_city?city=" + ui.item.label.toLowerCase();
+              }
+
+          }
+      });
+
+
+
 
 
 
@@ -63,24 +85,91 @@ $("#budget").text("Budget : Rs. "+parseInt(slider.noUiSlider.get()[0])+ " - "+"R
 
 slider.noUiSlider.on('end',function(){
   setTimeout(function() {
-   $('#f-form').submit();
-   console.log("IN");
+    $.ajax({
+                  data:$("#f-form").serialize(),
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajaxforfilters/' ,
+                  success: function(response) { 
+              
+              
+                    $('#result-box').html(response);
+                
+            },
+                });
+   
 }, 5000);
 });
 
 
    $('#id_function_type').on('change', function() {
-                this.form.submit();
+                $.ajax({
+                  data:$("#f-form").serialize(),
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajaxforfilters/' ,
+                  success: function(response) { 
+              
+              
+                    $('#result-box').html(response);
+                
+            },
+                });
             });
    $('#id_filter_by').on('change', function() {
-                this.form.submit();
-            });
+    ;
+$.ajax({          
+                  data:$("#f-form").serialize(),
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajaxforfilters/' ,
+                  success: function(response) { 
+
+              $('#result-box').html(response);
+
+
+                
+            },
+                });            });
    $('#id_talents').on('change', function() {
-                this.form.submit();
-            });
+$.ajax({
+                  data:$("#f-form").serialize(),
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajaxforfilters/' ,
+                  success: function(response) { 
+              
+              $('#result-box').html(response);
+
+                
+            },
+                });            });
+   $('.tagged label input').on('change', function() {
+$.ajax({
+                  data:$("#f-form").serialize(),
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajaxforfilters/' ,
+                  success: function(response) { 
+              
+              $('#result-box').html(response);
+
+                
+            },
+                });            });
    $('#id_outstation').on('change', function() {
-                this.form.submit();
-            });
+$.ajax({
+                  data:$("#f-form").serialize(),
+                  
+                  type: "GET", // GET or POST
+                  url: '/ajax/' ,
+                  success: function(response) { 
+              
+              $('#result-box').html(response);
+
+                
+            },
+                });            });
 
 })
 </script>
@@ -189,7 +278,7 @@ slider.noUiSlider.on('end',function(){
 
         <div class="col-md-9">
 
-            <div class="result-box">
+            <div id="result-box">
 
                 <div class="row">
 

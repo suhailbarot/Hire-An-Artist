@@ -12,6 +12,45 @@
   min-height: 200px;
   min-width: 200px;
 }
+.googlebutton{
+            background-color: #DC4B39;
+            width: 286px;
+            height: 39px;
+            border:none;
+            margin-bottom: 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .socialtext{
+            color: white;
+            margin-top:3%;
+            position: relative;
+            right:10px;
+        }
+        .fbbutton{
+            background-color: #3B5998;
+            width: 286px;
+            height: 39px;
+            border:none;
+        }
+        .scicon{
+            width:30px;
+            float: left;
+            position: relative;
+            top:-5px;
+
+        }
+       
+        .modaldialog{
+          height: 435px;
+          width:840px;
+        }
+        .logcol3{
+          padding-top: 0px;
+        }
+         .regcol {
+    border-left: 1px solid #d1d1d1;
+}
 
 
 
@@ -180,7 +219,7 @@ $('#contactModal').on('shown.bs.modal', function (e) {
             <div class="alert alert-danger">
   You must login to see contact details!
 </div>
-         <div class="col-md-6 logcol2">
+         <div class="col-md-6 logcol2 logcol3">
 
 
 
@@ -193,12 +232,12 @@ $('#contactModal').on('shown.bs.modal', function (e) {
 <a><input class = "btn btn-default buttonsubmit" type="submit" value="Login" name="login"></a>
 
         <a href="#" id="forgot">Forgot Password?</a>
-        <button class="googlebutton"><div>
+        <button class="googlebutton gfbtn"><div>
             <img src="{% static 'google.png' %}" class="scicon">
             <p class="socialtext">Continue With Google</p>
 
         </div></button>
-        <button class="fbbutton"><div>
+        <button class="fbbutton gfbtn"><div>
             <img src="{% static 'facebook.png' %}" class="scicon">
             <p class="socialtext">Continue With Facebook</p>
 
@@ -299,9 +338,12 @@ $('#contactModal').on('shown.bs.modal', function (e) {
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-body bodymodal">
+        <div class="alert alert-danger">
+  You must enter your phone number to see contact details!
+</div>
         <form id="phoneform" method="post" action="/ajax/"> 
           {% csrf_token %}
-        {{ phoneform | bootstrap}}
+        {{ phoneform | bootstrap_inline}}
 
         <h3 id="error"></h3>
 <a><input class = "btn btn-default buttonsubmit" type="submit" value="Submit" name="phone" id="phonesubmit"></a>

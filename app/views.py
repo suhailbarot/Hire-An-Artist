@@ -1,5 +1,4 @@
 import datetime
-import pprint
 from PIL import Image
 from StringIO import StringIO
 from jfu.http import upload_receive, UploadResponse, JFUResponse
@@ -7,6 +6,8 @@ import time
 import boto
 import json
 from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 
 from django.views.decorators.http import require_POST
@@ -77,10 +78,7 @@ def home(request):
 
 def user_login(request):
     redirect_to = request.POST.get('next', '')
-    if redirect_to:
-        print redirect_to
-    else:
-        print "Nope"
+
     if request.POST:
         form = LoginForm(data=request.POST, files=request.FILES)
         if form.is_valid():
@@ -119,7 +117,6 @@ def reset_password(request, key):
             # send_mail("Reset your password",message,'support@bla.com',[pr.email], fail_silently=True)
             return HttpResponse("A new password has been emailed to you :" + message)
         except Exception,e:
-            print e
             return HttpResponse("Invalid Attempt")
 
 
@@ -316,7 +313,6 @@ def view_listing(request,lid):
             similar = Listing.objects.filter(group_key=listing.group_key).exclude(id=listing.id)
         else:
             similar = []
-        print similar
         yt = []
         sc = []
         ph = []
@@ -339,7 +335,6 @@ def view_listing(request,lid):
             rating_form = RatingForm(data=request.POST,instance=listing)
             if rating_form.is_valid():
                 rated = rating_form.save()
-                print "Saved"
             return render(request,'view_listing.html',{'listing':listing,'videos':yt[:4],'sounds':sc,
                                                'images':ph[:4],'image_count':max(0,len(ph)-4),
                                                'video_count':max(0,len(yt)-4),'projects':projects,'similar':similar,'phoneform':phoneform,'form_login':form2,'form_register':form1,'rating_form':rating_form})
@@ -510,8 +505,7 @@ def image_upload(request):
         key.set_contents_from_file(file)
         key.make_public()
         url = key.generate_url(expires_in=0, query_auth=False, force_http=True)
-        print url
-        print "herer"
+
         md = Media.objects.create(listing=listing,url=url,type=PHOTO)
         file_dict = {
             'name' : file.name,
@@ -639,6 +633,8 @@ def image_view_api(request,lid):
 def search_home(request, template='home_search.html', extra_context=None):
     filter_form = FilterSearchForm(request.GET)
     results = Listing.objects.all()
+    cities = City.objects.filter(is_active=1,is_popular=1).order_by('name')
+
 
     tn=None
 
@@ -694,14 +690,37 @@ def search_home(request, template='home_search.html', extra_context=None):
 
             results = Listing.objects.filter(is_active=1)
 
+        
+
+
+   
+
+        if request.GET.get('function_type'):
+            function = int(request.GET['function_type'])
+            fn = Function.objects.get(id=function)
+            results = results.filter(functions=fn)
+        if request.GET.get('talents'):
+            talents = int(request.GET['talents']) 
+            tn = Talent.objects.get(id=talents)
+            results = results.filter(talents=tn)
+
+        if request.GET.get('budget_min'):
+            budget_min = int(request.GET['budget_min'])
+            results = results.filter(fees__gte=budget_min)
+        if request.GET.get('budget_max'):
+            budget_max = int(request.GET['budget_max'])
+            results = results.filter(fees__lte=budget_max)
+        if request.GET.get('city'):
+            city = request.GET['city'] 
+            results = results.filter(city__icontains=str(city))
+        if request.GET.get('outstation'):
+            results = results.filter(outstation=True)
         if request.GET.get('filter_by'):
             if int(request.GET['filter_by']) == 0:
                 results=results.order_by('fees')
 
             if int(request.GET['filter_by'])==1:
 
-                tagslist=[tag.value for tag in filter_form['tags']]
-                
                 for res in results:
                     m=0   
                     sum1=0
@@ -736,51 +755,28 @@ def search_home(request, template='home_search.html', extra_context=None):
                     if res.param_10!=-1:
                         sum1+=res.param_10
                         m+=1
-                    tagss = res.tags.all()
-                    n=0
-                    for tag in tagss:
-                        if 'tags' in request.GET:
-                            if str(tag.pk) in request.GET['tags']:
-                                sum1+=10
-                                n+=1
+                    if request.GET.get('talents'):
+                        tagss = res.tags.filter(talent=int(request.GET['talents']))
+                        n=0
+                        for tag in tagss:
+                            if 'tags' in request.GET:
+                                if str(tag.pk) in request.GET['tags']:
+                                    sum1+=10
+                                    n+=1
+                    else:
+                        n=0
                     if (m+n)==0:
-                        res.rscore = 0
+                        res.rscore = float(0)
                     else:
                         res.rscore=sum1/float(m+n)
-                    print res.rscore
-                    res.save()
-                results = results.order_by('-rscore')
+                    
+                results=sorted(results,key=lambda a: a.rscore,reverse=True)
 
-
-
-
-   
-
-        if request.GET.get('function_type'):
-            function = int(request.GET['function_type'])
-            fn = Function.objects.get(id=function)
-            results = results.filter(functions=fn)
-        if request.GET.get('talents'):
-            talents = int(request.GET['talents']) 
-            tn = Talent.objects.get(id=talents)
-            results = results.filter(talents=tn)
-
-        if request.GET.get('budget_min'):
-            budget_min = int(request.GET['budget_min'])
-            results = results.filter(fees__gte=budget_min)
-        if request.GET.get('budget_max'):
-            budget_max = int(request.GET['budget_max'])
-            results = results.filter(fees__lte=budget_max)
-        if request.GET.get('city'):
-            city = request.GET['city'] 
-            results = results.filter(city__icontains=str(city))
-        if request.GET.get('outstation'):
-            results = results.filter(outstation=True)
 
     if tn:
-        context = {'results':results,'form':filter_form,'tn':tn}
+        context = {'results':results,'form':filter_form,'tn':tn,'cities':cities}
     else:
-        context = {'results':results,'form':filter_form}
+        context = {'results':results,'form':filter_form,'cities':cities}
 
     if extra_context is not None:
         context.update(extra_context)
@@ -797,10 +793,18 @@ def search_home(request, template='home_search.html', extra_context=None):
 
 
 def ajax(request):
-    usp = UserProfile.objects.get(user=request.user)
 
     if request.is_ajax():
+        usp = UserProfile.objects.get(user=request.user)
+
         if request.GET:
+            
+
+
+               
+            
+
+
             if usp.phone:
                 l = request.GET.get('listing')
                 listing = Listing.objects.get(name=l)
@@ -825,21 +829,19 @@ def ajax(request):
             form = PhoneForm(data=request.POST)
             if not isinstance(int(form.data['phone']),(int,long)):
                 message['status'] = 3
-                print "in"
                 return JsonResponse({'message': message})
             if len(str(form.data['phone']))<10 or len(str(form.data['phone']))>12:
                 message['status'] = 2
-                print "in"
                 return JsonResponse({'message': message})
-
 
 
             if form.is_valid():
+                
                 form.save(usp)
-                print "saved!"
 
                 message['status'] = 1 
                 return JsonResponse({'message': message})
+            else:
             message['failiure'] = "form not valid"
             return HttpResponse(json.dumps({'message': message}))
         
@@ -849,3 +851,184 @@ def ajax(request):
     return render_to_response(
         template, context, context_instance=RequestContext(request))
 
+
+def ajaxforfilters(request):
+    if request.is_ajax():
+        if request.GET:
+
+            if request.GET:
+
+                results = Listing.objects.filter(is_active=1)
+
+        
+
+
+   
+
+                if request.GET.get('function_type'):
+                    function = int(request.GET['function_type'])
+                    fn = Function.objects.get(id=function)
+                    results = results.filter(functions=fn)
+                if request.GET.get('talents'):
+                    talents = int(request.GET['talents']) 
+                    tn = Talent.objects.get(id=talents)
+                    results = results.filter(talents=tn)
+
+                if request.GET.get('budget_min'):
+                    budget_min = int(request.GET['budget_min'])
+                    results = results.filter(fees__gte=budget_min)
+                if request.GET.get('budget_max'):
+                    budget_max = int(request.GET['budget_max'])
+                    results = results.filter(fees__lte=budget_max)
+                if request.GET.get('city'):
+                    city = request.GET['city'] 
+                    results = results.filter(city__icontains=str(city))
+                if request.GET.get('outstation'):
+                    results = results.filter(outstation=True)
+                if request.GET.get('filter_by'):
+                    if int(request.GET['filter_by']) == 0:
+                        results=results.order_by('fees')
+
+                    if int(request.GET['filter_by'])==1:
+
+                        for res in results:
+                            m=0   
+                            sum1=0
+                            if res.param_1!=-1:
+                                sum1+=res.param_1
+                                m+=1
+                            if res.param_2!=-1:
+                                sum1+=res.param_2
+                                m+=1
+
+                            if res.param_3!=-1:
+                                sum1+=res.param_3
+                                m+=1
+                            if res.param_4!=-1:
+                                sum1+=res.param_4
+                                m+=1
+                            if res.param_5!=-1:
+                                sum1+=res.param_5
+                                m+=1
+                            if res.param_6!=-1:
+                                sum1+=res.param_6
+                                m+=1
+                            if res.param_7!=-1:
+                                sum1+=res.param_7
+                                m+=1
+                            if res.param_8!=-1:
+                                sum1+=res.param_8
+                                m+=1
+                            if res.param_9!=-1:
+                                sum1+=res.param_9
+                                m+=1
+                            if res.param_10!=-1:
+                                sum1+=res.param_10
+                                m+=1
+                            if request.GET.get('talents'):
+                                tagss = res.tags.filter(talent=int(request.GET['talents']))
+                                n=0
+                                for tag in tagss:
+                                    if 'tags' in request.GET:
+                                        if str(tag.pk) in request.GET['tags']:
+                                            sum1+=10
+                                            n+=1
+                            else:
+                                n=0
+                            if (m+n)==0:
+                                res.rscore = float(0)
+                            else:
+                                res.rscore=sum1/float(m+n)
+                    
+                        results=sorted(results,key=lambda a: a.rscore,reverse=True)
+            message = """"""
+            for res in results:
+                star = '<span class="rating-star %s"></span>'
+                avg = 0.0
+                cnt = 0
+                for x in range(1,11):
+                    par = "param_"+str(x)
+                    num = getattr(res, par)
+                    if num > 0:
+                        avg += num
+                        cnt += 1
+                if cnt>0:
+                    avg /= cnt
+                avg/=2.0
+                full_star = int(avg)
+                half_star = 1 if (avg-full_star) >= 0.5 else 0
+                final_c = ""
+                tot = 5
+                for j in range(full_star):
+                    final_c+=star % "full-star"
+                    tot-=1
+                for j in range(half_star):
+                    final_c+=star % "half-star"
+                    tot-=1
+                for j in range(tot):
+                    final_c+=star % "empty-star"
+                    
+
+                tagstring=""""""
+                count=0
+                for t in res.tags.all():
+                    if count>=4:
+                        break
+                    count+=1
+                    tagstring+="""
+                                                    
+                                                    <p class="tag">
+
+                                                        %s
+                                                    </p>
+                                                    
+                                                    
+                                                """%(t)
+                mess = """<div class="col-md-6">
+
+                        <div class="content-box">
+                            <div class="result-card">
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="listing.profile_pic" class="card-image">
+                                        </div>
+
+                                        <div class="col-md-8 listing-card-data">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                            <div class="rating rating-box">
+                                             %s 
+                                        </div>
+                                        </div>
+
+
+                                            <div class="col-md-12">
+
+                                    <div class="listing-name">
+                                        <h5>%s</h5>
+                                    </div>
+                                                <div class="listing-talent">
+                                                    <h6>%s</h6>
+                                                </div>
+                                                <div class="listing-tags">
+
+                                                %s
+                                                </div>
+
+
+                                                <div class="listing-price">
+                                                  %s
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                    </div>
+                            </div>
+
+</div>
+                    </div>
+                        </div>"""%(final_c,res.name,res.talents,tagstring,res.fees)
+                message+=mess
+
+ 
+            return HttpResponse(message)

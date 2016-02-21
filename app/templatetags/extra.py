@@ -46,7 +46,6 @@ def get_rating(listing):
     for x in range(1,11):
         par = "param_"+str(x)
         num = getattr(listing, par)
-        print num
         if num > 0:
             avg += num
             cnt += 1
