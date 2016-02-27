@@ -842,7 +842,7 @@ def ajax(request):
                 message['status'] = 1 
                 return JsonResponse({'message': message})
             else:
-            message['failiure'] = "form not valid"
+            	message['failiure'] = "form not valid"
             return HttpResponse(json.dumps({'message': message}))
         
 
