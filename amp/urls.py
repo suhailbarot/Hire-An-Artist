@@ -10,6 +10,8 @@ urlpatterns = [
 
     #user stuff
     url(r'^ajax/','app.views.ajax', name='ajax'),
+    url(r'^ajaxforfilters/','app.views.ajaxforfilters', name='ajaxforfilters'),
+
 
 
     url(r'^user/register/','app.views.user_register', name='user_register'),
