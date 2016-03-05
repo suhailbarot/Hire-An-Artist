@@ -18,20 +18,32 @@
                                         </div>
 
                                         <div class="col-md-8 listing-card-data">
+
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-5">
                                             <div class="rating rating-box">
                                         {% get_rating listing %}</div>
+
+
+                                        </div>
+                                        <div>
+                                                <div class = "col-md-6">
+                                            {% if listing.outstation == 1 %}
+                                            <p class = "outright">Outstation Services</p></div>
+                                            {% else %}
+                                            <p class = "outwrong">Outstation Services</p></div>
+                                            {% endif %}
+
                                         </div>
 
 
                                             <div class="col-md-12">
 
                                     <div class="listing-name">
-                                        <h5>{{listing.name}}</h5>
+                                        <h5><b>{{listing.name}}</b></h5>
                                     </div>
                                                 <div class="listing-talent">
-                                                    <h6>{{listing.talents}}</h6>
+                                                    <h5>{{listing.talents}}</h5>
                                                 </div>
 
                                                 <div class="listing-tags">
@@ -47,7 +59,7 @@
 
 
                                                 <div class="listing-price">
-                                                   {{listing.fees}}
+                                                   Rs. {{listing.fees}}
                                                 </div>
                                                 </div>
                                             </div>

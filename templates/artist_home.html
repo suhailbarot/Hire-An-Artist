@@ -83,52 +83,66 @@
 {% for listing in listings %}
 		<div class="col-md-6">
 
-<div class="row singlelist">
-			<div class="col-md-2 pic-col">
-				{% if listing.profile_pic %}
-				<img src="{{ listing.profile_pic.url }}" class="img-responsive profilepic">
-				{% else %}
-				<img src="{% static 'dp.png' %}" class="img-responsive profilepic">
-				{% endif %}
+                        <div class="content-box">
+                            <div class="result-card">
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="listing.profile_pic" class="card-image">
+                                        </div>
 
-			</div>
-			<div class="col-md-8 info-col">
-				<div class="row namerow">
-    <h3><a class="name" href="/artist/{{ listing.id }}">{{ listing.name }}</a></h3>
-				</div>
-				<div class="row attributes">
-					<div class="col-md-3 attr-col">
-					<h5 class="attr-name"> Talents:</h5>
+                                        <div class="col-md-8 listing-card-data">
 
-{{ listing.talents.name }}
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                            <div class="rating rating-box">
+                                        {% get_rating listing %}</div>
 
-					</div>
-					<div class="col-md-3 attr-col">
-					<h5 class="attr-name">Tags :</h5>
 
-{% for tag in listing.tags.all %}
-{{ tag.name }},
-{% endfor %}
-					</div>
+                                        </div>
+                                        <div>
+                                                <div class = "col-md-6">
+                                            {% if listing.outstation == 1 %}
+                                            <p class = "outright">Outstation Services</p></div>
+                                            {% else %}
+                                            <p class = "outwrong">Outstation Services</p></div>
+                                            {% endif %}
 
-					<div class="col-md-3 attr-col">
-					<h5 class="attr-name">Functions :</h5>
-{% for function in listing.functions.all %}
-{{ function.name }},
-{% endfor %}
-					</div>
-					<div class="col-md-3 attr-col
-					">
-					<h5 class="attr-name">Fees :</h5> {{ listing.feeds }}
+                                        </div>
 
-					</div>
-				</div>
-			</div>
 
-					</div>
-    <br/>
-    </div>
+                                            <div class="col-md-12">
 
+                                    <div class="listing-name">
+                                        <h5><b>{{listing.name}}</b></h5>
+                                    </div>
+                                                <div class="listing-talent">
+                                                    <h5>{{listing.talents}}</h5>
+                                                </div>
+
+                                                <div class="listing-tags">
+                                                    {# only show 4 tags at max and .. if more tags are there #}
+                                                    {% for name in listing.tag_names|slice:":4" %}
+                                                    <p class="tag">
+
+                                                        {{name}}
+                                                    </p>
+                                                    {% endfor %}
+                                                    
+                                                </div>
+
+
+                                                <div class="listing-price">
+                                                   Rs. {{listing.fees}}
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                    </div>
+                            </div>
+
+</div>
+                    </div>
+                        </div>
 
 {% endfor %}
 
